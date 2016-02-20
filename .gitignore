@@ -1,6 +1,15 @@
-# Ignore Build directory
-
-Build/
-
-# Ignore log file
-*.log
+*.m4
+*.o
+autom4te.cache
+config*
+configure
+depcomp
+install-sh
+libtool
+ltmain.sh
+Makefile
+Makefile.in
+missing
+stamp-h1
+assignment2
+compile
