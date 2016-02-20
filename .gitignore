@@ -1,7 +1,7 @@
 *.m4
 *.o
 autom4te.cache
-config*
+config.*
 configure
 depcomp
 install-sh
