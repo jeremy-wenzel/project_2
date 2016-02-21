@@ -5,13 +5,14 @@ GameObject::GameObject (Ogre::String name,
 						Simulator* simulator,
 						btScalar mass,
 						btScalar restitution,
-						btScalar friction) : _name(name),
-											_sceneManager(sceneManager),
-											_simulator(simulator),
-											_mass(mass),
-											_restitution(restitution),
-											_friction(friction) 
+						btScalar friction) 
 {
+	_name = name;
+	_sceneManager = sceneManager;
+	_simulator = simulator;
+	_mass = mass;
+	_restitution = restitution;
+	_friction = friction;
 }
 
 GameObject::~GameObject() {
