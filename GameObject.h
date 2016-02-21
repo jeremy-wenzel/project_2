@@ -21,32 +21,35 @@ class Simulator;
 
 class GameObject {
 protected:
-	Ogre::String name;
-	Ogre::SceneManager* sceneManager;
-	Ogre::SceneNode* rootNode;
-	Ogre::Entity* entity;
-	OgreMotionState* motionState;
+	Ogre::String _name;
+	Ogre::SceneManager* _sceneManager;
+	Ogre::SceneNode* _rootNode;
+	Ogre::Entity* _entity;
+	OgreMotionState* _motionState;
 
-	Simulator* simulator;
-	btCollisionShape* shape;
-	btRigidBody* body;
-	btScalar mass;
-	btScalar restitution;
+	Simulator* _simulator;
+	btCollisionShape* _shape;
+	btRigidBody* _body;
+	btScalar _mass;
+	btScalar _restitution;
 	
-	btScalar friction;
-	btTransform tr;
-	btVector3 inertia;
+	btScalar _friction;
+	btTransform _tr;
+	btVector3 _inertia;
 
-	CollisionContext* context;
-	BulletContactCallback* cCallBack;		
+	CollisionContext* _context;
+	BulletContactCallback* _cCallBack;		
 
 public:
-	GameObject();
+	GameObject (Ogre::String name,
+				Ogre::SceneManager* sceneManager,
+				Simulator* simulator,
+				btScalar mass,
+				btScalar restitution,
+				btScalar friction);
+
 	virtual ~GameObject();
 	virtual btRigidBody* getBody();
-
+	virtual void update() = 0;
 };
 
-btRigidBody* GameObject::getBody() {
-	return body;
-}
