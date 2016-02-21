@@ -12,11 +12,16 @@ Simulator::Simulator() {
 }
 
 Simulator::~Simulator() {
-	delete collisionConfiguration;
-	delete dispatcher;
-	delete overlappingPairCache;
-	delete solver;
-	delete dynamicsWorld;
+	if (collisionConfiguration)
+		delete collisionConfiguration;
+	if (dispatcher)
+		delete dispatcher;
+	if (overlappingPairCache)
+		delete overlappingPairCache;
+	if (solver)
+		delete solver;
+	if (dynamicsWorld)
+		delete dynamicsWorld;
 
 	// Also need to go thorugh collision objects to delete them as well
 	// Probably have to go thorugh object list to delete objects
