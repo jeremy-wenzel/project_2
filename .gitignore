@@ -1,5 +1,6 @@
 *.m4
 *.o
+.deps
 autom4te.cache
 config.*
 configure
@@ -13,3 +14,4 @@ missing
 stamp-h1
 assignment2
 compile
+*~
