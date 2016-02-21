@@ -1,4 +1,4 @@
-noinst_HEADERS = GameObject.h Simulator.h
+noinst_HEADERS = BulletContactCallback.h GameObject.h OgreMotionState.h Simulator.h
 
 bin_PROGRAMS = assignment2
 assignment2_CPPFLAGS = -I$(top_srcdir)

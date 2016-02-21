@@ -17,7 +17,7 @@ Simulator::~Simulator() {
 
 void Simulator::addObject(GameObject* o) {
 	objectList.push_back(o);
-	// dynamicsWorld->addRigidBody(o->getBody());
+	dynamicsWorld->addRigidBody(o->getBody());
 }
 
 bool Simulator::removeObject(GameObject* o) {

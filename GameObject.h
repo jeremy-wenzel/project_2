@@ -11,26 +11,38 @@ GameObject class for creating objects to be placed in the game world.
 /* Bullet Includes */
 #include <btBulletDynamicsCommon.h>
 
+/* Game Includes */
+#include "OgreMotionState.h"
 #include "Simulator.h"
 
 // Needed for forward declearation
 class Simulator;
 
 class GameObject {
-	protected:
-		Ogre::String name;
-		Ogre::SceneManager* sceneManager;
-		Simulator* simulator;
-		Ogre::SceneNode* rootNode;
-		Ogre::Entity* entity;
-		btCollisionShape* shape;
-		btScalar mass;
-		btRigidBody* body;
-		btTransform tr;
-		btVector3 inertia;
+protected:
+	Ogre::String name;
+	Ogre::SceneManager* sceneManager;
+	Ogre::SceneNode* rootNode;
+	Ogre::Entity* entity;
+	OgreMotionState* motionState;
 
-	public:
-		GameObject() = default;
-		~GameObject() = default;
+	Simulator* simulator;
+	btCollisionShape* shape;
+	btRigidBody* body;
+	btScalar mass;
+	btScalar restitution;
+	
+	btScalar friction;
+	btTransform tr;
+	btVector3 inertia;		
+
+public:
+	GameObject();
+	virtual ~GameObject();
+	virtual btRigidBody* getBody();
 
 };
+
+btRigidBody* GameObject::getBody() {
+	return body;
+}
