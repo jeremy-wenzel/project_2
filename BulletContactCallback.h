@@ -6,6 +6,7 @@
 
 #include "GameObject.h"
 
+class GameObject;
 /*
 A struct to keep track of contact information.  Can vary depending on what needs to be tracked
 */

@@ -12,6 +12,7 @@ GameObject class for creating objects to be placed in the game world.
 #include <btBulletDynamicsCommon.h>
 
 /* Game Includes */
+#include "BulletContactCallback.h"
 #include "OgreMotionState.h"
 #include "Simulator.h"
 
@@ -34,7 +35,10 @@ protected:
 	
 	btScalar friction;
 	btTransform tr;
-	btVector3 inertia;		
+	btVector3 inertia;
+
+	CollisionContext* context;
+	BulletContactCallback* cCallBack;		
 
 public:
 	GameObject();
