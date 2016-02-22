@@ -53,6 +53,6 @@ public:
 	virtual void addToSimulator();
 	virtual void updateTransform();
 	// This method checks if there is a collision or not
-	virtual void update(const FrameEvent &evt) = 0;
+	virtual void update() = 0;
 };
 
