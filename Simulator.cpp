@@ -41,11 +41,16 @@ bool Simulator::removeObject(GameObject* o) {
 	return false;
 }
 
+btDiscreteDynamicsWorld* Simulator::getWorld() {
+	return dynamicsWorld;
+}
 // Does a step of the simulation world.
 // After stpe is done, goes through all objects and checks if there are any collisions
 void Simulator::stepSimulation(const Ogre::Real elapsedTime, int maxSubSteps,
 							   Ogre::Real fixedTimeStep) {
 	dynamicsWorld->stepSimulation(elapsedTime, maxSubSteps, fixedTimeStep);
+
+	// go through each object and do updates
 }
 
 int main() {

@@ -26,6 +26,10 @@ GameObject::GameObject (Ogre::String name,
 	_mass = mass;
 	_restitution = restitution;
 	_friction = friction;
+
+	// Not sure what to set these to
+	_context = NULL;
+	_cCallBack = NULL;
 }
 
 // Destructor that isn't really doing anything
@@ -36,7 +40,18 @@ GameObject::~GameObject() {
 // Add object to the Simulator as well as doing some
 // Bullet Physics stuff
 void GameObject::addToSimulator() {
+	updateTransform();
 
+	if (_mass != 0.0f)
+		_shape->calculateLocalInertia(_mass, _inertia);
+
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(_mass, _motionState, _shape, _inertia);
+	rbInfo.m_restitution = _restitution;
+	rbInfo.m_friction = _friction;
+	_body = new btRigidBody(rbInfo);
+	_body->setUserPointer(this);
+
+	_simulator->addObject(this);
 }
 
 // Get the Bullet Physics body pointer
@@ -46,5 +61,5 @@ btRigidBody* GameObject::getBody() {
 
 // Transform the object from the Bullet World to the Ogre World
 void GameObject::updateTransform() {
-
+	_motionState->updateTransform(_tr);	
 }
