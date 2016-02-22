@@ -51,6 +51,8 @@ public:
 	virtual ~GameObject();
 	virtual btRigidBody* getBody();
 	virtual void addToSimulator();
+	virtual void updateTransform();
+	// This method checks if there is a collision or not
 	virtual void update() = 0;
 };
 

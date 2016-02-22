@@ -15,10 +15,7 @@ protected:
 	btTransform mPosl;
 
 public:
-	OgreMotionState(const btTransform intialpos, Ogre::SceneNode* node) {
-		mVisibleobj = node;
-		mPosl = intialpos;
-	}
+	OgreMotionState(const btTransform intialpos, Ogre::SceneNode* node); 
 
 	virtual ~OgreMotionState();
 
@@ -26,19 +23,9 @@ public:
 	void updateTransform(btTransform& newpos);
 
 	/* Initialize object position when it enters simulation */
-	virtual void getWorldTransform(btTransform& worldTrans) const {
-		worldTrans = mPosl;
-	}
+	virtual void getWorldTransform(btTransform& worldTrans) const;
 
 	/* Call motion state during simulation to move body in rendering world */
-	virtual void setWorldTransform(const btTransform& worldTrans) {
-		if (NULL == mVisibleobj)
-			return;
-
-		btQuaternion rot = worldTrans.getRotation();
-		mVisibleobj->setOrientation(rot.w(), rot.x(), rot.y(), rot.z());
-		btVector3 pos = worldTrans.getOrigin();
-		mVisibleobj->setPosition(pos.x(), pos.y(), pos.z());
-	}
+	virtual void setWorldTransform(const btTransform& worldTrans);
 };
 

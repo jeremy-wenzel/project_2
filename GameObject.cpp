@@ -28,15 +28,23 @@ GameObject::GameObject (Ogre::String name,
 	_friction = friction;
 }
 
+// Destructor that isn't really doing anything
 GameObject::~GameObject() {
 
 }
 
+// Add object to the Simulator as well as doing some
+// Bullet Physics stuff
 void GameObject::addToSimulator() {
 
 }
 
+// Get the Bullet Physics body pointer
 btRigidBody* GameObject::getBody() {
 	return _body;
 }
 
+// Transform the object from the Bullet World to the Ogre World
+void GameObject::updateTransform() {
+
+}
