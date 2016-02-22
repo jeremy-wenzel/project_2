@@ -19,6 +19,8 @@ http://www.ogre3d.org/wiki/
 #define __TutorialApplication_h_
 
 #include "BaseApplication.h"
+#include "ball.h"
+#include "Wall.h"
 
 //---------------------------------------------------------------------------
 
@@ -30,6 +32,10 @@ public:
 
 protected:
     virtual void createScene(void);
+
+private:
+	vector<Wall *> wall;
+	ball *b;
 };
 
 //---------------------------------------------------------------------------
