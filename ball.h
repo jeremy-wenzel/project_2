@@ -16,6 +16,7 @@ class ball: public GameObject {
 private:
 	Real radius;
 	Vector3 velocity;
+	Real speed;
 public:
 	ball(Ogre::String name, Ogre::SceneManager *sceneManager, 
 		 Simulator* simulator, btScalar mass,
@@ -24,16 +25,17 @@ public:
 	~ball();
 	void changeVelocity(Vector3 velocity);
 	String material;
-	virtual void update(const FrameEvent &evt);
+	virtual void update();
 	SceneNode *node;
-	Real speed;
+	void changeSpeed(Real speed);
+
 
 	inline btVector3 convertVectorToBtVector(const Vector3 &V)
 	{
     	return btVector3(V.x, V.y, V.z);
 	}
 
-	inline Vector3 convertBtVectorToVector(const btVector3 &v)
+	inline Vector3 convertBtVectorToVector(const btVector3 &V)
 	{
 		return Vector3(V.x(), V.y(), V.z());
 	}

@@ -19,17 +19,28 @@ ball::ball(Ogre::String name,
 		this->_entity->setCastShadows(true);
 		this->radius = entity->getBoundingRadius();
 		this->velocity = Vector3(0, 0, 0);
+
+		btTransform initPosition(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 0));
+
+		_shape = new btSphereShape(radius);
+		_motionState = new OgreMotionState(initPosition, this->node);
+
+
 	}
 
-void ball::update(const FrameEvent &evt)
+void ball::update()
 {
-	Vector3 position = this->node->getPosition();
-	this->node->translate(speed * evt.timeSinceLastFrame * velocity);
+	
 }
 
 void ball::changeVelocity(Vector3 velocity)
 {
 	this->velocity = velocity;
+}
+
+void ball::changeSpeed(Real speed)
+{
+	this->speed = speed;
 }
 
 ball::~ball()

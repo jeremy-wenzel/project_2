@@ -16,6 +16,7 @@ GameObject class for creating objects to be placed in the game world.
 #include "OgreMotionState.h"
 #include "Simulator.h"
 
+
 // Needed for forward declearation
 class Simulator;
 
