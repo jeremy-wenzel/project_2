@@ -1,5 +1,7 @@
 #pragma once
 
+/* Ogre Includes */
+#include <OgreMeshManager.h>
 
 /* Game Includes */
 #include "GameObject.h"

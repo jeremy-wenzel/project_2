@@ -50,6 +50,7 @@ public:
 
 	virtual ~GameObject();
 	virtual btRigidBody* getBody();
+	virtual void addToSimulator();
 	virtual void update() = 0;
 };
 
