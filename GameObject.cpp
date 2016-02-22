@@ -63,3 +63,10 @@ btRigidBody* GameObject::getBody() {
 void GameObject::updateTransform() {
 	_motionState->updateTransform(_tr);	
 }
+
+void GameObject::setKinematic(bool flag) {
+	if (flag) {
+		_body->setCollisionFlags(_body->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
+		_body->setActivationState(DISABLE_DEACTIVATION);
+	}
+}

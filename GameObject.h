@@ -55,5 +55,6 @@ public:
 	virtual void updateTransform();
 	// This method checks if there is a collision or not
 	virtual void update() = 0;
+	virtual void setKinematic(bool flag);
 };
 
