@@ -15,19 +15,20 @@ using namespace Ogre;
 class ball: public GameObject {
 private:
 	Real radius;
-	Vector3 velocity;
 	Real speed;
+	double lastTime;
 public:
 	ball(Ogre::String name, Ogre::SceneManager *sceneManager, 
 		 Simulator* simulator, btScalar mass,
 		 btScalar restitution, btScalar friction,
 		 Real radius, Vector3 initialPosition);
 	~ball();
-	void changeVelocity(Vector3 velocity);
 	String material;
 	virtual void update();
 	SceneNode *node;
 	void changeSpeed(Real speed);
+	void moveAround(Vector3 vector);
+	void update(float elapsedTime);
 
 
 	inline btVector3 convertVectorToBtVector(const Vector3 &V)
