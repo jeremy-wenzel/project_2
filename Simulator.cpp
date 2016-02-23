@@ -53,6 +53,6 @@ void Simulator::stepSimulation(const Ogre::Real elapsedTime, int maxSubSteps,
 	// go through each object and do updates
 }
 
-int main() {
-	return 0;
-}
+// int main() {
+// 	return 0;
+// }

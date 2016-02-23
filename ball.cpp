@@ -6,15 +6,15 @@ ball::ball(Ogre::String name,
 			btScalar mass,
 			btScalar restit,
 			btScalar fric,
-			Real radius,
 			Vector3 initialPosition)
 	:GameObject(name, sceneMgr, sim, mass, restit, fric)
 	{
 		this->radius = radius;
-		Entity *entity = sceneMgr->createEntity(name + "Node", name);
+		Entity *entity = sceneMgr->createEntity(name);
 		this->_entity = entity;
-		this->node = _rootNode->createChildSceneNode("sphereNode");
-		this->node->attachObject(_entity);
+		this->_rootNode = sceneMgr->getRootSceneNode();
+		this->node = this->_rootNode->createChildSceneNode("sphereNode");
+		this->node->attachObject(this->_entity);
 		this->node->setPosition(initialPosition);
 		this->_entity->setCastShadows(true);
 		this->radius = entity->getBoundingRadius();

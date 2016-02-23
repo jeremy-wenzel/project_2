@@ -21,6 +21,8 @@ http://www.ogre3d.org/wiki/
 #include "BaseApplication.h"
 #include "ball.h"
 #include "Wall.h"
+#include "Simulator.h"
+#include <vector>
 
 //---------------------------------------------------------------------------
 
@@ -32,9 +34,10 @@ public:
 
 protected:
     virtual void createScene(void);
+    virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
 
 private:
-	vector<Wall *> wall;
+	std::vector<Wall *> wall;
 	ball *b;
 };
 

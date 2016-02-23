@@ -24,12 +24,41 @@ TutorialApplication::TutorialApplication(void)
 //---------------------------------------------------------------------------
 TutorialApplication::~TutorialApplication(void)
 {
+    if (b)
+    {
+        delete b;
+    }
+
+    for (std::vector<Wall *>::iterator it = wall.begin(); it != wall.end(); ++it)
+    {
+        delete (*it);
+    } 
 }
 
 //---------------------------------------------------------------------------
 void TutorialApplication::createScene(void)
 {
     // Create your scene here :)
+    mCameraMan->getCamera()->setPosition(0, 300, 500);
+    mCameraMan->getCamera()->lookAt(0, 0, 0);
+    mSceneMgr->setShadowTechnique(SHADOWTYPE_STENCIL_MODULATIVE);
+    mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
+    Simulator *sim = new Simulator();
+    btScalar mass = 1.0;
+    btScalar resist = 0.0;
+    btScalar friction = 0.50;
+    Vector3 initialPoint (0, 0, 0);
+
+    b = new ball("sphere.mesh", mSceneMgr, sim, mass, 
+                resist, friction, initialPoint);
+}
+
+
+bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
+{
+    b->updateTransform();
+    bool ret = BaseApplication::frameRenderingQueued(evt);
+    return ret;
 }
 //---------------------------------------------------------------------------
 
