@@ -6,12 +6,15 @@ ball::ball(Ogre::String name,
 			btScalar mass,
 			btScalar restit,
 			btScalar fric,
-			Vector3 initialPosition)
-	:GameObject(name, sceneMgr, sim, mass, restit, fric)
+			Vector3 initialPosition,
+			String material)
+	:GameObject(name, sceneMgr, sim, mass, restit, fric), lastTime(0.0)
 	{
 		this->radius = radius;
 		Entity *entity = sceneMgr->createEntity(name);
 		this->_entity = entity;
+		if (!material.empty())
+			this->_entity->setMaterialName(material);
 		this->_rootNode = sceneMgr->getRootSceneNode();
 		this->node = this->_rootNode->createChildSceneNode("sphereNode");
 		this->node->attachObject(this->_entity);

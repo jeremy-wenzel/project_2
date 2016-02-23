@@ -43,6 +43,11 @@ void TutorialApplication::createScene(void)
     mCameraMan->getCamera()->lookAt(0, 0, 0);
     mSceneMgr->setShadowTechnique(SHADOWTYPE_STENCIL_MODULATIVE);
     mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
+    Light *diffuseLight = mSceneMgr->createLight("diffuse light");
+    // make this light a point light
+    diffuseLight->setType(Light::LT_POINT);            
+    diffuseLight->setDiffuseColour(20.0, 20.0, 20.0);
+
     Simulator *sim = new Simulator();
     btScalar mass = 1.0;
     btScalar resist = 0.0;
@@ -50,13 +55,13 @@ void TutorialApplication::createScene(void)
     Vector3 initialPoint (0, 0, 0);
 
     b = new ball("sphere.mesh", mSceneMgr, sim, mass, 
-                resist, friction, initialPoint);
+                resist, friction, initialPoint, "Penguin");
 }
 
 
 bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
-    b->updateTransform();
+    // b->update(evt.timeSinceLastEvent);
     bool ret = BaseApplication::frameRenderingQueued(evt);
     return ret;
 }

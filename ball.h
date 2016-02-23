@@ -21,7 +21,7 @@ public:
 	ball(Ogre::String name, Ogre::SceneManager *sceneManager, 
 		 Simulator* simulator, btScalar mass,
 		 btScalar restitution, btScalar friction,
-		 Vector3 initialPosition);
+		 Vector3 initialPosition, String material);
 	~ball();
 	String material;
 	virtual void update();
