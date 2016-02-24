@@ -9,21 +9,20 @@
 class Paddle : public GameObject {
 private:
 	bool _active;
-	int _moveSpeed;
+	Ogre::Real _moveSpeed;
 public:
 	Paddle (Ogre::SceneManager* sceneMgr,
 		  	Simulator* sim,
-			btScalar mass,
-			btScalar restit,
-			btScalar fric,
+			btScalar mass, btScalar restit, btScalar fric,
 			Ogre::Real length,
 			Ogre::Real height,
+			Ogre::Real depth,
 			Ogre::Real x_pos,
 			Ogre::Real y_pos,
 			Ogre::Real z_pos,
-			Ogre::Degree roll,
-			Ogre::Degree pitch,
-			Ogre::Degree yaw);
+			Ogre::Real roll,
+			Ogre::Real pitch,
+			Ogre::Real yaw);
 	~Paddle();
 	void update();
 };
