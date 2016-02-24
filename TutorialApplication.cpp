@@ -14,8 +14,11 @@ Tutorial Framework (for Ogre 1.9)
 http://www.ogre3d.org/wiki/
 -----------------------------------------------------------------------------
 */
+#include <iostream>
 
 #include "TutorialApplication.h"
+
+using namespace std;
 
 //---------------------------------------------------------------------------
 TutorialApplication::TutorialApplication(void)
@@ -30,8 +33,18 @@ TutorialApplication::~TutorialApplication(void)
 void TutorialApplication::createScene(void)
 {
     // Create your scene here :)
+    sim = new Simulator();
+    p = new Paddle(mSceneMgr, sim, btScalar(1), btScalar(1), btScalar(.5f), Ogre::Real(10), Ogre::Real(30), Ogre::Real(0), Ogre::Real(0), Ogre::Real(0), Ogre::Degree(0), Ogre::Degree(0), Ogre::Degree(0));
 }
 //---------------------------------------------------------------------------
+
+bool TutorialApplication::keyPressed(const OIS::KeyEvent &arg) {
+    if (arg.key == OIS::KC_W) {
+        cout << "fcuk" << endl;
+    }
+}
+
+
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define WIN32_LEAN_AND_MEAN

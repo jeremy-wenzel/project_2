@@ -21,6 +21,7 @@ http://www.ogre3d.org/wiki/
 #include "BaseApplication.h"
 #include "ball.h"
 #include "Wall.h"
+#include "paddle.h"
 
 //---------------------------------------------------------------------------
 
@@ -32,10 +33,13 @@ public:
 
 protected:
     virtual void createScene(void);
+    virtual bool keyPressed(const OIS::KeyEvent &arg);
 
 private:
 	vector<Wall *> wall;
 	ball *b;
+	Paddle *p;
+	Simulator *sim;
 };
 
 //---------------------------------------------------------------------------
