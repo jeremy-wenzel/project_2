@@ -22,9 +22,10 @@ void OgreMotionState::getWorldTransform(btTransform& worldTrans) const {
 }
 
 void OgreMotionState::setWorldTransform(const btTransform& worldTrans) {
+	mPosl = worldTrans;
 	if (NULL == mVisibleobj)
 		return;
-	mPosl = worldTrans;
+
 	btQuaternion rot = worldTrans.getRotation();
 	mVisibleobj->setOrientation(rot.w(), rot.x(), rot.y(), rot.z());
 	btVector3 pos = worldTrans.getOrigin();
