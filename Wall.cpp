@@ -1,4 +1,5 @@
 #include "Wall.h"
+#include <iostream>
 
 Wall::Wall (Ogre::String name,
 			Ogre::SceneManager* sceneMgr,
@@ -11,9 +12,9 @@ Wall::Wall (Ogre::String name,
 			Ogre::Real x_pos,
 			Ogre::Real y_pos,
 			Ogre::Real z_pos,
-			Ogre::Degree roll,
-			Ogre::Degree pitch,
-			Ogre::Degree yaw) : GameObject(name, sceneMgr, sim, mass, restit, fric) {
+			Ogre::Real roll,
+			Ogre::Real pitch,
+			Ogre::Real yaw) : GameObject(name, sceneMgr, sim, mass, restit, fric) {
 
 	_active = true;
 
@@ -32,43 +33,56 @@ Wall::Wall (Ogre::String name,
 	// Build entity and node to go into root
 	_entity = sceneMgr->createEntity("wall");
 	_rootNode = sceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(x_pos, 
-																					  y_pos, 
-																					  z_pos));
+																			     y_pos, 
+																				 z_pos));
+	_rootNode->pitch(Ogre::Degree(pitch));
+	_rootNode->roll(Ogre::Degree(roll));
+	_rootNode->yaw(Ogre::Degree(yaw));
 
-	// Create Transform
-	_tr.setIdentity();
-	_tr.setOrigin(btVector3(x_pos, y_pos, z_pos));
-	// _tr.setRotation(btQuaternion(yaw, pitch, roll, 0));
-
-	// Set Motion State
-	_motionState = new OgreMotionState(_tr, _rootNode);
-	// Set origin (both in Ogre and in Bullet)
-
-	_rootNode->pitch(pitch);
-	_rootNode->roll(roll);
-	_rootNode->yaw(yaw);
-
-	// Create enitty for plane
 	_rootNode->attachObject(_entity);
 
-	addToSimulator();
+	_entity->setMaterialName("Examples/Rockwall");
 
+	_tr.setIdentity();
+	_tr.setOrigin(btVector3(x_pos, y_pos, z_pos));
+
+	//_tr.setRotation(btQuaternion(btScalar(yaw), btScalar(pitch), btScalar(roll), 0));
+	_shape = new btBoxShape(btVector3(btScalar(length), btScalar(5.f), btScalar(height)));
+	_motionState = new OgreMotionState(_tr, _rootNode);
+
+	// Set Motion State
+	
+	// Set origin (both in Ogre and in Bullet)
+	addToSimulator();
 }
 
 Wall::~Wall () {
+	std::cout << "Deleting Wall" << std::endl;
 	delete _motionState;	
 }
 
 void Wall::update () {
 	// Not sure if we need to do anything because wall is not doing anything
-	_simulator->getWorld()->contactTest(_body, *_cCallBack);
+	if (_cCallBack){
+		_simulator->getWorld()->contactTest(_body, *_cCallBack);
 
-	if (_context->hit && _active) {
-		// Add point
+		if (_context && _context->hit && _active) {
+			// Add point
+			std::cout << "Collision" << std::endl;
+			// Deactivate wall
+			_active = false;
+		}
 
-		// Deactivate wall
-		_active = false;
+		_context->hit = false;
 	}
+	
+}
 
-	_context->hit = false;
+void Wall::setKinematic() {
+	_body->setCollisionFlags(_body->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
+	_body->setActivationState(DISABLE_DEACTIVATION);
+}
+
+OgreMotionState* Wall::getMotionState() {
+	return _motionState;
 }
