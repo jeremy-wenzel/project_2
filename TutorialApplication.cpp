@@ -57,15 +57,6 @@ void TutorialApplication::createScene(void)
 
     b = new ball("sphere.mesh", mSceneMgr, sim, mass, 
                 resist, friction, initialPoint, "");
-
-    // for (int i = 0; i < 300; i ++)
-    // {
-    //     sim->stepSimulation(1/60.f, 10);
-    //     btTransform trans;
-    //     b->getMotionState()->getWorldTransform(trans);
-    //     std::cout << trans.getOrigin().getY() << std::endl;
-    //     b->update();
-    // }
 }
 
 
