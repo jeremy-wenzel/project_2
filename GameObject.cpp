@@ -50,7 +50,6 @@ void GameObject::addToSimulator() {
 	rbInfo.m_friction = _friction;
 	_body = new btRigidBody(rbInfo);
 	_body->setUserPointer(this);
-
 	_simulator->addObject(this);
 }
 

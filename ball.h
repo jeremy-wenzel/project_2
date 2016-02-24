@@ -29,6 +29,7 @@ public:
 	void changeSpeed(Real speed);
 	void moveAround(Vector3 vector);
 	void update(float elapsedTime);
+	OgreMotionState* getMotionState();
 
 
 	inline btVector3 convertVectorToBtVector(const Vector3 &V)

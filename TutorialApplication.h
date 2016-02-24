@@ -39,6 +39,7 @@ protected:
 private:
 	std::vector<Wall *> wall;
 	ball *b;
+	Simulator *sim;
 };
 
 //---------------------------------------------------------------------------

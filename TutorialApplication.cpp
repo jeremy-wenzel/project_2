@@ -16,6 +16,7 @@ http://www.ogre3d.org/wiki/
 */
 
 #include "TutorialApplication.h"
+#include <iostream>
 
 //---------------------------------------------------------------------------
 TutorialApplication::TutorialApplication(void)
@@ -48,20 +49,30 @@ void TutorialApplication::createScene(void)
     diffuseLight->setType(Light::LT_POINT);            
     diffuseLight->setDiffuseColour(20.0, 20.0, 20.0);
 
-    Simulator *sim = new Simulator();
+    sim = new Simulator();
     btScalar mass = 1.0;
     btScalar resist = 0.0;
     btScalar friction = 0.50;
     Vector3 initialPoint (0, 0, 0);
 
     b = new ball("sphere.mesh", mSceneMgr, sim, mass, 
-                resist, friction, initialPoint, "Penguin");
+                resist, friction, initialPoint, "");
+
+    // for (int i = 0; i < 300; i ++)
+    // {
+    //     sim->stepSimulation(1/60.f, 10);
+    //     btTransform trans;
+    //     b->getMotionState()->getWorldTransform(trans);
+    //     std::cout << trans.getOrigin().getY() << std::endl;
+    //     b->update();
+    // }
 }
 
 
 bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
-    // b->update(evt.timeSinceLastEvent);
+    sim->stepSimulation(evt.timeSinceLastEvent, 1);
+    b->update(evt.timeSinceLastEvent);
     bool ret = BaseApplication::frameRenderingQueued(evt);
     return ret;
 }
