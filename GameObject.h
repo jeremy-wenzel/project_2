@@ -39,7 +39,7 @@ protected:
 	btVector3 _inertia;
 
 	CollisionContext* _context;
-	BulletContactCallback* _cCallBack;		
+		
 
 public:
 	GameObject (Ogre::String name,
@@ -54,7 +54,8 @@ public:
 	virtual void addToSimulator();
 	virtual void updateTransform();
 	// This method checks if there is a collision or not
-	virtual void update() = 0;
+	virtual void update() {}
 	virtual void setKinematic(bool flag);
+	BulletContactCallback* _cCallBack;	
 };
 

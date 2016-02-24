@@ -24,7 +24,7 @@ class Simulator {
 		btCollisionDispatcher* dispatcher;
 		btBroadphaseInterface* overlappingPairCache;
 		btSequentialImpulseConstraintSolver* solver;
-		btDiscreteDynamicsWorld* dynamicsWorld;
+		// btDiscreteDynamicsWorld* dynamicsWorld;
 		btAlignedObjectArray<btCollisionShape*> collisionShapes;
 		std::deque<GameObject*> objectList;
 
@@ -36,5 +36,6 @@ class Simulator {
 		btDiscreteDynamicsWorld* getWorld();
 		void stepSimulation(const Ogre::Real elapsedTime, int maxSubSteps = 1,
 							Ogre::Real fixedTimeStep = 1.0f/60.0f);
+		btDiscreteDynamicsWorld* dynamicsWorld;
 };
 

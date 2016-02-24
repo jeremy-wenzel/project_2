@@ -10,6 +10,8 @@ Simulator::Simulator() {
 												overlappingPairCache,
 												solver,
 												collisionConfiguration);
+
+	dynamicsWorld->setGravity(btVector3(0, -10, 0));
 }
 
 /* Destructor for Simulation world. Frees all pointers*/
@@ -51,8 +53,12 @@ void Simulator::stepSimulation(const Ogre::Real elapsedTime, int maxSubSteps,
 	dynamicsWorld->stepSimulation(elapsedTime, maxSubSteps, fixedTimeStep);
 
 	// go through each object and do updates
-}
+	for (int i = 0; i < objectList.size(); ++i) {
+		dynamicsWorld->contactTest(objectList[i]->getBody(), *(objectList[i]->_cCallBack));
+	}
 
-int main() {
-	return 0;
+	for (int i = 0; i < objectList.size(); ++i) {
+		std::cout << "Updating" << std::endl;
+		objectList[i]->update();
+	}
 }

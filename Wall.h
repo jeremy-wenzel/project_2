@@ -21,9 +21,11 @@ public:
 			Ogre::Real x_pos,
 			Ogre::Real y_pos,
 			Ogre::Real z_pos,
-			Ogre::Degree roll,
-			Ogre::Degree pitch,
-			Ogre::Degree yaw);
+			Ogre::Real roll,
+			Ogre::Real pitch,
+			Ogre::Real yaw);
 	~Wall();
 	void update();
+	void setKinematic();
+	OgreMotionState* getMotionState();
 };
