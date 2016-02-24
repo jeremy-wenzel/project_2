@@ -11,7 +11,7 @@ Simulator Class for simulating game world
 /* Bullet Includes */
 #include <btBulletDynamicsCommon.h>
 
-/* C++ inlcudes */
+/* C++ Includes */
 #include <deque>
 
 /* Game Includes */
