@@ -52,8 +52,8 @@ void GameObject::addToSimulator() {
 	_body = new btRigidBody(rbInfo);
 	_body->setUserPointer(this);
 
-	// _context = new CollisionContext();
-	// _cCallBack = new BulletContactCallback(*_body, *_context);
+	_context = new CollisionContext();
+	_cCallBack = new BulletContactCallback(*_body, *_context);
 
 	_simulator->addObject(this);	
 }
