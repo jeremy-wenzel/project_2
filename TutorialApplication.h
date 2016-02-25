@@ -35,6 +35,7 @@ public:
 protected:
     virtual void createScene(void);
     virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
+    bool soundInit(void);
 
 private:
 	std::vector<Wall *> wall;
