@@ -6,9 +6,13 @@
 /* Game Includes */
 #include "GameObject.h"
 
+#include <SDL_mixer.h>
+#include <SDL.h>
+
 class Wall : public GameObject {
 private:
 	bool _active;
+	Mix_Chunk *gScratch;
 public:
 	Wall (Ogre::String name,
 		  Ogre::SceneManager* sceneMgr,

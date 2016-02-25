@@ -25,6 +25,7 @@ ball::ball(Ogre::String name,
 		_tr = initPosition;
 		_shape = new btSphereShape(radius);
 		_motionState = new OgreMotionState(_tr, this->_rootNode);
+    	
 		addToSimulator();
 	}
 
@@ -41,15 +42,25 @@ void ball::moveAround(Ogre::Vector3 vector)
 	this->_rootNode->setPosition(transform);
 }
 
-void ball::update(){}
+void ball::update(){
+	if (_cCallBack)
+	{
+		_simulator->getWorld()->contactTest(_body, *_cCallBack);
+		if (_context->hit && (_context->velNorm > 2.0 || _context->velNorm < -2.0) 
+			&& (lastTime > 0.5 || (_context->lastBody != _context->body && lastTime > 0.1))) {
+			//Handle the hit
+		}
+		_context->hit = false;
+	}
+}
 
 void ball::update(float elapsedTime) {
 	if (_cCallBack)
 	{
 		lastTime += elapsedTime;
 		_simulator->getWorld()->contactTest(_body, *_cCallBack);
-		if (_context->hit && (_context->velNorm > 2.0 || _context->velNorm < -2.0) 
-			&& (lastTime > 0.5 || (_context->lastBody != _context->body && lastTime > 0.1))) {
+		if (_context->hit /*&& (_context->velNorm > 2.0 || _context->velNorm < -2.0) 
+			&& (lastTime > 0.5 || (_context->lastBody != _context->body && lastTime > 0.1))*/) {
 			//Handle the hit
 			lastTime = 0.0f;
 		}
@@ -63,6 +74,5 @@ OgreMotionState* ball::getMotionState(){
 
 ball::~ball()
 {
-
 }
 
