@@ -3,9 +3,9 @@
 Room::Room(Ogre::SceneManager* sceneManager, Simulator *sim) {
 	// Build Ground Wall
 	
-	btScalar mass(0);
-	btScalar rest(1);
-	btScalar frict(.5);
+	btScalar mass(0.f);
+	btScalar rest(1.f);
+	btScalar frict(0.5f);
 
 	walls.push_back(new Wall(Ogre::String("ground"),
 					   sceneManager,
