@@ -37,9 +37,9 @@ protected:
     virtual void createScene(void);
     virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
     bool soundInit(void);
+    virtual bool mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id);
 
 private:
-	std::vector<Wall *> wall;
 	ball *b;
 	Simulator *sim;
   Room *room;
