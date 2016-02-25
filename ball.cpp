@@ -15,18 +15,16 @@ ball::ball(Ogre::String name,
 		this->_entity = entity;
 		if (!material.empty())
 			this->_entity->setMaterialName(material);
-		this->_rootNode = sceneMgr->getRootSceneNode();
-		this->node = this->_rootNode->createChildSceneNode("sphereNode");
-		this->node->attachObject(this->_entity);
-		this->node->setPosition(initialPosition);
-		this->node->setScale(Ogre::Vector3(0.1, 0.1, 0.1));
+		this->_rootNode = sceneMgr->getRootSceneNode()->createChildSceneNode("sphereNode", initialPosition);
+		this->_rootNode->attachObject(this->_entity);
+		this->_rootNode->setScale(Ogre::Vector3(0.1, 0.1, 0.1));
 		this->_entity->setCastShadows(true);
 		this->radius = entity->getBoundingRadius() * 0.1;
 
 		btTransform initPosition(btQuaternion(0, 0, 0, 1), convertVectorToBtVector(initialPosition));
 		_tr = initPosition;
 		_shape = new btSphereShape(radius);
-		_motionState = new OgreMotionState(_tr, this->node);
+		_motionState = new OgreMotionState(_tr, this->_rootNode);
 		addToSimulator();
 	}
 
@@ -38,9 +36,9 @@ void ball::changeSpeed(Ogre::Real speed)
 
 void ball::moveAround(Ogre::Vector3 vector)
 {
-	Ogre::Vector3 transform = this->node->getPosition();
+	Ogre::Vector3 transform = this->_rootNode->getPosition();
 	transform += vector;
-	this->node->setPosition(transform);
+	this->_rootNode->setPosition(transform);
 }
 
 void ball::update(){}

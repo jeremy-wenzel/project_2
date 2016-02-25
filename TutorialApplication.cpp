@@ -65,9 +65,9 @@ void TutorialApplication::createScene(void)
 
     sim = new Simulator();
     btScalar mass = 10.0;
-    btScalar resist = 1.0;
+    btScalar resist = 1.5;
     btScalar friction = 0.50;
-    Ogre::Vector3 initialPoint (0, 1000, 0);
+    Ogre::Vector3 initialPoint (0, 10, 0);
 
     
     b = new ball("sphere.mesh", mSceneMgr, sim, mass, 
