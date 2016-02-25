@@ -11,7 +11,7 @@ Simulator::Simulator() {
 												solver,
 												collisionConfiguration);
 
-	dynamicsWorld->setGravity(btVector3(0, -10, 0));
+	dynamicsWorld->setGravity(btVector3(0, -100, 0));
 }
 
 /* Destructor for Simulation world. Frees all pointers*/
