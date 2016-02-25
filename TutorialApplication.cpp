@@ -17,8 +17,8 @@ http://www.ogre3d.org/wiki/
 
 #include "TutorialApplication.h"
 #include <iostream>
-#include <SDL_mixer.h>
-#include <SDL.h>
+
+#include <OgreLog.h>
 
 //---------------------------------------------------------------------------
 TutorialApplication::TutorialApplication(void)
@@ -44,6 +44,11 @@ bool TutorialApplication::soundInit(void)
         /* Failed, exit. */
         return false;
     }
+      //Initialize SDL_mixer
+    if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+    {
+        return false;
+    }
     return true;
 
 }
@@ -52,7 +57,9 @@ bool TutorialApplication::soundInit(void)
 void TutorialApplication::createScene(void)
 {
     // Create your scene here :)
-    soundInit();
+    if (!soundInit()) {
+        std::cout << "sound init failed" << std::endl;
+    }
     mCameraMan->getCamera()->setPosition(0, 300, 500);
     mCameraMan->getCamera()->lookAt(0, 0, 0);
     mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
