@@ -58,6 +58,11 @@ void GameObject::addToSimulator() {
 	_simulator->addObject(this);	
 }
 
+// Get the Scene Node
+Ogre::SceneNode* GameObject::getNode() {
+	return _rootNode;
+}
+
 // Get the Bullet Physics body pointer
 btRigidBody* GameObject::getBody() {
 	return _body;

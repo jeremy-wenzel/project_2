@@ -34,11 +34,13 @@ public:
 protected:
     virtual void createScene(void);
     virtual bool keyPressed(const OIS::KeyEvent &arg);
+    virtual bool mouseMoved(const OIS::MouseEvent &arg);
 
 private:
 	vector<Wall *> wall;
 	ball *b;
 	Paddle *p;
+  SceneNode *camNode;
 	Simulator *sim;
 };
 

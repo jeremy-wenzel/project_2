@@ -9,8 +9,9 @@
 class Paddle : public GameObject {
 private:
 	bool _active;
-	Ogre::Real _moveSpeed;
 public:
+	Ogre::Real _moveSpeed;
+	
 	Paddle (Ogre::SceneManager* sceneMgr,
 		  	Simulator* sim,
 			btScalar mass, btScalar restit, btScalar fric,
