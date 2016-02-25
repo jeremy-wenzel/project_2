@@ -17,6 +17,7 @@ http://www.ogre3d.org/wiki/
 
 #include "TutorialApplication.h"
 #include <iostream>
+#include <SDL_mixer.h>
 
 //---------------------------------------------------------------------------
 TutorialApplication::TutorialApplication(void)
@@ -42,21 +43,34 @@ void TutorialApplication::createScene(void)
     // Create your scene here :)
     mCameraMan->getCamera()->setPosition(0, 300, 500);
     mCameraMan->getCamera()->lookAt(0, 0, 0);
-    mSceneMgr->setShadowTechnique(SHADOWTYPE_STENCIL_MODULATIVE);
+    mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
     mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
-    Light *diffuseLight = mSceneMgr->createLight("diffuse light");
+    Ogre::Light *diffuseLight = mSceneMgr->createLight("diffuse light");
     // make this light a point light
-    diffuseLight->setType(Light::LT_POINT);            
+    diffuseLight->setType(Ogre::Light::LT_POINT);            
     diffuseLight->setDiffuseColour(20.0, 20.0, 20.0);
+    diffuseLight->setPosition(0, 1000, 0);
 
     sim = new Simulator();
-    btScalar mass = 1.0;
-    btScalar resist = 0.0;
+    btScalar mass = 10.0;
+    btScalar resist = 1.0;
     btScalar friction = 0.50;
-    Vector3 initialPoint (0, 0, 0);
+    Ogre::Vector3 initialPoint (0, 1000, 0);
 
+    
     b = new ball("sphere.mesh", mSceneMgr, sim, mass, 
-                resist, friction, initialPoint, "");
+                resist, friction, initialPoint, "OceanHLSL_GLSL");
+
+    Wall *floor = new Wall("floor", mSceneMgr, sim, btScalar(0), resist, friction,
+        Ogre::Real(1000),
+            Ogre::Real(1000),
+            Ogre::Real(-10),
+            Ogre::Real(-100),
+            Ogre::Real(-10),
+            Ogre::Real(0),
+            Ogre::Real(0),
+            Ogre::Real(0));
+    wall.push_back(floor);
 }
 
 
@@ -64,6 +78,13 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
     sim->stepSimulation(evt.timeSinceLastEvent, 1);
     b->update(evt.timeSinceLastEvent);
+    for (std::vector<Wall *>::iterator it = wall.begin(); it != wall.end(); ++it)
+    {
+        if (*it != NULL)
+        {
+            (*it)->update();
+        }
+    } 
     bool ret = BaseApplication::frameRenderingQueued(evt);
     return ret;
 }

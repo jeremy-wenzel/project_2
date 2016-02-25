@@ -10,36 +10,35 @@
 
 #include "GameObject.h"
 
-using namespace Ogre;
 
 class ball: public GameObject {
 private:
-	Real radius;
-	Real speed;
+	Ogre::Real radius;
+	Ogre::Real speed;
 	double lastTime;
 public:
 	ball(Ogre::String name, Ogre::SceneManager *sceneManager, 
 		 Simulator* simulator, btScalar mass,
 		 btScalar restitution, btScalar friction,
-		 Vector3 initialPosition, String material);
+		 Ogre::Vector3 initialPosition, Ogre::String material);
 	~ball();
-	String material;
+	Ogre::String material;
 	virtual void update();
-	SceneNode *node;
-	void changeSpeed(Real speed);
-	void moveAround(Vector3 vector);
+	Ogre::SceneNode *node;
+	void changeSpeed(Ogre::Real speed);
+	void moveAround(Ogre::Vector3 vector);
 	void update(float elapsedTime);
 	OgreMotionState* getMotionState();
 
 
-	inline btVector3 convertVectorToBtVector(const Vector3 &V)
+	inline btVector3 convertVectorToBtVector(const Ogre::Vector3 &V)
 	{
     	return btVector3(V.x, V.y, V.z);
 	}
 
-	inline Vector3 convertBtVectorToVector(const btVector3 &V)
+	inline Ogre::Vector3 convertBtVectorToVector(const btVector3 &V)
 	{
-		return Vector3(V.x(), V.y(), V.z());
+		return Ogre::Vector3(V.x(), V.y(), V.z());
 	}
 
 

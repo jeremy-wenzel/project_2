@@ -6,12 +6,12 @@ ball::ball(Ogre::String name,
 			btScalar mass,
 			btScalar restit,
 			btScalar fric,
-			Vector3 initialPosition,
-			String material)
+			Ogre::Vector3 initialPosition,
+			Ogre::String material)
 	:GameObject(name, sceneMgr, sim, mass, restit, fric), lastTime(0.0)
 	{
 		this->radius = radius;
-		Entity *entity = sceneMgr->createEntity(name);
+		Ogre::Entity *entity = sceneMgr->createEntity(name);
 		this->_entity = entity;
 		if (!material.empty())
 			this->_entity->setMaterialName(material);
@@ -19,8 +19,9 @@ ball::ball(Ogre::String name,
 		this->node = this->_rootNode->createChildSceneNode("sphereNode");
 		this->node->attachObject(this->_entity);
 		this->node->setPosition(initialPosition);
+		this->node->setScale(Ogre::Vector3(0.1, 0.1, 0.1));
 		this->_entity->setCastShadows(true);
-		this->radius = entity->getBoundingRadius();
+		this->radius = entity->getBoundingRadius() * 0.1;
 
 		btTransform initPosition(btQuaternion(0, 0, 0, 1), convertVectorToBtVector(initialPosition));
 		_tr = initPosition;
@@ -30,14 +31,14 @@ ball::ball(Ogre::String name,
 	}
 
 
-void ball::changeSpeed(Real speed)
+void ball::changeSpeed(Ogre::Real speed)
 {
 	this->speed = speed;
 }
 
-void ball::moveAround(Vector3 vector)
+void ball::moveAround(Ogre::Vector3 vector)
 {
-	Vector3 transform = this->node->getPosition();
+	Ogre::Vector3 transform = this->node->getPosition();
 	transform += vector;
 	this->node->setPosition(transform);
 }
