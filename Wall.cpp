@@ -63,18 +63,16 @@ Wall::~Wall () {
 
 void Wall::update () {
 	// Not sure if we need to do anything because wall is not doing anything
-	if (_cCallBack){
-		_simulator->getWorld()->contactTest(_body, *_cCallBack);
 
-		if (_context && _context->hit && _active) {
+		if (_context && _context->hit) {
 			// Add point
 			std::cout << "Collision" << std::endl;
 			// Deactivate wall
 			_active = false;
-		}
 
-		_context->hit = false;
-	}
+			_context->hit = false;
+		}
+	// std::cout << "Collision" << std::endl;
 	
 }
 

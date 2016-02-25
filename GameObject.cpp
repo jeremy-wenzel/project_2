@@ -34,7 +34,6 @@ GameObject::GameObject (Ogre::String name,
 
 // Destructor that isn't really doing anything
 GameObject::~GameObject() {
-	std::cout << "Destorying game object" << std::endl;
 }
 
 // Add object to the Simulator as well as doing some
@@ -45,16 +44,14 @@ void GameObject::addToSimulator() {
 	if (_mass != 0.0f)
 		_shape->calculateLocalInertia(_mass, _inertia);
 
-	std::cout << _mass << std::endl;
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(_mass, _motionState, _shape, _inertia);
 	rbInfo.m_restitution = _restitution;
 	rbInfo.m_friction = _friction;
 	_body = new btRigidBody(rbInfo);
 	_body->setUserPointer(this);
 
-
-	// _context = new CollisionContext();
-	// _cCallBack = new BulletContactCallback(*_body, *_context);
+	_context = new CollisionContext();
+	_cCallBack = new BulletContactCallback(*_body, *_context);
 
 	_simulator->addObject(this);	
 }
