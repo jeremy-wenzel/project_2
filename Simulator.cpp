@@ -11,7 +11,7 @@ Simulator::Simulator() {
 												solver,
 												collisionConfiguration);
 
-	dynamicsWorld->setGravity(btVector3(0, -10, 0));
+	dynamicsWorld->setGravity(btVector3(0, -100, 0));
 }
 
 /* Destructor for Simulation world. Frees all pointers*/
@@ -58,7 +58,6 @@ void Simulator::stepSimulation(const Ogre::Real elapsedTime, int maxSubSteps,
 	}
 
 	for (int i = 0; i < objectList.size(); ++i) {
-		std::cout << "Updating" << std::endl;
 		objectList[i]->update();
 	}
 }

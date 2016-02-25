@@ -22,6 +22,9 @@ http://www.ogre3d.org/wiki/
 #include "ball.h"
 #include "Wall.h"
 #include "paddle.h"
+#include "Room.h"
+#include "Simulator.h"
+#include <vector>
 
 //---------------------------------------------------------------------------
 
@@ -36,13 +39,15 @@ protected:
     virtual bool keyPressed(const OIS::KeyEvent &arg);
     virtual bool mouseMoved(const OIS::MouseEvent &arg);
     virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
+    bool soundInit(void);
 
 private:
-	vector<Wall *> wall;
+	std::vector<Wall *> wall;
 	ball *b;
 	Paddle *p;
   SceneNode *camNode;
 	Simulator *sim;
+  Room *room;
 };
 
 //---------------------------------------------------------------------------
