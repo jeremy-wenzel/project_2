@@ -6,35 +6,39 @@ ball::ball(Ogre::String name,
 			btScalar mass,
 			btScalar restit,
 			btScalar fric,
-			Real radius,
-			Vector3 initialPosition)
-	:GameObject(name, sceneMgr, sim, mass, restit, fric)
+			Ogre::Vector3 initialPosition,
+			Ogre::String material)
+	:GameObject(name, sceneMgr, sim, mass, restit, fric), lastTime(0.0)
 	{
 		this->radius = radius;
-		Entity *entity = sceneMgr->createEntity(name + "Node", name);
+		Ogre::Entity *entity = sceneMgr->createEntity(name);
 		this->_entity = entity;
-		this->node = _rootNode->createChildSceneNode("sphereNode");
-		this->node->attachObject(_entity);
+		if (!material.empty())
+			this->_entity->setMaterialName(material);
+		this->_rootNode = sceneMgr->getRootSceneNode();
+		this->node = this->_rootNode->createChildSceneNode("sphereNode");
+		this->node->attachObject(this->_entity);
 		this->node->setPosition(initialPosition);
+		this->node->setScale(Ogre::Vector3(0.1, 0.1, 0.1));
 		this->_entity->setCastShadows(true);
-		this->radius = entity->getBoundingRadius();
+		this->radius = entity->getBoundingRadius() * 0.1;
 
 		btTransform initPosition(btQuaternion(0, 0, 0, 1), convertVectorToBtVector(initialPosition));
-
+		_tr = initPosition;
 		_shape = new btSphereShape(radius);
-		_motionState = new OgreMotionState(initPosition, this->node);
+		_motionState = new OgreMotionState(_tr, this->node);
 		addToSimulator();
 	}
 
 
-void ball::changeSpeed(Real speed)
+void ball::changeSpeed(Ogre::Real speed)
 {
 	this->speed = speed;
 }
 
-void ball::moveAround(Vector3 vector)
+void ball::moveAround(Ogre::Vector3 vector)
 {
-	Vector3 transform = this->node->getPosition();
+	Ogre::Vector3 transform = this->node->getPosition();
 	transform += vector;
 	this->node->setPosition(transform);
 }
@@ -42,14 +46,21 @@ void ball::moveAround(Vector3 vector)
 void ball::update(){}
 
 void ball::update(float elapsedTime) {
-	lastTime += elapsedTime;
-	_simulator->getWorld()->contactTest(_body, *_cCallBack);
-	if (_context->hit && (_context->velNorm > 2.0 || _context->velNorm < -2.0) 
-		&& (lastTime > 0.5 || (_context->lastBody != _context->body && lastTime > 0.1))) {
-		//Handle the hit
-		lastTime = 0.0f;
+	if (_cCallBack)
+	{
+		lastTime += elapsedTime;
+		_simulator->getWorld()->contactTest(_body, *_cCallBack);
+		if (_context->hit && (_context->velNorm > 2.0 || _context->velNorm < -2.0) 
+			&& (lastTime > 0.5 || (_context->lastBody != _context->body && lastTime > 0.1))) {
+			//Handle the hit
+			lastTime = 0.0f;
+		}
+		_context->hit = false;
 	}
-	_context->hit = false;
+}
+
+OgreMotionState* ball::getMotionState(){
+	return _motionState;
 }
 
 ball::~ball()

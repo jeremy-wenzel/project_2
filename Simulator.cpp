@@ -58,7 +58,6 @@ void Simulator::stepSimulation(const Ogre::Real elapsedTime, int maxSubSteps,
 	}
 
 	for (int i = 0; i < objectList.size(); ++i) {
-		std::cout << "Updating" << std::endl;
 		objectList[i]->update();
 	}
 }
