@@ -21,6 +21,7 @@ http://www.ogre3d.org/wiki/
 #include "BaseApplication.h"
 #include "ball.h"
 #include "Wall.h"
+#include "Room.h"
 #include "Simulator.h"
 #include <vector>
 
@@ -41,6 +42,7 @@ private:
 	std::vector<Wall *> wall;
 	ball *b;
 	Simulator *sim;
+  Room *room;
 };
 
 //---------------------------------------------------------------------------
