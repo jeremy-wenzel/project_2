@@ -58,7 +58,7 @@ Wall::Wall (Ogre::String name,
 }
 
 Wall::~Wall () {
-	std::cout << "Deleting Wall" << std::endl;
+	// std::cout << "Deleting Wall" << std::endl;
 	Mix_FreeChunk( gScratch );
 	delete _motionState;	
 }
@@ -68,7 +68,7 @@ void Wall::update () {
 
 		if (_context && _context->hit) {
 			// Add point
-			std::cout << "Collision" << std::endl;
+			// std::cout << "Collision" << std::endl;
 			// Deactivate wall
 			_active = false;
 			Mix_PlayChannel( -1, gScratch, 0 );
