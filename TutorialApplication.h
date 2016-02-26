@@ -37,12 +37,14 @@ protected:
     virtual void createScene(void);
     virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
     bool soundInit(void);
+    virtual void createFrameListener(void);
     virtual bool mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id);
 
 private:
 	ball *b;
 	Simulator *sim;
   Room *room;
+  int score;
 };
 
 //---------------------------------------------------------------------------

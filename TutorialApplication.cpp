@@ -18,10 +18,10 @@ http://www.ogre3d.org/wiki/
 #include "TutorialApplication.h"
 #include <iostream>
 #include <OgreLogManager.h>
-#include "userInterface.h"
+// #include "userInterface.h"
 
 //---------------------------------------------------------------------------
-TutorialApplication::TutorialApplication(void)
+TutorialApplication::TutorialApplication(void): score(0)
 {
 }
 //---------------------------------------------------------------------------
@@ -36,6 +36,8 @@ TutorialApplication::~TutorialApplication(void)
     {
         delete room;
     }
+    // mTrayMgr->destroyWidget("Pause");
+    // mTrayMgr->destroyWidget("Score");
 }
 
 bool TutorialApplication::soundInit(void)
@@ -64,6 +66,15 @@ bool TutorialApplication::mousePressed(
 
   return true; 
 }
+
+void TutorialApplication::createFrameListener(void)
+{
+    BaseApplication::createFrameListener();
+    mTrayMgr->showCursor();
+    std::string Score("score: " + std::to_string(score));
+    mTrayMgr->createLabel(OgreBites::TL_BOTTOMLEFT, "Score: ", Ogre::String(Score), 150);
+    mTrayMgr->createButton(OgreBites::TL_BOTTOMLEFT, "Pause", "Pause", 150);
+}
  
 //---------------------------------------------------------------------------
 void TutorialApplication::createScene(void)
@@ -75,6 +86,7 @@ void TutorialApplication::createScene(void)
     mCameraMan->getCamera()->setPosition(0, 300, 500);
     mCameraMan->getCamera()->lookAt(0, 0, 0);
     mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
+    mSceneMgr->setSkyBox(true, "Examples/EveningSkyBox");
     mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
     Ogre::Light *diffuseLight = mSceneMgr->createLight("diffuse light");
     // make this light a point light
@@ -85,7 +97,7 @@ void TutorialApplication::createScene(void)
     sim = new Simulator();
     sim->setGravityManual(btVector3(0, 0, 0));
     btScalar mass = 10.0;
-    btScalar resist = 1.5;
+    btScalar resist = 1.1;
     btScalar friction = 0.50;
     Ogre::Vector3 initialPoint (0, 100, 0);
 
