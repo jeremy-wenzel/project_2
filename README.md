@@ -1,4 +1,4 @@
-# Building the Executable
+'''# Building the Executable
 
 1. Place the project_1_jhw866 (may also be name project_1_jhw866-master) folder that contains the code and executable into some desired directory. The directory doesn't matter. This project is based of Ronald's OgreAppBase.
 
@@ -14,4 +14,17 @@
 
 7. Wala!
 
-8. There is also an executable of the project in the root of the directory called "ProjectName". The code for the project is located in "Source/Core"
+8. There is also an executable of the project in the root of the directory called "ProjectName". The code for the project is located in "Source/Core"'''
+
+README file for assignment2 milestone 2
+
+Done:
+1. Left click to drop the ball
+2. Audio is enabled when ball hit the wall
+3. Gravity and Collision detection
+
+
+TODO:
+1. User Interface, use CEGUI 0.8.4
+2. Paddle
+3. Score system
