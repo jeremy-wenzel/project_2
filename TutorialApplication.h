@@ -21,6 +21,7 @@ http://www.ogre3d.org/wiki/
 #include "BaseApplication.h"
 #include "ball.h"
 #include "Wall.h"
+#include "paddle.h"
 #include "Room.h"
 #include "Simulator.h"
 #include <vector>
@@ -35,12 +36,16 @@ public:
 
 protected:
     virtual void createScene(void);
+    virtual bool keyPressed(const OIS::KeyEvent &arg);
+    virtual bool mouseMoved(const OIS::MouseEvent &arg);
     virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
     bool soundInit(void);
     virtual bool mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id);
 
 private:
 	ball *b;
+	Paddle *p;
+  SceneNode *camNode;
 	Simulator *sim;
   Room *room;
 };
