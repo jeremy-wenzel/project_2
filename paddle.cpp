@@ -39,6 +39,8 @@ Paddle::Paddle (Ogre::SceneManager* sceneMgr,
 	// Create entity for plane
 	_rootNode->attachObject(_entity);
 
+	// setKinematic(true);
+
 	addToSimulator();
 }
 

@@ -57,17 +57,20 @@ bool TutorialApplication::soundInit(void)
 
 }
 
+/* all bugged up */
+// bool TutorialApplication::mousePressed(
+//   const OIS::MouseEvent& me, OIS::MouseButtonID id) 
+// {
+//     if (id == OIS::MB_Left)
+//         std::cout << "mousePressed" << std::endl;
 
-bool TutorialApplication::mousePressed(
-  const OIS::MouseEvent& me, OIS::MouseButtonID id) 
-{
-    if (id == OIS::MB_Left)
-    {
-       sim->setGravityManual(btVector3(0, -100, 0));
-    }
+//     if (id == OIS::MB_Left)
+//     {
+//        sim->setGravityManual(btVector3(0, -100, 0));
+//     }
 
-  return true; 
-}
+//   return true; 
+// }
  
 //---------------------------------------------------------------------------
 void TutorialApplication::createScene(void)
@@ -91,7 +94,7 @@ void TutorialApplication::createScene(void)
     diffuseLight->setPosition(0, 1000, 0);
 
     sim = new Simulator();
-    sim->setGravityManual(btVector3(0, 0, 0));
+    // sim->setGravityManual(btVector3(0, 0, 0));
     btScalar mass = 10.0;
     btScalar resist = 1.5;
     btScalar friction = 0.50;
@@ -101,25 +104,12 @@ void TutorialApplication::createScene(void)
     b = new ball("sphere.mesh", mSceneMgr, sim, mass, 
                 resist, friction, initialPoint, "OceanHLSL_GLSL");
 
-<<<<<<< HEAD
     room = new Room(mSceneMgr, sim);
-=======
-    Wall *floor = new Wall("floor", mSceneMgr, sim, btScalar(0), resist, friction,
-        Ogre::Real(1000),
-            Ogre::Real(1000),
-            Ogre::Real(-10),
-            Ogre::Real(-100),
-            Ogre::Real(-10),
-            Ogre::Real(0),
-            Ogre::Real(0),
-            Ogre::Real(0));
-    wall.push_back(floor);
 
     p = new Paddle(mSceneMgr, sim, btScalar(1), btScalar(1), btScalar(.5f), 
         Ogre::Real(40), Ogre::Real(20), Ogre::Real(5), 
-        Ogre::Real(0), Ogre::Real(0), Ogre::Real(0), 
+        Ogre::Real(100), Ogre::Real(0), Ogre::Real(0), 
         Ogre::Real(0), Ogre::Real(0), Ogre::Real(0));
->>>>>>> Paddle
 }
 
 

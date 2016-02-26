@@ -40,12 +40,12 @@ protected:
     virtual bool mouseMoved(const OIS::MouseEvent &arg);
     virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
     bool soundInit(void);
-    virtual bool mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id);
+    // virtual bool mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id);
 
 private:
 	ball *b;
 	Paddle *p;
-  SceneNode *camNode;
+  Ogre::SceneNode *camNode;
 	Simulator *sim;
   Room *room;
 };
