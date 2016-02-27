@@ -1,0 +1,59 @@
+Milestone 2.2 - Revised Plan
+----------------------------
+
+Team 9:
+Daniel Purdes
+Xinyi Wang
+Jeremy Wenzel
+
+Component Design
+----------------
+
+GameObject:
+	- This task is complete for now. It can be revised as needed.
+
+Integrating Bullet Physics (Simulator and OgreMotionState Object):
+	- This task is complete, although it took much longer to integrate than we hoped.
+	- All GameObjects are integrated with Bullet Physics
+	- OgreMotionState has successfully been implemented, transferring data between Bullet and Ogre correctly.
+	- Collision Detection is also working.
+
+Ball:
+	- Still lacks user interaction (e.g. set initial velocity/speed; change material)
+	- We would like the player to be able to place the ball wherever they desire on the field prior to playing.
+
+Paddle:
+	- This piece still requires a lot of work, but still has placed into the project, although it is extremely buggy.
+	- Probably needs some math implementations to make it move smoothly. This will be our primary focus.
+	- The paddle was planned to rotate along the yaw and roll to correspond with x and y movement of the mouse. This system has been implemented, but it’s not quite working properly. At the moment, the paddle rotates along its local axis, not the global axis.
+	- Keyboard controls are another system that was planned to be implemented. Like the mouse controls, a basic system is implemented for paddle movement. It moves according to the orientation of the paddle, but it will ideally be locked to the X-Z plane.
+
+Wall:
+	- Almost done except point system
+	- However, we do have sounds working on it(Yay!)
+	- Currently, a sound goes off when the ball hits the wall
+
+Room:
+	- Has been implemented and is functioning.
+
+UI:
+	- Experienced basic UI with sdkTrays, but still haven't integrated it with CEGUI
+	- Will focus on that once the conflict is resolved
+
+Sound:
+	- Sound has been integrated and works. 
+		-It currently only fires off when an object hits the wall
+		-We need it to get working for when the ball hits the Paddle.
+	- We are currently looking into adding background music.
+
+Point System:
+	- This System has not been implemented just yet.
+	- We need to find a way to communicate between walls and the UI system
+		-One idea is to have a Point System object that will act as medium, where walls add points to the Point System object, and the UI grabs information from the Point System
+
+Milestone Analysis
+------------------
+Currently, the project is around the point of being on time. Bullet has successfully been implemented as well as GameObject, which are perhaps the biggest challenges of the project. We are successfully able to switch between Bullet and Ogre, another major milestone in the project. This took the most amount of time debugging, more time than we anticipated, as we were unfamiliar with how Bullet worked. This led us to not being able to get the Paddle (or player) as far as we hoped. Sound has successfully been integrated and currently works for when an object hits a wall. The GUI has not been implemented as we would have liked. We were planning on using the CEGUI library, but it doesn’t seem to be working on the lab machines. The Point System also hasn’t been implemented. However, we do have a plan for it and it will be easily integrated in the next milestone.
+
+The Paddle has the most work ahead of us. Most of our focus will be shifted towards getting this implemented. If it appears that the way want to implement the Paddle is a little too complicated and taking too much time, then we will try moving to another system that is easier to implement. Once we have the Paddle fully implemented, then the majority of the criteria have been implemented. All that would be left to add would be the Scoring System (plan is already in place), GUI (waiting to hear from professor on situation), other Sounds (waiting to get Paddle and Scoring System in place), and the various bells and whistles (rest of the components).
+
