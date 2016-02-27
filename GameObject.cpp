@@ -79,4 +79,8 @@ void GameObject::setKinematic(bool flag) {
 		_body->setCollisionFlags(_body->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
 		_body->setActivationState(DISABLE_DEACTIVATION);
 	}
+	else {
+		_body->setCollisionFlags(_body->getCollisionFlags() & (~btCollisionObject::CF_KINEMATIC_OBJECT));
+		_body->setActivationState(ACTIVE_TAG);
+	}
 }

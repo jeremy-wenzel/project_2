@@ -39,6 +39,8 @@ protected:
     bool soundInit(void);
     virtual void createFrameListener(void);
     virtual bool mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id);
+    virtual bool keyPressed(const OIS::KeyEvent& ke);
+    virtual bool keyReleased(const OIS::KeyEvent& ke);
 
 private:
 	ball *b;

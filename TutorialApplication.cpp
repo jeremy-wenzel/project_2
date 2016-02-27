@@ -55,15 +55,47 @@ bool TutorialApplication::soundInit(void)
 
 }
 
-
+// mouse event
 bool TutorialApplication::mousePressed(
   const OIS::MouseEvent& me, OIS::MouseButtonID id) 
 {
     if (id == OIS::MB_Left)
     {
-       sim->setGravityManual(btVector3(0, -100, 0));
+       // sim->setGravityManual(btVector3(0, -100, 0));
+        b->setKinematic(false);
     }
 
+  return true; 
+}
+
+// keyboard event
+bool TutorialApplication::keyPressed(const OIS::KeyEvent& ke) 
+{
+    if (ke.key == OIS::KC_W)
+    {
+        b->moveAround(Ogre::Vector3(0, 10, 0));
+    }
+    if (ke.key == OIS::KC_A)
+    {
+        b->moveAround(Ogre::Vector3(-10, 0, 0));
+    }
+    if (ke.key == OIS::KC_S)
+    {
+        b->moveAround(Ogre::Vector3(0, -10, 0));
+    }
+    if (ke.key == OIS::KC_D)
+    {
+        b->moveAround(Ogre::Vector3(10, 0, 0));
+    }
+    if (ke.key == OIS::KC_ESCAPE)
+    {
+        mShutDown = true;
+    }
+  return true; 
+}
+ 
+bool TutorialApplication::keyReleased(const OIS::KeyEvent& ke) 
+{ 
   return true; 
 }
 
@@ -95,7 +127,7 @@ void TutorialApplication::createScene(void)
     diffuseLight->setPosition(0, 1000, 0);
 
     sim = new Simulator();
-    sim->setGravityManual(btVector3(0, 0, 0));
+    // sim->setGravityManual(btVector3(0, 0, 0));
     btScalar mass = 10.0;
     btScalar resist = 1.1;
     btScalar friction = 0.50;

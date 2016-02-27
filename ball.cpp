@@ -22,11 +22,12 @@ ball::ball(Ogre::String name,
 		this->radius = entity->getBoundingRadius() * 0.1;
 
 		btTransform initPosition(btQuaternion(0, 0, 0, 1), convertVectorToBtVector(initialPosition));
-		_tr = initPosition;
-		_shape = new btSphereShape(radius);
-		_motionState = new OgreMotionState(_tr, this->_rootNode);
+		this->_tr = initPosition;
+		this->_shape = new btSphereShape(radius);
+		this->_motionState = new OgreMotionState(this->_tr, this->_rootNode);
     	
 		addToSimulator();
+		setKinematic(true);
 	}
 
 
@@ -40,6 +41,7 @@ void ball::moveAround(Ogre::Vector3 vector)
 	Ogre::Vector3 transform = this->_rootNode->getPosition();
 	transform += vector;
 	this->_rootNode->setPosition(transform);
+	updateTransform();
 }
 
 void ball::update(){
