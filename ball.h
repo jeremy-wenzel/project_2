@@ -31,7 +31,7 @@ public:
 	void moveAround(Ogre::Vector3 vector);
 	void update(float elapsedTime);
 	OgreMotionState* getMotionState();
-
+	Ogre::SceneNode *getSceneNode();
 
 	inline btVector3 convertVectorToBtVector(const Ogre::Vector3 &V)
 	{

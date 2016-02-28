@@ -32,4 +32,5 @@ public:
 	void update();
 	void setKinematic();
 	OgreMotionState* getMotionState();
+	Ogre::Entity* getEntity();
 };

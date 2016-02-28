@@ -70,6 +70,10 @@ void ball::update(float elapsedTime) {
 	}
 }
 
+Ogre::SceneNode* ball::getSceneNode() {
+	return this->_rootNode;
+}
+
 OgreMotionState* ball::getMotionState(){
 	return _motionState;
 }

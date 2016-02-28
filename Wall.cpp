@@ -86,3 +86,7 @@ void Wall::setKinematic() {
 OgreMotionState* Wall::getMotionState() {
 	return _motionState;
 }
+
+Ogre::Entity* Wall::getEntity() {
+	return this->_entity;
+}

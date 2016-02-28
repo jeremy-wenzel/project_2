@@ -102,3 +102,47 @@ Room::~Room() {
 
 }
 
+/* walls[0] = ground
+   walls[1] = northwall
+   walls[2] = southwall
+   walls[3] = eastwall
+   walls[4] = westwall
+   walls[5] = ceiling
+*/
+Ogre::Vector3 Room::checkBoundary(Ogre::SceneNode *node, Ogre::Vector3 move, int index)
+{
+	Ogre::Vector3 position = node->getPosition();
+	Wall* wall = walls.at(index);
+	Ogre::Entity* entity = wall->getEntity();
+	Ogre::AxisAlignedBox box = entity->getWorldBoundingBox();
+	Ogre::Vector3 maxCorner = box.getMaximum();
+	Ogre::Real difference = 0;
+	int footnode = 0;
+	switch(index)
+	{
+		case 0:
+			footnode = 1;
+		case 4:
+			difference = maxCorner[footnode] - (position[footnode] + move[footnode]);;
+			difference = difference < move[footnode]? move[footnode]: difference;
+			// clamp
+			difference = difference > 0.0? 0.0: difference;
+			move[footnode] = difference;
+			break;
+		case 5:
+			footnode = 1;
+		case 3:
+			difference = maxCorner[footnode] - (position[footnode] + move[footnode]);
+			difference = difference > move[footnode]? move[footnode]: difference;
+			// clamp
+			difference = difference < 0.0? 0.0: difference;
+			move[footnode] = difference;
+			break;
+		default:
+			Ogre::LogManager::getSingleton().logMessage ("invalid argument");
+	}
+	std::cout << move << std::endl;
+	return move;
+
+}
+
