@@ -20,8 +20,8 @@ Paddle::Paddle (Ogre::SceneManager* sceneMgr,
 	_entity = sceneMgr->createEntity("cube.mesh");
 	_parentNode = sceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(x_pos, y_pos-height, z_pos));
 	_rootNode = _parentNode->createChildSceneNode();
-	_rootNode->translate(0, 0,Ogre::Real(height));
-	_rootNode->pitch(Ogre::Degree(45));
+	_rootNode->translate(0, Ogre::Real(height), 0);
+	//_rootNode->pitch(Ogre::Degree(45));
 
 	// Create Transform
 	_tr.setIdentity();

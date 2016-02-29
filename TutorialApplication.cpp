@@ -98,7 +98,7 @@ void TutorialApplication::createScene(void)
         Ogre::Real(0), Ogre::Real(0), Ogre::Real(0), 
         Ogre::Real(0), Ogre::Real(0), Ogre::Real(0));
 
-    camNode = p->getNode()->createChildSceneNode(Ogre::Vector3(0,5.f,0));
+    camNode = p->getNode()->createChildSceneNode(Ogre::Vector3(0,0,5.f));
     camNode->attachObject(mCamera);
 }
 
@@ -123,28 +123,28 @@ bool TutorialApplication::keyPressed(const OIS::KeyEvent &arg) {
     BaseApplication::keyPressed(arg);
 
     if (arg.key == OIS::KC_W) {
-        Ogre::Vector3 ori = p->getNode()->getOrientation() * Ogre::Vector3::UNIT_X;
-        Ogre::Vector3 dir = p->_moveSpeed * Ogre::Vector3(cos(ori.x), 0, sin(ori.z));
-        p->getNode()->translate(dir);
-        cout << "forward (" << p->getNode()->getPosition().x << ", " << p->getNode()->getPosition().y << ", " << p->getNode()->getPosition().z << ")" << endl;
+        Ogre::Quaternion ori = p->getParentNode()->getOrientation();
+        Ogre::Vector3 dir = ori * Ogre::Vector3::NEGATIVE_UNIT_Z;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
+        p->getParentNode()->translate(p->_moveSpeed * dir);
+        cout << "forward : " << p->getParentNode()->getPosition() << endl;
     }
     if (arg.key == OIS::KC_S) {
-        //Ogre::Quaternion ori = p->getNode()->getOrientation();
-        //Ogre::Vector3 dir = p->_moveSpeed * Ogre::Vector3(-cos(ori.x), 0, -sin(ori.z));
-        //p->getNode()->translate(dir);
-        cout << "back (" << p->getNode()->getPosition().x << ", " << p->getNode()->getPosition().y << ", " << p->getNode()->getPosition().z << ")" << endl;
+        Ogre::Quaternion ori = p->getParentNode()->getOrientation();
+        Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_Z;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
+        p->getParentNode()->translate(p->_moveSpeed * dir);
+        cout << "forward : " << p->getParentNode()->getPosition() << endl;
     }
     if (arg.key == OIS::KC_A) {
-        // Ogre::Quaternion ori = p->getNode()->getOrientation();
-        // Ogre::Vector3 dir = p->_moveSpeed * Ogre::Vector3(-sin(ori.x), 0, -cos(ori.z));
-        // p->getNode()->translate(dir);
-        cout << "left (" << p->getNode()->getPosition().x << ", " << p->getNode()->getPosition().y << ", " << p->getNode()->getPosition().z << ")" << endl;
+        Ogre::Quaternion ori = p->getParentNode()->getOrientation();
+        Ogre::Vector3 dir = ori * Ogre::Vector3::NEGATIVE_UNIT_X;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
+        p->getParentNode()->translate(p->_moveSpeed * dir);
+        cout << "forward : " << p->getParentNode()->getPosition() << endl;
     }
     if (arg.key == OIS::KC_D) {
-        // Ogre::Vector3 ori = p->getNode()->getOrientation();
-        // Ogre::Vector3 dir = p->_moveSpeed * Ogre::Vector3(sin(ori.x), 0, cos(ori.z));
-        // p->getNode()->translate(ori);
-        cout << "right (" << p->getNode()->getPosition().x << ", " << p->getNode()->getPosition().y << ", " << p->getNode()->getPosition().z << ")" << endl;
+        Ogre::Quaternion ori = p->getParentNode()->getOrientation();
+        Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_X;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
+        p->getParentNode()->translate(p->_moveSpeed * dir);
+        cout << "forward : " << p->getParentNode()->getPosition() << endl;
     }
 
     if (arg.key == OIS::KC_ESCAPE)
@@ -158,10 +158,10 @@ bool TutorialApplication::keyPressed(const OIS::KeyEvent &arg) {
 bool TutorialApplication::mouseMoved(const OIS::MouseEvent &arg)
 {
     //p->getNode()->yaw(Ogre::Degree(-arg.state.X.rel * .25f));
-    p->getParentNode()->yaw(Ogre::Degree(-arg.state.X.rel * .5f));
+    p->getParentNode()->yaw(Ogre::Degree(arg.state.X.rel * .5f));
     p->getNode()->pitch(Ogre::Degree(-arg.state.Y.rel * .25f));
 
-    cout << p->getParentNode()->getOrientation() << endl;
+    cout << p->getNode()->getOrientation() << ", " << p->getParentNode()->getOrientation() << endl;
 
     return true;//BaseApplication::mouseMoved(arg);
 }
