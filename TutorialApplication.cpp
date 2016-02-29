@@ -84,17 +84,6 @@ void TutorialApplication::createScene(void)
     b = new ball("sphere.mesh", mSceneMgr, sim, mass, 
                 resist, friction, initialPoint, "OceanHLSL_GLSL");
 
-    Wall *floor = new Wall("floor", mSceneMgr, sim, btScalar(0), resist, friction,
-        Ogre::Real(1000),
-            Ogre::Real(1000),
-            Ogre::Real(-10),
-            Ogre::Real(-100),
-            Ogre::Real(-10),
-            Ogre::Real(0),
-            Ogre::Real(0),
-            Ogre::Real(0));
-    wall.push_back(floor);
-
     p = new Paddle(mSceneMgr, sim, btScalar(1), btScalar(1), btScalar(.5f), 
         Ogre::Real(40), Ogre::Real(20), Ogre::Real(5), 
         Ogre::Real(0), Ogre::Real(0), Ogre::Real(0), 
@@ -156,10 +145,10 @@ bool TutorialApplication::keyPressed(const OIS::KeyEvent &arg) {
 
 bool TutorialApplication::mouseMoved(const OIS::MouseEvent &arg)
 {
-    p->getNode()->yaw(Ogre::Degree(-arg.state.X.rel * .5f));
+    p->getParentNode()->yaw(Ogre::Degree(-arg.state.X.rel * .5f));
     p->getNode()->pitch(Ogre::Degree(-arg.state.Y.rel * .25f));
 
-    cout << p->getNode()->getOrientation() << endl;
+    cout << p->getParentNode()->getOrientation() << endl;
 
     return true;//BaseApplication::mouseMoved(arg);
 }

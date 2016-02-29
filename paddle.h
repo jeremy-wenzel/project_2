@@ -9,6 +9,7 @@
 class Paddle : public GameObject {
 private:
 	bool _active;
+	Ogre::SceneNode* _parentNode;
 public:
 	Ogre::Real _moveSpeed;
 	
@@ -26,4 +27,5 @@ public:
 			Ogre::Real yaw);
 	~Paddle();
 	void update();
+	Ogre::SceneNode* getParentNode();
 };

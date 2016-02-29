@@ -45,7 +45,6 @@ private:
 	std::vector<Wall *> wall;
 	ball *b;
 	Paddle *p;
-  SceneNode *camNode;
 	Simulator *sim;
   Room *room;
 };
