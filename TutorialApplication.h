@@ -47,6 +47,7 @@ private:
 	Simulator *sim;
   Room *room;
   int score;
+  bool gameStarts;
 };
 
 //---------------------------------------------------------------------------

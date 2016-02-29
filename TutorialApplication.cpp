@@ -21,7 +21,7 @@ http://www.ogre3d.org/wiki/
 // #include "userInterface.h"
 
 //---------------------------------------------------------------------------
-TutorialApplication::TutorialApplication(void): score(0)
+TutorialApplication::TutorialApplication(void): score(0), gameStarts(false)
 {
 }
 //---------------------------------------------------------------------------
@@ -62,6 +62,7 @@ bool TutorialApplication::mousePressed(
     if (id == OIS::MB_Left)
     {
         b->setKinematic(false);
+        gameStarts = true;
     }
 
   return true; 
@@ -70,34 +71,38 @@ bool TutorialApplication::mousePressed(
 // keyboard event
 bool TutorialApplication::keyPressed(const OIS::KeyEvent& ke) 
 {
-    Ogre::SceneNode *node = b->getSceneNode();
-    if (ke.key == OIS::KC_W)
+    if (!gameStarts) 
     {
-        Ogre::Vector3 mvVector = 
-        room->checkBoundary(node, Ogre::Vector3(0, 10, 0), 5);
-        b->moveAround(mvVector);
-    }
-    if (ke.key == OIS::KC_A)
-    {
-        Ogre::Vector3 mvVector = 
-        room->checkBoundary(node, Ogre::Vector3(-10, 0, 0), 4);
-        b->moveAround(mvVector);
-    }
-    if (ke.key == OIS::KC_S)
-    {
-        Ogre::Vector3 mvVector = 
-        room->checkBoundary(node, Ogre::Vector3(0, -10, 0), 0);
-        b->moveAround(mvVector);
-    }
-    if (ke.key == OIS::KC_D)
-    {
-        Ogre::Vector3 mvVector = 
-        room->checkBoundary(node, Ogre::Vector3(10, 0, 0), 3);
-        b->moveAround(mvVector);
-    }
-    if (ke.key == OIS::KC_ESCAPE)
-    {
-        mShutDown = true;
+        
+        Ogre::SceneNode *node = b->getSceneNode();
+        if (ke.key == OIS::KC_W)
+        {
+            Ogre::Vector3 mvVector = 
+            room->checkBoundary(node, Ogre::Vector3(0, 10, 0), 5);
+            b->moveAround(mvVector);
+        }
+        if (ke.key == OIS::KC_A)
+        {
+            Ogre::Vector3 mvVector = 
+            room->checkBoundary(node, Ogre::Vector3(-10, 0, 0), 4);
+            b->moveAround(mvVector);
+        }
+        if (ke.key == OIS::KC_S)
+        {
+            Ogre::Vector3 mvVector = 
+            room->checkBoundary(node, Ogre::Vector3(0, -10, 0), 0);
+            b->moveAround(mvVector);
+        }
+        if (ke.key == OIS::KC_D)
+        {
+            Ogre::Vector3 mvVector = 
+            room->checkBoundary(node, Ogre::Vector3(10, 0, 0), 3);
+            b->moveAround(mvVector);
+        }
+        if (ke.key == OIS::KC_ESCAPE)
+        {
+            mShutDown = true;
+        }
     }
   return true; 
 }
