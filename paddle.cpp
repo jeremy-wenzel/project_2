@@ -18,7 +18,10 @@ Paddle::Paddle (Ogre::SceneManager* sceneMgr,
 
 	// Build entity and node to go into root
 	_entity = sceneMgr->createEntity("cube.mesh");
-	_rootNode = sceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(x_pos, y_pos, z_pos));
+	_parentNode = sceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(x_pos, y_pos-height, z_pos));
+	_rootNode = _parentNode->createChildSceneNode();
+	_rootNode->translate(0, 0,Ogre::Real(height));
+	_rootNode->pitch(Ogre::Degree(45));
 
 	// Create Transform
 	_tr.setIdentity();
@@ -40,6 +43,7 @@ Paddle::Paddle (Ogre::SceneManager* sceneMgr,
 	_rootNode->attachObject(_entity);
 
 	addToSimulator();
+	setKinematic(true);
 }
 
 Paddle::~Paddle () {
@@ -48,4 +52,8 @@ Paddle::~Paddle () {
 
 void Paddle::update () {
 
+}
+
+Ogre::SceneNode* Paddle::getParentNode() {
+	return _parentNode;
 }

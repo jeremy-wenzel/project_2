@@ -57,8 +57,6 @@ void TutorialApplication::createScene(void)
 {
     // Create your scene here :)
 
-    
-
     soundInit();
     mCameraMan->getCamera()->setPosition(0, 300, 500);
     mCameraMan->getCamera()->lookAt(0, 0, 0);
@@ -67,6 +65,7 @@ void TutorialApplication::createScene(void)
     mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
     mSceneMgr->setSkyDome(true, "Examples/CloudySky", 5, 8);
     Ogre::Light *diffuseLight = mSceneMgr->createLight("diffuse light");
+    
     // make this light a point light
     diffuseLight->setType(Ogre::Light::LT_POINT);            
     diffuseLight->setDiffuseColour(20.0, 20.0, 20.0);
@@ -93,7 +92,8 @@ void TutorialApplication::createScene(void)
             Ogre::Real(0));
     wall.push_back(floor);
 
-    p = new Paddle(mSceneMgr, sim, btScalar(0), btScalar(1), btScalar(.5f), 
+    //p = new Paddle(mSceneMgr, sim, btScalar(0), btScalar(1), btScalar(.5f), 
+    p = new Paddle(mSceneMgr, sim, btScalar(1), btScalar(1), btScalar(.5f), 
         Ogre::Real(40), Ogre::Real(20), Ogre::Real(5), 
         Ogre::Real(0), Ogre::Real(0), Ogre::Real(0), 
         Ogre::Real(0), Ogre::Real(0), Ogre::Real(0));
@@ -157,10 +157,11 @@ bool TutorialApplication::keyPressed(const OIS::KeyEvent &arg) {
 
 bool TutorialApplication::mouseMoved(const OIS::MouseEvent &arg)
 {
-    p->getNode()->yaw(Ogre::Degree(-arg.state.X.rel * .25f));
+    //p->getNode()->yaw(Ogre::Degree(-arg.state.X.rel * .25f));
+    p->getParentNode()->yaw(Ogre::Degree(-arg.state.X.rel * .5f));
     p->getNode()->pitch(Ogre::Degree(-arg.state.Y.rel * .25f));
 
-    cout << p->getNode()->getOrientation() << endl;
+    cout << p->getParentNode()->getOrientation() << endl;
 
     return true;//BaseApplication::mouseMoved(arg);
 }
