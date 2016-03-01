@@ -85,7 +85,7 @@ void TutorialApplication::createScene(void)
         Ogre::Real(1000),
             Ogre::Real(1000),
             Ogre::Real(-10),
-            Ogre::Real(-100),
+            Ogre::Real(-30),
             Ogre::Real(-10),
             Ogre::Real(0),
             Ogre::Real(0),
@@ -93,7 +93,7 @@ void TutorialApplication::createScene(void)
     wall.push_back(floor);
 
     //p = new Paddle(mSceneMgr, sim, btScalar(0), btScalar(1), btScalar(.5f), 
-    p = new Paddle(mSceneMgr, sim, btScalar(1), btScalar(1), btScalar(.5f), 
+    p = new Paddle(mSceneMgr, sim, btScalar(0), btScalar(1.f), btScalar(0.f), 
         Ogre::Real(80), Ogre::Real(10), Ogre::Real(40), 
         Ogre::Real(0), Ogre::Real(0), Ogre::Real(0), 
         Ogre::Real(0), Ogre::Real(0), Ogre::Real(0));
@@ -110,7 +110,7 @@ void TutorialApplication::createScene(void)
 
 bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
-    sim->stepSimulation(evt.timeSinceLastEvent, 1);
+    sim->stepSimulation(evt.timeSinceLastEvent, 100);
     b->update(evt.timeSinceLastEvent);
     for (std::vector<Wall *>::iterator it = wall.begin(); it != wall.end(); ++it)
     {
@@ -225,7 +225,7 @@ bool TutorialApplication::mouseMoved(const OIS::MouseEvent &arg)
 {
     //p->getNode()->yaw(Ogre::Degree(-arg.state.X.rel * .25f));
     p->getParentNode()->yaw(Ogre::Degree(arg.state.X.rel * .5f));
-    p->getParentNode()->pitch(Ogre::Degree(-arg.state.Y.rel * .25f));
+    // p->getParentNode()->pitch(Ogre::Degree(-arg.state.Y.rel * .25f));
 
     cout << p->getNode()->getOrientation() << ", " << p->getParentNode()->getOrientation() << endl;
 

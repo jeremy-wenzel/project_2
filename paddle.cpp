@@ -31,7 +31,7 @@ Paddle::Paddle (Ogre::SceneManager* sceneMgr,
 
 	// Set Motion State
 	_shape = new btBoxShape(btVector3(btScalar(height/2.f), btScalar(width/2.f), btScalar(depth/2.f)));
-	_motionState = new OgreMotionState(_tr, _parentNode);
+	_motionState = new OgreMotionState(_tr, _rootNode);
 	// Set origin (both in Ogre and in Bullet)
 
 	_rootNode->scale(Ogre::Vector3(height/100.f, width/100.f, depth/100.f));
@@ -63,9 +63,8 @@ void Paddle::updateTransform() {
 	if (_parentNode) {
 		Ogre::Vector3 position = _parentNode->getPosition();
 		_tr.setOrigin(btVector3(position.x, position.y, position.z));
-		Ogre::Quaternion quat = _parentNode->getOrientation();
-		Ogre::Quaternion quat2 = _rootNode->getOrientation();
-		_tr.setRotation(btQuaternion(quat.x*quat2.x, quat.y*quat2.y, quat.z*quat2.z, quat.w*quat2.w));
+		Ogre::Quaternion quat = _rootNode->getOrientation();
+		_tr.setRotation(btQuaternion(quat.x, quat.y, quat.z, quat.w));
 	}
 	if (_motionState) {
 		_motionState->updateTransform(_tr);	
