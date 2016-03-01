@@ -14,13 +14,14 @@ Paddle::Paddle (Ogre::SceneManager* sceneMgr,
 				Ogre::Real yaw)
 				: GameObject("paddle", sceneMgr, sim, mass, restit, fric) {
 	_active = true;
-	_moveSpeed = 5.f;
+	_moveSpeed = 200.f;
 
 	// Build entity and node to go into root
 	_entity = sceneMgr->createEntity("cube.mesh");
-	_parentNode = sceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(x_pos, y_pos-height, z_pos));
+	_entity->setCastShadows(true);
+	_parentNode = sceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(x_pos, y_pos, z_pos));
 	_rootNode = _parentNode->createChildSceneNode();
-	_rootNode->translate(0, Ogre::Real(height), 0);
+	//_rootNode->translate(0, Ogre::Real(height), 0);
 	//_rootNode->pitch(Ogre::Degree(45));
 
 	// Create Transform
@@ -29,8 +30,8 @@ Paddle::Paddle (Ogre::SceneManager* sceneMgr,
 	//_tr.setRotation(btQuaternion(yaw, pitch, roll, 0));
 
 	// Set Motion State
-	_shape = new btBoxShape(btVector3(btScalar(height), btScalar(width), btScalar(depth)));
-	_motionState = new OgreMotionState(_tr, _rootNode);
+	_shape = new btBoxShape(btVector3(btScalar(height/2.f), btScalar(width/2.f), btScalar(depth/2.f)));
+	_motionState = new OgreMotionState(_tr, _parentNode);
 	// Set origin (both in Ogre and in Bullet)
 
 	_rootNode->scale(Ogre::Vector3(height/100.f, width/100.f, depth/100.f));
@@ -56,4 +57,17 @@ void Paddle::update () {
 
 Ogre::SceneNode* Paddle::getParentNode() {
 	return _parentNode;
+}
+
+void Paddle::updateTransform() {
+	if (_parentNode) {
+		Ogre::Vector3 position = _parentNode->getPosition();
+		_tr.setOrigin(btVector3(position.x, position.y, position.z));
+		Ogre::Quaternion quat = _parentNode->getOrientation();
+		Ogre::Quaternion quat2 = _rootNode->getOrientation();
+		_tr.setRotation(btQuaternion(quat.x*quat2.x, quat.y*quat2.y, quat.z*quat2.z, quat.w*quat2.w));
+	}
+	if (_motionState) {
+		_motionState->updateTransform(_tr);	
+	}
 }

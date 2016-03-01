@@ -73,9 +73,9 @@ void TutorialApplication::createScene(void)
 
     sim = new Simulator();
     btScalar mass = 10.0;
-    btScalar resist = 1.5;
+    btScalar resist = 1.0;
     btScalar friction = 0.50;
-    Ogre::Vector3 initialPoint (0, 10, 0);
+    Ogre::Vector3 initialPoint (0, 200, 0);
 
     
     b = new ball("sphere.mesh", mSceneMgr, sim, mass, 
@@ -94,11 +94,16 @@ void TutorialApplication::createScene(void)
 
     //p = new Paddle(mSceneMgr, sim, btScalar(0), btScalar(1), btScalar(.5f), 
     p = new Paddle(mSceneMgr, sim, btScalar(1), btScalar(1), btScalar(.5f), 
-        Ogre::Real(40), Ogre::Real(20), Ogre::Real(5), 
+        Ogre::Real(80), Ogre::Real(10), Ogre::Real(40), 
         Ogre::Real(0), Ogre::Real(0), Ogre::Real(0), 
         Ogre::Real(0), Ogre::Real(0), Ogre::Real(0));
 
-    camNode = p->getNode()->createChildSceneNode(Ogre::Vector3(0,0,5.f));
+    doMoveForward = false;
+    doMoveBackward = false;
+    doMoveLeft = false;
+    doMoveRight = false;
+
+    camNode = p->getNode()->createChildSceneNode(Ogre::Vector3(0,5.f,0));
     camNode->attachObject(mCamera);
 }
 
@@ -113,7 +118,38 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
         {
             (*it)->update();
         }
-    } 
+    }
+
+    Ogre::Real temp_move_speed= p->_moveSpeed * evt.timeSinceLastFrame;
+
+    if (doMoveForward) {
+        Ogre::Quaternion ori = p->getParentNode()->getOrientation();
+        Ogre::Vector3 dir = ori * Ogre::Vector3::NEGATIVE_UNIT_Z;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
+        p->getParentNode()->translate(temp_move_speed * dir);
+        cout << "forward : " << p->getParentNode()->getPosition() << endl;
+    }
+    else if (doMoveBackward) {
+        Ogre::Quaternion ori = p->getParentNode()->getOrientation();
+        Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_Z;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
+        p->getParentNode()->translate(temp_move_speed * dir);
+        cout << "back : " << p->getParentNode()->getPosition() << endl;
+    }
+
+    if (doMoveLeft) {
+        Ogre::Quaternion ori = p->getParentNode()->getOrientation();
+        Ogre::Vector3 dir = ori * Ogre::Vector3::NEGATIVE_UNIT_X;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
+        p->getParentNode()->translate(temp_move_speed * dir);
+        cout << "left : " << p->getParentNode()->getPosition() << endl;
+    }
+    else if (doMoveRight) {
+        Ogre::Quaternion ori = p->getParentNode()->getOrientation();
+        Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_X;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
+        p->getParentNode()->translate(temp_move_speed * dir);
+        cout << "right : " << p->getParentNode()->getPosition() << endl;
+    }
+
+    p->updateTransform();
+
     bool ret = BaseApplication::frameRenderingQueued(evt);
     return ret;
 }
@@ -122,30 +158,39 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 bool TutorialApplication::keyPressed(const OIS::KeyEvent &arg) {
     BaseApplication::keyPressed(arg);
 
+    // Paddle Movement
+
     if (arg.key == OIS::KC_W) {
-        Ogre::Quaternion ori = p->getParentNode()->getOrientation();
-        Ogre::Vector3 dir = ori * Ogre::Vector3::NEGATIVE_UNIT_Z;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
-        p->getParentNode()->translate(p->_moveSpeed * dir);
-        cout << "forward : " << p->getParentNode()->getPosition() << endl;
+        // Ogre::Quaternion ori = p->getParentNode()->getOrientation();
+        // Ogre::Vector3 dir = ori * Ogre::Vector3::NEGATIVE_UNIT_Z;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
+        // p->getParentNode()->translate(p->_moveSpeed * dir);
+        // cout << "forward : " << p->getParentNode()->getPosition() << endl;
+        doMoveForward = true;
     }
     if (arg.key == OIS::KC_S) {
-        Ogre::Quaternion ori = p->getParentNode()->getOrientation();
-        Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_Z;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
-        p->getParentNode()->translate(p->_moveSpeed * dir);
-        cout << "forward : " << p->getParentNode()->getPosition() << endl;
+        // Ogre::Quaternion ori = p->getParentNode()->getOrientation();
+        // Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_Z;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
+        // p->getParentNode()->translate(p->_moveSpeed * dir);
+        // cout << "back : " << p->getParentNode()->getPosition() << endl;
+        doMoveBackward = true;
     }
     if (arg.key == OIS::KC_A) {
-        Ogre::Quaternion ori = p->getParentNode()->getOrientation();
-        Ogre::Vector3 dir = ori * Ogre::Vector3::NEGATIVE_UNIT_X;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
-        p->getParentNode()->translate(p->_moveSpeed * dir);
-        cout << "forward : " << p->getParentNode()->getPosition() << endl;
+        // Ogre::Quaternion ori = p->getParentNode()->getOrientation();
+        // Ogre::Vector3 dir = ori * Ogre::Vector3::NEGATIVE_UNIT_X;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
+        // p->getParentNode()->translate(p->_moveSpeed * dir);
+        // cout << "left : " << p->getParentNode()->getPosition() << endl;
+        doMoveLeft = true;
     }
     if (arg.key == OIS::KC_D) {
-        Ogre::Quaternion ori = p->getParentNode()->getOrientation();
-        Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_X;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
-        p->getParentNode()->translate(p->_moveSpeed * dir);
-        cout << "forward : " << p->getParentNode()->getPosition() << endl;
+        // Ogre::Quaternion ori = p->getParentNode()->getOrientation();
+        // Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_X;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
+        // p->getParentNode()->translate(p->_moveSpeed * dir);
+        // cout << "right : " << p->getParentNode()->getPosition() << endl;
+        doMoveRight = true;
     }
+
+    ////////////////////////////////////
+
 
     if (arg.key == OIS::KC_ESCAPE)
     {
@@ -155,11 +200,32 @@ bool TutorialApplication::keyPressed(const OIS::KeyEvent &arg) {
     return true;
 }
 
+bool TutorialApplication::keyReleased(const OIS::KeyEvent &arg) {
+    BaseApplication::keyReleased(arg);
+
+    // Paddle Movement
+
+    if (arg.key == OIS::KC_W) {
+        doMoveForward = false;
+    }
+    if (arg.key == OIS::KC_S) {
+        doMoveBackward = false;
+    }
+    if (arg.key == OIS::KC_A) {
+        doMoveLeft = false;
+    }
+    if (arg.key == OIS::KC_D) {
+        doMoveRight = false;
+    }
+
+    return true;
+}
+
 bool TutorialApplication::mouseMoved(const OIS::MouseEvent &arg)
 {
     //p->getNode()->yaw(Ogre::Degree(-arg.state.X.rel * .25f));
     p->getParentNode()->yaw(Ogre::Degree(arg.state.X.rel * .5f));
-    p->getNode()->pitch(Ogre::Degree(-arg.state.Y.rel * .25f));
+    p->getParentNode()->pitch(Ogre::Degree(-arg.state.Y.rel * .25f));
 
     cout << p->getNode()->getOrientation() << ", " << p->getParentNode()->getOrientation() << endl;
 

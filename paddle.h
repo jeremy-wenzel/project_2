@@ -28,4 +28,5 @@ public:
 	~Paddle();
 	void update();
 	Ogre::SceneNode* getParentNode();
+	void updateTransform();
 };
