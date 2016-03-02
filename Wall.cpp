@@ -73,7 +73,6 @@ void Wall::update (float elapsedTime) {
 			&& (lastTime > 0.5 || (_context->lastBody != _context->body && lastTime > 0.1))) {
 			// Add point
 			// Deactivate wall
-			std::cout << "here" << std::endl;
 			if(_name == "ground")
 			{
 				_ps->updateTotalScore();
@@ -86,9 +85,9 @@ void Wall::update (float elapsedTime) {
 			}
 			_active = false;
 			Mix_PlayChannel( -1, gScratch, 0 );
-			_context->hit = false;
 			lastTime = 0.0f;
 		}
+		_context->hit = false;
 	// std::cout << "Collision" << std::endl;
 	
 }
