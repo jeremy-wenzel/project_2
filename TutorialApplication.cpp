@@ -225,11 +225,18 @@ bool TutorialApplication::mouseMoved(const OIS::MouseEvent &arg)
 {
     //p->getNode()->yaw(Ogre::Degree(-arg.state.X.rel * .25f));
     p->getParentNode()->yaw(Ogre::Degree(arg.state.X.rel * .5f));
-    // p->getParentNode()->pitch(Ogre::Degree(-arg.state.Y.rel * .25f));
+    p->getNode()->pitch(Ogre::Degree(-arg.state.Y.rel * .25f));
 
-    cout << p->getNode()->getOrientation() << ", " << p->getParentNode()->getOrientation() << endl;
+    while (p->getNode()->getOrientation().getPitch().valueDegrees() > 45) {
+        p->getNode()->pitch(Ogre::Radian(-0.01f));
+    }
+    while (p->getNode()->getOrientation().getPitch().valueDegrees() < -45) {
+        p->getNode()->pitch(Ogre::Radian(0.01f));
+    }
 
-    return true;//BaseApplication::mouseMoved(arg);
+    cout << "Pitch : " << p->getNode()->getOrientation().getPitch().valueRadians() << ", Yaw : " << p->getParentNode()->getOrientation().getYaw().valueRadians() << endl;
+
+    return true; //BaseApplication::mouseMoved(arg);
 }
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
