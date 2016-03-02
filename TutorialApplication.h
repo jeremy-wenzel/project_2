@@ -48,6 +48,7 @@ private:
   Room *room;
   int score;
   bool gameStarts;
+  PointSystem *ps;
 };
 
 //---------------------------------------------------------------------------

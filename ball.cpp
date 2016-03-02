@@ -1,4 +1,5 @@
 #include "ball.h"
+#include <iostream>
 
 ball::ball(Ogre::String name,
 			Ogre::SceneManager* sceneMgr,
@@ -10,7 +11,6 @@ ball::ball(Ogre::String name,
 			Ogre::String material)
 	:GameObject(name, sceneMgr, sim, mass, restit, fric), lastTime(0.0)
 	{
-		this->radius = radius;
 		Ogre::Entity *entity = sceneMgr->createEntity(name);
 		this->_entity = entity;
 		if (!material.empty())
@@ -20,9 +20,8 @@ ball::ball(Ogre::String name,
 		this->_rootNode->setScale(Ogre::Vector3(0.1, 0.1, 0.1));
 		this->_entity->setCastShadows(true);
 		this->radius = entity->getBoundingRadius() * 0.1;
-
-		btTransform initPosition(btQuaternion(0, 0, 0, 1), convertVectorToBtVector(initialPosition));
-		this->_tr = initPosition;
+		_tr.setIdentity();
+		_tr.setOrigin(convertVectorToBtVector(initialPosition));
 		this->_shape = new btSphereShape(radius);
 		this->_motionState = new OgreMotionState(this->_tr, this->_rootNode);
     	
@@ -44,25 +43,26 @@ void ball::moveAround(Ogre::Vector3 vector)
 	updateTransform();
 }
 
-void ball::update(){
-	if (_cCallBack)
-	{
-		_simulator->getWorld()->contactTest(_body, *_cCallBack);
-		if (_context->hit && (_context->velNorm > 2.0 || _context->velNorm < -2.0) 
-			&& (lastTime > 0.5 || (_context->lastBody != _context->body && lastTime > 0.1))) {
-			//Handle the hit
-		}
-		_context->hit = false;
-	}
-}
+// void ball::update(){
+// 	if (_cCallBack)
+// 	{
+// 		_simulator->getWorld()->contactTest(_body, *_cCallBack);
+// 		if (_context->hit && (_context->velNorm > 2.0 || _context->velNorm < -2.0) 
+// 			&& (lastTime > 0.5 || (_context->lastBody != _context->body && lastTime > 0.1))) {
+// 			//Handle the hit
+// 		}
+// 		_context->hit = false;
+// 	}
+// }
 
 void ball::update(float elapsedTime) {
 	if (_cCallBack)
 	{
 		lastTime += elapsedTime;
 		_simulator->getWorld()->contactTest(_body, *_cCallBack);
-		if (_context->hit /*&& (_context->velNorm > 2.0 || _context->velNorm < -2.0) 
-			&& (lastTime > 0.5 || (_context->lastBody != _context->body && lastTime > 0.1))*/) {
+		if (_context->hit && (_context->velNorm > 2.0 || _context->velNorm < -2.0) 
+			&& (lastTime > 0.5 || (_context->lastBody != _context->body && lastTime > 0.1))) {
+			std::cout << "hit" << std::endl;
 			//Handle the hit
 			lastTime = 0.0f;
 		}

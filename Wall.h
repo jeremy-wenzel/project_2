@@ -8,12 +8,15 @@
 
 #include <SDL_mixer.h>
 #include <SDL.h>
+#include "PointSystem.h"
 
 class Wall : public GameObject {
 private:
-	bool _active;
 	Mix_Chunk *gScratch;
+	PointSystem *_ps;
+	float lastTime;
 public:
+	bool _active;
 	Wall (Ogre::String name,
 		  Ogre::SceneManager* sceneMgr,
 		  Simulator* sim,
@@ -27,10 +30,12 @@ public:
 			Ogre::Real z_pos,
 			Ogre::Real roll,
 			Ogre::Real pitch,
-			Ogre::Real yaw);
+			Ogre::Real yaw,
+			PointSystem *ps);
 	~Wall();
-	void update();
+	void update(float elapsedTime);
 	void setKinematic();
 	OgreMotionState* getMotionState();
 	Ogre::Entity* getEntity();
+	// void update() {}
 };

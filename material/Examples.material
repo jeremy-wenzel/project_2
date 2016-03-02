@@ -1,0 +1,17 @@
+material Examples/RockwallDarker
+{
+	technique
+	{
+		pass
+		{
+			diffuse 0 0 0
+			texture_unit
+			{
+				texture rockwall.tga
+				
+			}
+		}
+	}
+}
+
+

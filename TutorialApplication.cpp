@@ -18,7 +18,7 @@ http://www.ogre3d.org/wiki/
 #include "TutorialApplication.h"
 #include <iostream>
 #include <OgreLogManager.h>
-// #include "userInterface.h"
+#include "userInterface.h"
 
 //---------------------------------------------------------------------------
 TutorialApplication::TutorialApplication(void): score(0), gameStarts(false)
@@ -73,7 +73,7 @@ bool TutorialApplication::keyPressed(const OIS::KeyEvent& ke)
 {
     if (!gameStarts) 
     {
-        
+
         Ogre::SceneNode *node = b->getSceneNode();
         if (ke.key == OIS::KC_W)
         {
@@ -99,10 +99,10 @@ bool TutorialApplication::keyPressed(const OIS::KeyEvent& ke)
             room->checkBoundary(node, Ogre::Vector3(10, 0, 0), 3);
             b->moveAround(mvVector);
         }
-        if (ke.key == OIS::KC_ESCAPE)
-        {
-            mShutDown = true;
-        }
+    }
+    if (ke.key == OIS::KC_ESCAPE)
+    {
+        mShutDown = true;
     }
   return true; 
 }
@@ -146,17 +146,18 @@ void TutorialApplication::createScene(void)
     Ogre::Vector3 initialPoint (0, 100, 0);
 
     
+// 
+    ps = new PointSystem();
+
+    room = new Room(mSceneMgr, sim, ps);
     b = new ball("sphere.mesh", mSceneMgr, sim, mass, 
                 resist, friction, initialPoint, "OceanHLSL_GLSL");
-
-    room = new Room(mSceneMgr, sim);
 }
 
 
 bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
     sim->stepSimulation(evt.timeSinceLastEvent, 1);
-    b->update(evt.timeSinceLastEvent);
     bool ret = BaseApplication::frameRenderingQueued(evt);
     return ret;
 }

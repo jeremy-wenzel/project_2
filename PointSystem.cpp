@@ -1,15 +1,17 @@
 #include "PointSystem.h"
+#include <iostream>
 
 
-PointSystem::PointSystem():_currentScore(0), _scoreTotal(0){}
+PointSystem::PointSystem():_scoreCurrent(0), _scoreTotal(0){}
 
 
 void PointSystem::updateCurrentScore() {
-	_currentScore ++;
+	_scoreCurrent ++;
 }
 
 void PointSystem::updateTotalScore() {
-	_scoreTotal += _currentScore;
+	_scoreTotal += _scoreCurrent;
+	_scoreCurrent = 0;
 }
 
 int PointSystem::getScore() {

@@ -26,7 +26,7 @@ public:
 		 Ogre::Vector3 initialPosition, Ogre::String material);
 	~ball();
 	Ogre::String material;
-	virtual void update();
+	// virtual void update();
 	void changeSpeed(Ogre::Real speed);
 	void moveAround(Ogre::Vector3 vector);
 	void update(float elapsedTime);

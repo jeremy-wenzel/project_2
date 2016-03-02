@@ -1,6 +1,7 @@
 #include "Room.h"
 
-Room::Room(Ogre::SceneManager* sceneManager, Simulator *sim) {
+
+Room::Room(Ogre::SceneManager* sceneManager, Simulator *sim, PointSystem *ps) {
 	// Build Ground Wall
 	
 	btScalar mass(0.f);
@@ -20,7 +21,8 @@ Room::Room(Ogre::SceneManager* sceneManager, Simulator *sim) {
 					   Ogre::Real(0),
 					   Ogre::Real(0),
 					   Ogre::Real(0),
-					   Ogre::Real(0)));
+					   Ogre::Real(0),
+					   ps));
 
 	walls.push_back(new Wall(Ogre::String("northWall"),
 					   sceneManager,
@@ -35,7 +37,8 @@ Room::Room(Ogre::SceneManager* sceneManager, Simulator *sim) {
 					   Ogre::Real(wallLength/2),
 					   Ogre::Real(0),
 					   Ogre::Real(-90),
-					   Ogre::Real(0)));
+					   Ogre::Real(0),
+					   ps));
 
 	walls.push_back(new Wall(Ogre::String("southWall"),
 					   sceneManager,
@@ -50,7 +53,8 @@ Room::Room(Ogre::SceneManager* sceneManager, Simulator *sim) {
 					   Ogre::Real(-wallLength/2),
 					   Ogre::Real(0),
 					   Ogre::Real(90),
-					   Ogre::Real(0)));
+					   Ogre::Real(0),
+					   ps));
 
 	walls.push_back(new Wall(Ogre::String("eastWall"),
 					   sceneManager,
@@ -65,7 +69,8 @@ Room::Room(Ogre::SceneManager* sceneManager, Simulator *sim) {
 					   Ogre::Real(0),
 					   Ogre::Real(90),
 					   Ogre::Real(0),
-					   Ogre::Real(0)));
+					   Ogre::Real(0),
+					   ps));
 
 	walls.push_back(new Wall(Ogre::String("westWall"),
 					   sceneManager,
@@ -80,7 +85,8 @@ Room::Room(Ogre::SceneManager* sceneManager, Simulator *sim) {
 					   Ogre::Real(0),
 					   Ogre::Real(-90),
 					   Ogre::Real(0),
-					   Ogre::Real(0)));
+					   Ogre::Real(0),
+					   ps));
 
 	walls.push_back(new Wall(Ogre::String("ceiling"),
 					   sceneManager,
@@ -95,7 +101,8 @@ Room::Room(Ogre::SceneManager* sceneManager, Simulator *sim) {
 					   Ogre::Real(0),
 					   Ogre::Real(0),
 					   Ogre::Real(180),
-					   Ogre::Real(0)));
+					   Ogre::Real(0),
+					   ps));
 }
 
 Room::~Room() {
@@ -141,7 +148,6 @@ Ogre::Vector3 Room::checkBoundary(Ogre::SceneNode *node, Ogre::Vector3 move, int
 		default:
 			Ogre::LogManager::getSingleton().logMessage ("invalid argument");
 	}
-	std::cout << move << std::endl;
 	return move;
 
 }

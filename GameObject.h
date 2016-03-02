@@ -54,7 +54,7 @@ public:
 	virtual void addToSimulator();
 	virtual void updateTransform();
 	// This method checks if there is a collision or not
-	virtual void update() {}
+	virtual void update(float elapsedTime) {}
 	virtual void setKinematic(bool flag);
 	BulletContactCallback* _cCallBack;	
 };

@@ -14,7 +14,8 @@ Wall::Wall (Ogre::String name,
 			Ogre::Real z_pos,
 			Ogre::Real roll,
 			Ogre::Real pitch,
-			Ogre::Real yaw) : GameObject(name, sceneMgr, sim, mass, restit, fric) {
+			Ogre::Real yaw,
+			PointSystem *ps) : GameObject(name, sceneMgr, sim, mass, restit, fric), lastTime(0){
 
 	_active = true;
 
@@ -54,6 +55,7 @@ Wall::Wall (Ogre::String name,
 	
 	// Set origin (both in Ogre and in Bullet)
 	gScratch = Mix_LoadWAV( "bat_hit_ball.wav" );
+	this->_ps = ps;
 	addToSimulator();
 }
 
@@ -63,16 +65,27 @@ Wall::~Wall () {
 	delete _motionState;	
 }
 
-void Wall::update () {
+void Wall::update (float elapsedTime) {
 	// Not sure if we need to do anything because wall is not doing anything
-
-		if (_context && _context->hit) {
+		lastTime += elapsedTime;
+		if (_context->hit 
+			&& (lastTime > 0.5 || (_context->lastBody != _context->body && lastTime > 0.1))) {
 			// Add point
 			// std::cout << "Collision" << std::endl;
 			// Deactivate wall
+			_entity->setMaterialName("Examples/RockwallDarker");
+			if (_active && _name != "ground")
+			{
+				_ps->updateCurrentScore();
+			}
+			else if(_name == "ground")
+			{
+				_ps->updateTotalScore();
+			}
 			_active = false;
 			Mix_PlayChannel( -1, gScratch, 0 );
 			_context->hit = false;
+			lastTime = 0.0f;
 		}
 	// std::cout << "Collision" << std::endl;
 	
