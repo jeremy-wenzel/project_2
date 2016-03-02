@@ -78,14 +78,14 @@ void TutorialApplication::createScene(void)
     Ogre::Vector3 initialPoint (0, 200, 0);
 
     
-    b = new ball("sphere.mesh", mSceneMgr, sim, mass, 
+    b = new ball("sphere.mesh", mSceneMgr, sim, mass * .25f, 
                 resist, friction, initialPoint, "OceanHLSL_GLSL");
 
     Wall *floor = new Wall("floor", mSceneMgr, sim, btScalar(0), resist, friction,
         Ogre::Real(1000),
             Ogre::Real(1000),
             Ogre::Real(-10),
-            Ogre::Real(-30),
+            Ogre::Real(-100),
             Ogre::Real(-10),
             Ogre::Real(0),
             Ogre::Real(0),
@@ -93,7 +93,7 @@ void TutorialApplication::createScene(void)
     wall.push_back(floor);
 
     //p = new Paddle(mSceneMgr, sim, btScalar(0), btScalar(1), btScalar(.5f), 
-    p = new Paddle(mSceneMgr, sim, btScalar(0), btScalar(1.f), btScalar(0.f), 
+    p = new Paddle(mSceneMgr, sim, btScalar(10.f), btScalar(1.f), btScalar(0.25f), 
         Ogre::Real(80), Ogre::Real(10), Ogre::Real(40), 
         Ogre::Real(0), Ogre::Real(0), Ogre::Real(0), 
         Ogre::Real(0), Ogre::Real(0), Ogre::Real(0));
@@ -108,7 +108,7 @@ void TutorialApplication::createScene(void)
 
 
     ///////////
-    camNode = p->getNode()->createChildSceneNode(Ogre::Vector3(0,5.f,0));
+    camNode = p->getNode()->createChildSceneNode(Ogre::Vector3(0,200.f,300.f));
     camNode->attachObject(mCamera);
 }
 
@@ -124,6 +124,8 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
             (*it)->update();
         }
     }
+
+    cout << "Ball : " << b->getNode()->getPosition() << endl;
 
     //Paddle Movement
 
