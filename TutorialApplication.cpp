@@ -18,7 +18,6 @@ http://www.ogre3d.org/wiki/
 #include "TutorialApplication.h"
 #include <iostream>
 #include <OgreLogManager.h>
-#include "userInterface.h"
 
 //---------------------------------------------------------------------------
 TutorialApplication::TutorialApplication(void): score(0), gameStarts(false)

@@ -1,4 +1,4 @@
-noinst_HEADERS = BaseApplication.h BulletContactCallback.h GameObject.h OgreMotionState.h Room.h Simulator.h TutorialApplication.h Wall.h ball.h userInterface.h PointSystem.h
+noinst_HEADERS = BaseApplication.h BulletContactCallback.h GameObject.h OgreMotionState.h Room.h Simulator.h TutorialApplication.h Wall.h ball.h PointSystem.h
 
 bin_PROGRAMS = assignment2
 assignment2_CPPFLAGS = -I$(top_srcdir) -std=c++11 -I/usr/include/SDL 
