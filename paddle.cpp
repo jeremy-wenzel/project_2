@@ -14,7 +14,7 @@ Paddle::Paddle (Ogre::SceneManager* sceneMgr,
 				Ogre::Real yaw)
 				: GameObject("paddle", sceneMgr, sim, mass, restit, fric) {
 	_active = true;
-	_moveSpeed = 200.f;
+	_moveSpeed = 300.f;
 
 	// Build entity and node to go into root
 	_entity = sceneMgr->createEntity("cube.mesh");

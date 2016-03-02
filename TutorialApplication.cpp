@@ -103,6 +103,11 @@ void TutorialApplication::createScene(void)
     doMoveLeft = false;
     doMoveRight = false;
 
+    //Experimental
+    doMoveFast = false;
+
+
+    ///////////
     camNode = p->getNode()->createChildSceneNode(Ogre::Vector3(0,5.f,0));
     camNode->attachObject(mCamera);
 }
@@ -120,7 +125,13 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
         }
     }
 
+    //Paddle Movement
+
     Ogre::Real temp_move_speed= p->_moveSpeed * evt.timeSinceLastFrame;
+
+    if (doMoveFast) {
+        temp_move_speed *= 4.0f;
+    }
 
     if (doMoveForward) {
         Ogre::Quaternion ori = p->getParentNode()->getOrientation();
@@ -189,6 +200,12 @@ bool TutorialApplication::keyPressed(const OIS::KeyEvent &arg) {
         doMoveRight = true;
     }
 
+    //Experimental --- Fast Movement
+
+    if (arg.key == OIS::KC_LSHIFT) {
+        doMoveFast = true;
+    }
+
     ////////////////////////////////////
 
 
@@ -216,6 +233,12 @@ bool TutorialApplication::keyReleased(const OIS::KeyEvent &arg) {
     }
     if (arg.key == OIS::KC_D) {
         doMoveRight = false;
+    }
+
+    //Experimental --- Fast Movement
+
+    if (arg.key == OIS::KC_LSHIFT) {
+        doMoveFast = false;
     }
 
     return true;
