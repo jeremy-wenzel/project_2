@@ -1,6 +1,8 @@
 #include "Room.h"
 
 
+std::vector<Wall*> Room::walls;
+
 Room::Room(Ogre::SceneManager* sceneManager, Simulator *sim, PointSystem *ps) {
 	// Build Ground Wall
 	

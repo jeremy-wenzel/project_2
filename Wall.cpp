@@ -1,5 +1,6 @@
 #include "Wall.h"
 #include <iostream>
+#include "Room.h"
 
 Wall::Wall (Ogre::String name,
 			Ogre::SceneManager* sceneMgr,
@@ -71,16 +72,17 @@ void Wall::update (float elapsedTime) {
 		if (_context->hit 
 			&& (lastTime > 0.5 || (_context->lastBody != _context->body && lastTime > 0.1))) {
 			// Add point
-			// std::cout << "Collision" << std::endl;
 			// Deactivate wall
-			_entity->setMaterialName("Examples/RockwallDarker");
-			if (_active && _name != "ground")
-			{
-				_ps->updateCurrentScore();
-			}
-			else if(_name == "ground")
+			std::cout << "here" << std::endl;
+			if(_name == "ground")
 			{
 				_ps->updateTotalScore();
+				Room::reset();
+			}
+			else if (_active && _name != "ground")
+			{
+				_entity->setMaterialName("Examples/RockwallDarker");
+				_ps->updateCurrentScore();
 			}
 			_active = false;
 			Mix_PlayChannel( -1, gScratch, 0 );
