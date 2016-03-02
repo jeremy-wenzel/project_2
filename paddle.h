@@ -2,6 +2,7 @@
 
 /* Ogre Includes */
 #include <OgreMeshManager.h>
+#include <OgreParticleSystem.h>
 
 /* Game Includes */
 #include "GameObject.h"
@@ -10,6 +11,7 @@ class Paddle : public GameObject {
 private:
 	bool _active;
 	Ogre::SceneNode* _parentNode;
+
 public:
 	Ogre::Real _moveSpeed;
 	
