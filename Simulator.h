@@ -36,5 +36,6 @@ class Simulator {
 		btDiscreteDynamicsWorld* getWorld();
 		void stepSimulation(const Ogre::Real elapsedTime, int maxSubSteps = 1,
 							Ogre::Real fixedTimeStep = 1.0f/60.0f);
+		void setGravityManual(btVector3 vector);
 };
 

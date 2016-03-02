@@ -19,8 +19,8 @@ http://www.ogre3d.org/wiki/
 
 #include "TutorialApplication.h"
 #include <iostream>
-#include <SDL_mixer.h>
-#include <SDL.h>
+#include <OgreLogManager.h>
+//#include "userInterface.h"
 
 using namespace std;
 
@@ -36,10 +36,10 @@ TutorialApplication::~TutorialApplication(void)
         delete b;
     }
 
-    for (std::vector<Wall *>::iterator it = wall.begin(); it != wall.end(); ++it)
+    if (room)
     {
-        delete (*it);
-    } 
+        delete room;
+    }
 }
 
 bool TutorialApplication::soundInit(void)
@@ -48,16 +48,34 @@ bool TutorialApplication::soundInit(void)
         /* Failed, exit. */
         return false;
     }
+      //Initialize SDL_mixer
+    if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+    {
+        return false;
+    }
     return true;
 
 }
 
+
+bool TutorialApplication::mousePressed(
+  const OIS::MouseEvent& me, OIS::MouseButtonID id) 
+{
+    if (id == OIS::MB_Left)
+    {
+       sim->setGravityManual(btVector3(0, -100, 0));
+    }
+
+  return true; 
+}
+ 
 //---------------------------------------------------------------------------
 void TutorialApplication::createScene(void)
 {
     // Create your scene here :)
-
-    soundInit();
+    if (!soundInit()) {
+        Ogre::LogManager::getSingleton().logMessage ("init failed");
+    }
     mCameraMan->getCamera()->setPosition(0, 300, 500);
     mCameraMan->getCamera()->lookAt(0, 0, 0);
     mCameraMan->setStyle(OgreBites::CS_MANUAL);
@@ -72,25 +90,17 @@ void TutorialApplication::createScene(void)
     diffuseLight->setPosition(0, 1000, 0);
 
     sim = new Simulator();
+    sim->setGravityManual(btVector3(0, 0, 0));
     btScalar mass = 10.0;
     btScalar resist = 1.0;
     btScalar friction = 0.50;
     Ogre::Vector3 initialPoint (0, 200, 0);
 
+
     
     b = new ball("sphere.mesh", mSceneMgr, sim, mass * .25f, 
                 resist, friction, initialPoint, "OceanHLSL_GLSL");
 
-    Wall *floor = new Wall("floor", mSceneMgr, sim, btScalar(0), resist, friction,
-        Ogre::Real(1000),
-            Ogre::Real(1000),
-            Ogre::Real(-10),
-            Ogre::Real(-100),
-            Ogre::Real(-10),
-            Ogre::Real(0),
-            Ogre::Real(0),
-            Ogre::Real(0));
-    wall.push_back(floor);
 
     //p = new Paddle(mSceneMgr, sim, btScalar(0), btScalar(1), btScalar(.5f), 
     p = new Paddle(mSceneMgr, sim, btScalar(10.f), btScalar(1.f), btScalar(0.25f), 
@@ -110,6 +120,8 @@ void TutorialApplication::createScene(void)
     ///////////
     camNode = p->getNode()->createChildSceneNode(Ogre::Vector3(0,200.f,300.f));
     camNode->attachObject(mCamera);
+    room = new Room(mSceneMgr, sim);
+
 }
 
 
@@ -117,13 +129,6 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
     sim->stepSimulation(evt.timeSinceLastEvent, 100);
     b->update(evt.timeSinceLastEvent);
-    for (std::vector<Wall *>::iterator it = wall.begin(); it != wall.end(); ++it)
-    {
-        if (*it != NULL)
-        {
-            (*it)->update();
-        }
-    }
 
     cout << "Ball : " << b->getNode()->getPosition() << endl;
 

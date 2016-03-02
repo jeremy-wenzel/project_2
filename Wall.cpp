@@ -53,11 +53,13 @@ Wall::Wall (Ogre::String name,
 	// Set Motion State
 	
 	// Set origin (both in Ogre and in Bullet)
+	gScratch = Mix_LoadWAV( "bat_hit_ball.wav" );
 	addToSimulator();
 }
 
 Wall::~Wall () {
-	std::cout << "Deleting Wall" << std::endl;
+	// std::cout << "Deleting Wall" << std::endl;
+	Mix_FreeChunk( gScratch );
 	delete _motionState;	
 }
 
@@ -66,10 +68,10 @@ void Wall::update () {
 
 		if (_context && _context->hit) {
 			// Add point
-			std::cout << "Collision" << std::endl;
+			// std::cout << "Collision" << std::endl;
 			// Deactivate wall
 			_active = false;
-
+			Mix_PlayChannel( -1, gScratch, 0 );
 			_context->hit = false;
 		}
 	// std::cout << "Collision" << std::endl;

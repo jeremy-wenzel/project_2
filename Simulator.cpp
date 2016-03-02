@@ -14,6 +14,10 @@ Simulator::Simulator() {
 	dynamicsWorld->setGravity(btVector3(0, -100, 0));
 }
 
+void Simulator::setGravityManual(btVector3 vector) {
+	dynamicsWorld->setGravity(vector);
+}
+
 /* Destructor for Simulation world. Frees all pointers*/
 Simulator::~Simulator() {
 	if (collisionConfiguration)

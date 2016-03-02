@@ -11,11 +11,14 @@
 #include "GameObject.h"
 
 
+
+
 class ball: public GameObject {
 private:
 	Ogre::Real radius;
 	Ogre::Real speed;
 	double lastTime;
+
 public:
 	ball(Ogre::String name, Ogre::SceneManager *sceneManager, 
 		 Simulator* simulator, btScalar mass,
