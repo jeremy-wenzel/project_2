@@ -21,6 +21,7 @@ http://www.ogre3d.org/wiki/
 #include "BaseApplication.h"
 #include "ball.h"
 #include "Wall.h"
+#include "paddle.h"
 #include "Room.h"
 #include "Simulator.h"
 #include <vector>
@@ -35,20 +36,31 @@ public:
 
 protected:
     virtual void createScene(void);
+    virtual bool keyPressed(const OIS::KeyEvent &arg);
+    virtual bool keyReleased(const OIS::KeyEvent &arg);
+    virtual bool mouseMoved(const OIS::MouseEvent &arg);
     virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
     bool soundInit(void);
     virtual void createFrameListener(void);
     virtual bool mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id);
-    virtual bool keyPressed(const OIS::KeyEvent& ke);
-    virtual bool keyReleased(const OIS::KeyEvent& ke);
 
 private:
 	ball *b;
+	Paddle *p;
+  Ogre::SceneNode *camNode;
 	Simulator *sim;
   Room *room;
   int score;
   bool gameStarts;
   PointSystem *ps;
+
+  bool doMoveForward;
+  bool doMoveBackward;
+  bool doMoveLeft;
+  bool doMoveRight;
+
+  //Experimental
+  bool doMoveFast;
 };
 
 //---------------------------------------------------------------------------

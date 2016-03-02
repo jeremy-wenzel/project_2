@@ -50,6 +50,7 @@ public:
 				btScalar friction);
 
 	virtual ~GameObject();
+	virtual Ogre::SceneNode* getNode();
 	virtual btRigidBody* getBody();
 	virtual void addToSimulator();
 	virtual void updateTransform();
