@@ -11,7 +11,7 @@ Simulator::Simulator() {
 												solver,
 												collisionConfiguration);
 
-	dynamicsWorld->setGravity(btVector3(0, -100, 0));
+	dynamicsWorld->setGravity(btVector3(0, -900, 0));
 }
 
 void Simulator::setGravityManual(btVector3 vector) {

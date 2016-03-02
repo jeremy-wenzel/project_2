@@ -7,7 +7,7 @@
 class Room {
 private:
 	static std::vector<Wall*> walls;
-	int wallLength = 500;
+	int wallLength = 1000;
 
 public:
 	Room(Ogre::SceneManager* sceneManager, Simulator *sim, PointSystem *ps);

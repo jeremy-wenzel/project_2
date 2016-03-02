@@ -69,7 +69,7 @@ Wall::~Wall () {
 void Wall::update (float elapsedTime) {
 	// Not sure if we need to do anything because wall is not doing anything
 		lastTime += elapsedTime;
-		if (_context->hit 
+		if (_context->hit && _context->theObject->getName() == "sphere.mesh"
 			&& (lastTime > 0.5 || (_context->lastBody != _context->body && lastTime > 0.1))) {
 			// Add point
 			// Deactivate wall
@@ -88,7 +88,6 @@ void Wall::update (float elapsedTime) {
 			lastTime = 0.0f;
 		}
 		_context->hit = false;
-	// std::cout << "Collision" << std::endl;
 	
 }
 
