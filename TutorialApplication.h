@@ -59,6 +59,9 @@ private:
   bool doMoveLeft;
   bool doMoveRight;
 
+  bool doMoveUp;
+  bool doMoveDown;
+
   //Experimental
   bool doMoveFast;
 };
