@@ -161,23 +161,31 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
     if (doMoveForward) {
         Ogre::Quaternion ori = p->getParentNode()->getOrientation();
         Ogre::Vector3 dir = ori * Ogre::Vector3::NEGATIVE_UNIT_Z;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
-        p->getParentNode()->translate(temp_move_speed * dir);
+        Ogre::Vector3 moveVector = (temp_move_speed * dir);
+        if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
+            p->getParentNode()->translate(moveVector);
     }
     else if (doMoveBackward) {
         Ogre::Quaternion ori = p->getParentNode()->getOrientation();
         Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_Z;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
-        p->getParentNode()->translate(temp_move_speed * dir);
+        Ogre::Vector3 moveVector = (temp_move_speed * dir);
+        if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
+            p->getParentNode()->translate(moveVector);
     }
 
     if (doMoveLeft) {
         Ogre::Quaternion ori = p->getParentNode()->getOrientation();
         Ogre::Vector3 dir = ori * Ogre::Vector3::NEGATIVE_UNIT_X;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
-        p->getParentNode()->translate(temp_move_speed * dir);
+        Ogre::Vector3 moveVector = (temp_move_speed * dir);
+        if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
+            p->getParentNode()->translate(moveVector);
     }
     else if (doMoveRight) {
         Ogre::Quaternion ori = p->getParentNode()->getOrientation();
         Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_X;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
-        p->getParentNode()->translate(temp_move_speed * dir);
+        Ogre::Vector3 moveVector = (temp_move_speed * dir);
+        if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
+            p->getParentNode()->translate(moveVector);
     }
 
     p->updateTransform();
