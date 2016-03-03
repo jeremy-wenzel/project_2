@@ -149,12 +149,11 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
     sim->stepSimulation(evt.timeSinceLastEvent, 1);
     b->update(evt.timeSinceLastEvent);
+    Ogre::Real temp_move_speed = p->_moveSpeed * evt.timeSinceLastFrame;
 
-
+    // Paddle Movement
     if (gameStarts) {
-        //Paddle Movement
-
-        Ogre::Real temp_move_speed= p->_moveSpeed * evt.timeSinceLastFrame;
+        
 
         if (doMoveFast) {
             temp_move_speed *= 4.0f;
@@ -162,14 +161,14 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
         
         if (doMoveForward) {
             Ogre::Quaternion ori = p->getParentNode()->getOrientation();
-            Ogre::Vector3 dir = ori * Ogre::Vector3::NEGATIVE_UNIT_Z;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
+            Ogre::Vector3 dir = ori * Ogre::Vector3::NEGATIVE_UNIT_Z;
             Ogre::Vector3 moveVector = (temp_move_speed * dir);
             if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
                 p->getParentNode()->translate(moveVector);
         }
         else if (doMoveBackward) {
             Ogre::Quaternion ori = p->getParentNode()->getOrientation();
-            Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_Z;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
+            Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_Z;
             Ogre::Vector3 moveVector = (temp_move_speed * dir);
             if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
                 p->getParentNode()->translate(moveVector);
@@ -177,65 +176,63 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
         if (doMoveLeft) {
             Ogre::Quaternion ori = p->getParentNode()->getOrientation();
-            Ogre::Vector3 dir = ori * Ogre::Vector3::NEGATIVE_UNIT_X;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
+            Ogre::Vector3 dir = ori * Ogre::Vector3::NEGATIVE_UNIT_X;
             Ogre::Vector3 moveVector = (temp_move_speed * dir);
             if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
                 p->getParentNode()->translate(moveVector);
         }
         else if (doMoveRight) {
             Ogre::Quaternion ori = p->getParentNode()->getOrientation();
-            Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_X;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
+            Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_X;
             Ogre::Vector3 moveVector = (temp_move_speed * dir);
             if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
                 p->getParentNode()->translate(moveVector);
         }
     }
+
+    //Ball Movement
     else {
+
         Ogre::SceneNode *node = b->getSceneNode();
-        if (doMoveUp)
-        {
-            Ogre::Vector3 mvVector = 
-            room->checkBoundary(node, Ogre::Vector3(0, 10, 0), 5);
-            mvVector.normalise();
-            b->moveAround(mvVector);
-        }
-        if (doMoveDown)
-        {
-            Ogre::Vector3 mvVector = 
-            room->checkBoundary(node, Ogre::Vector3(0, -10, 0), 0);
-            mvVector.normalise();
-            b->moveAround(mvVector);
-        }
 
-        if (doMoveLeft)
-        {
+        if (doMoveUp) {
             Ogre::Vector3 mvVector = 
-            room->checkBoundary(node, Ogre::Vector3(-10, 0, 0), 4);
-            mvVector.normalise();
+            room->checkBoundary(node, Ogre::Vector3(0, temp_move_speed, 0), 5);
             b->moveAround(mvVector);
         }
-        if (doMoveRight)
-        {
+        else if (doMoveDown) {
             Ogre::Vector3 mvVector = 
-            room->checkBoundary(node, Ogre::Vector3(10, 0, 0), 3);
-            mvVector.normalise();
-            b->moveAround(mvVector);
-        }
-
-        if (doMoveForward)
-        {
-            Ogre::Vector3 mvVector = 
-            room->checkBoundary(node, Ogre::Vector3(0, 0, 10), 2);
-            mvVector.normalise();
+            room->checkBoundary(node, Ogre::Vector3(0, -temp_move_speed, 0), 0);
             b->moveAround(mvVector);
         }
         
-        if (doMoveBackward)
-        {
+        if (doMoveLeft) {
             Ogre::Vector3 mvVector = 
-            room->checkBoundary(node, Ogre::Vector3(0, 0, -10), 1);
-            mvVector.normalise();
+            room->checkBoundary(node, Ogre::Vector3(-temp_move_speed, 0, 0), 4);
             b->moveAround(mvVector);
+        }
+        else if (doMoveRight) {
+            Ogre::Vector3 mvVector = 
+            room->checkBoundary(node, Ogre::Vector3(temp_move_speed, 0, 0), 3);
+            b->moveAround(mvVector);
+        }
+        
+        if (doMoveForward) {
+            Ogre::Vector3 mvVector = 
+            room->checkBoundary(node, Ogre::Vector3(0, 0, temp_move_speed), 2);
+            b->moveAround(mvVector);
+        }
+        else if (doMoveBackward) {
+            Ogre::Vector3 mvVector = 
+            room->checkBoundary(node, Ogre::Vector3(0, 0, -temp_move_speed), 1);
+            b->moveAround(mvVector);
+        }
+
+        ///
+
+        if (room->isOutsideRoom(b->getNode()->getPosition())) {
+            gameStarts = false;
+            b->getNode()->setPosition(Ogre::Vector3(0, 200, 0));
         }
     }
 
@@ -251,102 +248,18 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 //---------------------------------------------------------------------------
 
 bool TutorialApplication::keyPressed(const OIS::KeyEvent &arg) {
-    BaseApplication::keyPressed(arg);
+    //BaseApplication::keyPressed(arg);
 
-    // Ball Movement
-    //if (!gameStarts) 
-    //{
+    switch (arg.key) {
+        case OIS::KC_W      : doMoveForward  = true; break;
+        case OIS::KC_S      : doMoveBackward = true; break;
+        case OIS::KC_A      : doMoveLeft     = true; break;
+        case OIS::KC_D      : doMoveRight    = true; break;
+        case OIS::KC_E      : doMoveUp       = true; break;
+        case OIS::KC_Q      : doMoveDown     = true; break;
+        case OIS::KC_LSHIFT : doMoveFast     = true; break;
 
-        // Ogre::SceneNode *node = b->getSceneNode();
-        // if (arg.key == OIS::KC_W)
-        // {
-        //     Ogre::Vector3 mvVector = 
-        //     room->checkBoundary(node, Ogre::Vector3(0, 10, 0), 5);
-        //     b->moveAround(mvVector);
-        // }
-        // if (arg.key == OIS::KC_A)
-        // {
-        //     Ogre::Vector3 mvVector = 
-        //     room->checkBoundary(node, Ogre::Vector3(-10, 0, 0), 4);
-        //     b->moveAround(mvVector);
-        // }
-        // if (arg.key == OIS::KC_S)
-        // {
-        //     Ogre::Vector3 mvVector = 
-        //     room->checkBoundary(node, Ogre::Vector3(0, -10, 0), 0);
-        //     b->moveAround(mvVector);
-        // }
-        // if (arg.key == OIS::KC_D)
-        // {
-        //     Ogre::Vector3 mvVector = 
-        //     room->checkBoundary(node, Ogre::Vector3(10, 0, 0), 3);
-        //     b->moveAround(mvVector);
-        // }
-    //}
-
-    // Paddle Movement
-    //else
-    //{
-        if (arg.key == OIS::KC_W) {
-            // Ogre::Quaternion ori = p->getParentNode()->getOrientation();
-            // Ogre::Vector3 dir = ori * Ogre::Vector3::NEGATIVE_UNIT_Z;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
-            // p->getParentNode()->translate(p->_moveSpeed * dir);
-            // cout << "forward : " << p->getParentNode()->getPosition() << endl;
-            doMoveForward = true;
-        }
-        if (arg.key == OIS::KC_S) {
-            // Ogre::Quaternion ori = p->getParentNode()->getOrientation();
-            // Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_Z;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
-            // p->getParentNode()->translate(p->_moveSpeed * dir);
-            // cout << "back : " << p->getParentNode()->getPosition() << endl;
-            doMoveBackward = true;
-        }
-        if (arg.key == OIS::KC_A) {
-            // Ogre::Quaternion ori = p->getParentNode()->getOrientation();
-            // Ogre::Vector3 dir = ori * Ogre::Vector3::NEGATIVE_UNIT_X;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
-            // p->getParentNode()->translate(p->_moveSpeed * dir);
-            // cout << "left : " << p->getParentNode()->getPosition() << endl;
-            //camNode->roll(Ogre::Radian(-2.f));
-            doMoveLeft = true;
-        }
-        if (arg.key == OIS::KC_D) {
-            // Ogre::Quaternion ori = p->getParentNode()->getOrientation();
-            // Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_X;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
-            // p->getParentNode()->translate(p->_moveSpeed * dir);
-            // cout << "right : " << p->getParentNode()->getPosition() << endl;
-            //camNode->roll(Ogre::Radian(2.f));
-            doMoveRight = true;
-        }
-
-
-        if (arg.key == OIS::KC_E) {
-            // Ogre::Quaternion ori = p->getParentNode()->getOrientation();
-            // Ogre::Vector3 dir = ori * Ogre::Vector3::NEGATIVE_UNIT_Z;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
-            // p->getParentNode()->translate(p->_moveSpeed * dir);
-            // cout << "forward : " << p->getParentNode()->getPosition() << endl;
-            doMoveUp = true;
-        }
-        if (arg.key == OIS::KC_Q) {
-            // Ogre::Quaternion ori = p->getParentNode()->getOrientation();
-            // Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_Z;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
-            // p->getParentNode()->translate(p->_moveSpeed * dir);
-            // cout << "back : " << p->getParentNode()->getPosition() << endl;
-            doMoveDown = true;
-        }
-
-        //Experimental --- Fast Movement
-
-        if (arg.key == OIS::KC_LSHIFT) {
-            doMoveFast = true;
-        }
-    //}
-
-    ////////////////////////////////////
-
-
-    if (arg.key == OIS::KC_ESCAPE)
-    {
-        mShutDown = true;
+        case OIS::KC_ESCAPE : mShutDown      = true; break;
     }
 
     return true;
@@ -355,32 +268,14 @@ bool TutorialApplication::keyPressed(const OIS::KeyEvent &arg) {
 bool TutorialApplication::keyReleased(const OIS::KeyEvent &arg) {
     BaseApplication::keyReleased(arg);
 
-    // Paddle Movement
-
-    if (arg.key == OIS::KC_W) {
-        doMoveForward = false;
-    }
-    if (arg.key == OIS::KC_S) {
-        doMoveBackward = false;
-    }
-    if (arg.key == OIS::KC_A) {
-        doMoveLeft = false;
-    }
-    if (arg.key == OIS::KC_D) {
-        doMoveRight = false;
-    }
-
-    if (arg.key == OIS::KC_E) {
-        doMoveUp = false;
-    }
-    if (arg.key == OIS::KC_Q) {
-        doMoveDown = false;
-    }
-
-    //Experimental --- Fast Movement
-
-    if (arg.key == OIS::KC_LSHIFT) {
-        doMoveFast = false;
+    switch (arg.key) {
+        case OIS::KC_W      : doMoveForward  = false; break;
+        case OIS::KC_S      : doMoveBackward = false; break;
+        case OIS::KC_A      : doMoveLeft     = false; break;
+        case OIS::KC_D      : doMoveRight    = false; break;
+        case OIS::KC_E      : doMoveUp       = false; break;
+        case OIS::KC_Q      : doMoveDown     = false; break;
+        case OIS::KC_LSHIFT : doMoveFast     = false; break;
     }
 
     return true;
