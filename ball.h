@@ -18,7 +18,7 @@ private:
 	Ogre::Real radius;
 	Ogre::Real speed;
 	double lastTime;
-
+	Ogre::ParticleSystem* _ps;
 public:
 	ball(Ogre::String name, Ogre::SceneManager *sceneManager, 
 		 Simulator* simulator, btScalar mass,

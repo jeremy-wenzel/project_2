@@ -7,7 +7,7 @@ Room::Room(Ogre::SceneManager* sceneManager, Simulator *sim, PointSystem *ps) {
 	// Build Ground Wall
 	
 	btScalar mass(0.f);
-	btScalar rest(1.f);
+	btScalar rest(0.5f);
 	btScalar frict(0.5f);
 
 	walls.push_back(new Wall(Ogre::String("ground"),
@@ -154,3 +154,21 @@ Ogre::Vector3 Room::checkBoundary(Ogre::SceneNode *node, Ogre::Vector3 move, int
 
 }
 
+bool Room::isOutsideRoom(Ogre::Vector3 pos) {
+	// Check floor
+	if (pos.y < walls[0]->getNode()->getPosition().y)
+		return true;
+	// Check cieling
+	if (pos.y > walls[5]->getNode()->getPosition().y)
+		return true;
+	// Check 
+	if (pos.z > walls[1]->getNode()->getPosition().z)
+		return true;
+	if (pos.z < walls[2]->getNode()->getPosition().z)
+		return true;
+	if (pos.x > walls[3]->getNode()->getPosition().x)
+		return true;
+	if (pos.x < walls[4]->getNode()->getPosition().x)
+		return true;
+	return false;
+}

@@ -20,6 +20,7 @@ http://www.ogre3d.org/wiki/
 #include "TutorialApplication.h"
 #include <iostream>
 #include <OgreLogManager.h>
+#include "OgreText.h"
 
 
 
@@ -86,7 +87,8 @@ void TutorialApplication::createFrameListener(void)
     text = new OgreText();
     std::string Score("score: " + std::to_string(score));
     text->setText(Ogre::String(Score));
-    text->setPosition(0, 0);
+    text->setColor(1.0, 1.0, 1.0, 1.0);
+    text->setPosition(0.1, 0.1);
 }
  
 //---------------------------------------------------------------------------
@@ -102,7 +104,6 @@ void TutorialApplication::createScene(void)
     mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
     mSceneMgr->setSkyBox(true, "Examples/EveningSkyBox");
     mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
-    mSceneMgr->setSkyDome(true, "Examples/CloudySky", 5, 8);
     Ogre::Light *diffuseLight = mSceneMgr->createLight("diffuse light");
     
     // make this light a point light
@@ -128,10 +129,10 @@ void TutorialApplication::createScene(void)
 
 
     //p = new Paddle(mSceneMgr, sim, btScalar(0), btScalar(1), btScalar(.5f), 
-    p = new Paddle(mSceneMgr, sim, btScalar(10.f), btScalar(1.f), btScalar(0.25f), 
+    p = new Paddle(mSceneMgr, sim, btScalar(10.f), btScalar(0.5f), btScalar(0.25f), 
         Ogre::Real(80), Ogre::Real(10), Ogre::Real(40), 
         Ogre::Real(0), Ogre::Real(0), Ogre::Real(0), 
-        Ogre::Real(0), Ogre::Real(0), Ogre::Real(0));
+        Ogre::Real(0), Ogre::Real(90), Ogre::Real(0));
 
     doMoveForward = false;
     doMoveBackward = false;
@@ -167,23 +168,31 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
     if (doMoveForward) {
         Ogre::Quaternion ori = p->getParentNode()->getOrientation();
         Ogre::Vector3 dir = ori * Ogre::Vector3::NEGATIVE_UNIT_Z;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
-        p->getParentNode()->translate(temp_move_speed * dir);
+        Ogre::Vector3 moveVector = (temp_move_speed * dir);
+        if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
+            p->getParentNode()->translate(moveVector);
     }
     else if (doMoveBackward) {
         Ogre::Quaternion ori = p->getParentNode()->getOrientation();
         Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_Z;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
-        p->getParentNode()->translate(temp_move_speed * dir);
+        Ogre::Vector3 moveVector = (temp_move_speed * dir);
+        if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
+            p->getParentNode()->translate(moveVector);
     }
 
     if (doMoveLeft) {
         Ogre::Quaternion ori = p->getParentNode()->getOrientation();
         Ogre::Vector3 dir = ori * Ogre::Vector3::NEGATIVE_UNIT_X;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
-        p->getParentNode()->translate(temp_move_speed * dir);
+        Ogre::Vector3 moveVector = (temp_move_speed * dir);
+        if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
+            p->getParentNode()->translate(moveVector);
     }
     else if (doMoveRight) {
         Ogre::Quaternion ori = p->getParentNode()->getOrientation();
         Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_X;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
-        p->getParentNode()->translate(temp_move_speed * dir);
+        Ogre::Vector3 moveVector = (temp_move_speed * dir);
+        if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
+            p->getParentNode()->translate(moveVector);
     }
 
     p->updateTransform();

@@ -24,16 +24,12 @@ ball::ball(Ogre::String name,
 		_tr.setOrigin(convertVectorToBtVector(initialPosition));
 		this->_shape = new btSphereShape(radius);
 		this->_motionState = new OgreMotionState(this->_tr, this->_rootNode);
-    	
+    	_ps = sceneMgr->createParticleSystem("Tail", "Examples/JetEngine1");
+		_rootNode->attachObject(_ps);
 		addToSimulator();
 		setKinematic(true);
 	}
 
-
-void ball::changeSpeed(Ogre::Real speed)
-{
-	this->speed = speed;
-}
 
 void ball::moveAround(Ogre::Vector3 vector)
 {
@@ -42,18 +38,6 @@ void ball::moveAround(Ogre::Vector3 vector)
 	this->_rootNode->setPosition(transform);
 	updateTransform();
 }
-
-// void ball::update(){
-// 	if (_cCallBack)
-// 	{
-// 		_simulator->getWorld()->contactTest(_body, *_cCallBack);
-// 		if (_context->hit && (_context->velNorm > 2.0 || _context->velNorm < -2.0) 
-// 			&& (lastTime > 0.5 || (_context->lastBody != _context->body && lastTime > 0.1))) {
-// 			//Handle the hit
-// 		}
-// 		_context->hit = false;
-// 	}
-// }
 
 void ball::update(float elapsedTime) {
 	if (_cCallBack)

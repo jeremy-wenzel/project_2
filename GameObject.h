@@ -52,6 +52,7 @@ public:
 	virtual ~GameObject();
 	virtual Ogre::SceneNode* getNode();
 	virtual btRigidBody* getBody();
+	virtual Ogre::String getName();
 	virtual void addToSimulator();
 	virtual void updateTransform();
 	// This method checks if there is a collision or not
