@@ -38,7 +38,7 @@ protected:
 	btTransform _tr;
 	btVector3 _inertia;
 
-	CollisionContext* _context;
+	
 		
 
 public:
@@ -58,7 +58,9 @@ public:
 	// This method checks if there is a collision or not
 	virtual void update(float elapsedTime) {}
 	virtual void setKinematic(bool flag);
+
 	bool getKinematic();
-	BulletContactCallback* _cCallBack;	
+	BulletContactCallback* _cCallBack;
+	CollisionContext* _context;	
 };
 
