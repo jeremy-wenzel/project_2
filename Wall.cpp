@@ -49,7 +49,7 @@ Wall::Wall (Ogre::String name,
 	_tr.setOrigin(btVector3(x_pos, y_pos, z_pos));
 
 	//_tr.setRotation(btQuaternion(btScalar(yaw), btScalar(pitch), btScalar(roll), 0));
-	_shape = new btBoxShape(btVector3(btScalar(length), btScalar(5.f), btScalar(height)));
+	_shape = new btBoxShape(btVector3(btScalar(length)/2.f, btScalar(5.f), btScalar(height)/2.f));
 	_motionState = new OgreMotionState(_tr, _rootNode);
 
 	// Set Motion State
@@ -72,7 +72,7 @@ void Wall::update (float elapsedTime) {
 	// Not sure if we need to do anything because wall is not doing anything
 		lastTime += elapsedTime;
 		if (_context->hit && _context->theObject->getName() == "sphere.mesh"
-			&& (lastTime > 0.5 || (_context->lastBody != _context->body && lastTime > 0.1))) {
+			&& timer->getMilliseconds() > 400 ) {
 			// Add point
 			// Deactivate wall
 			if(_name == "ground")
@@ -87,7 +87,7 @@ void Wall::update (float elapsedTime) {
 			}
 			_active = false;
 			std::cout << "timer " << timer->getMilliseconds() << std::endl;
-			if (timer->getMilliseconds() > 400 && Room::isSoundOn())
+			if (Room::isSoundOn())
 				Mix_PlayChannel( -1, gScratch, 0 );
 			lastTime = 0.0f;
 			timer->reset();
