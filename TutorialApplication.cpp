@@ -41,6 +41,9 @@ TutorialApplication::~TutorialApplication(void)
     {
         delete room;
     }
+
+    if (music)
+        Mix_FreeMusic( music );
     // mTrayMgr->destroyWidget("Pause");
     // mTrayMgr->destroyWidget("Score");
 }
@@ -86,6 +89,7 @@ void TutorialApplication::createFrameListener(void)
 //---------------------------------------------------------------------------
 void TutorialApplication::createScene(void)
 {
+    music = NULL;
     // Create your scene here :)
     if (!soundInit()) {
         Ogre::LogManager::getSingleton().logMessage ("init failed");
@@ -122,7 +126,7 @@ void TutorialApplication::createScene(void)
 
 
     //p = new Paddle(mSceneMgr, sim, btScalar(0), btScalar(1), btScalar(.5f), 
-    p = new Paddle(mSceneMgr, sim, btScalar(10.f), btScalar(0.5f), btScalar(0.25f), 
+    p = new Paddle(mSceneMgr, sim, btScalar(10.f), btScalar(5.0f), btScalar(0.25f), 
         Ogre::Real(160), Ogre::Real(20), Ogre::Real(160), 
         Ogre::Real(0), Ogre::Real(20), Ogre::Real(0), 
         Ogre::Real(0), Ogre::Real(90), Ogre::Real(0));
@@ -141,6 +145,10 @@ void TutorialApplication::createScene(void)
     ///////////
     camNode = p->getNode()->createChildSceneNode(Ogre::Vector3(0,1000.f,500.f));
     camNode->attachObject(mCamera);
+    music = Mix_LoadMUS( "halo.wav" );
+    Mix_PlayMusic( music, -1 );
+    musicPlaying = true;
+    Room::setPlayingSounds(true);
 }
 
 
@@ -260,6 +268,21 @@ bool TutorialApplication::keyPressed(const OIS::KeyEvent &arg) {
         case OIS::KC_LSHIFT : doMoveFast     = true; break;
 
         case OIS::KC_ESCAPE : mShutDown      = true; break;
+    }
+    
+    // Mute Music
+    if (arg.key == OIS::KC_M) {
+        // Stop Music
+        if (musicPlaying) {
+            musicPlaying = false;
+            Mix_HaltMusic();
+            Room::setPlayingSounds(false);
+        }
+        else {
+            musicPlaying = true;
+            Mix_PlayMusic(music, -1 );
+            Room::setPlayingSounds(true);
+        }
     }
 
     return true;

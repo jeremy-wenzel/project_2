@@ -17,3 +17,4 @@ compile
 *~
 .nfs*
 Ogre.log
+*.wav
