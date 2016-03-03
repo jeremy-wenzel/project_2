@@ -16,7 +16,8 @@ Wall::Wall (Ogre::String name,
 			Ogre::Real roll,
 			Ogre::Real pitch,
 			Ogre::Real yaw,
-			PointSystem *ps) : GameObject(name, sceneMgr, sim, mass, restit, fric), lastTime(0){
+			PointSystem *ps,
+			Ogre::String material) : GameObject(name, sceneMgr, sim, mass, restit, fric), lastTime(0){
 
 	_active = true;
 
@@ -44,7 +45,7 @@ Wall::Wall (Ogre::String name,
 
 	_rootNode->attachObject(_entity);
 
-	_entity->setMaterialName("Examples/Rockwall");
+	_entity->setMaterialName(material);
 
 	_tr.setIdentity();
 	_tr.setOrigin(btVector3(x_pos, y_pos, z_pos));
@@ -88,18 +89,21 @@ void Wall::update (float elapsedTime) {
 			&& (lastTime > 0.5 || (_context->lastBody != _context->body && lastTime > 0.1))) {
 			// Add point
 			// Deactivate wall
+			if (_context->theObject->getKinematic() == false)
+			{
 
-			if(_name == "ground")
-			{
-				_ps->updateTotalScore();
-				std::string Score("total score: " + std::to_string(_ps->getScore()));
-				text->setText(Ogre::String(Score));
-				Room::reset();
-			}
-			else if (_active && _name != "ground")
-			{
-				_entity->setMaterialName("Examples/RockwallDarker");
-				_ps->updateCurrentScore();
+				if(_name == "ground")
+				{
+					_ps->updateTotalScore();
+					std::string Score("total score: " + std::to_string(_ps->getScore()));
+					text->setText(Ogre::String(Score));
+					Room::reset();
+				}
+				else if (_active && _name != "ground")
+				{
+					_entity->setMaterialName("Examples/RockwallDarker");
+					_ps->updateCurrentScore();
+				}
 			}
 			_active = false;
 			Mix_PlayChannel( -1, gScratch, 0 );
@@ -120,4 +124,9 @@ OgreMotionState* Wall::getMotionState() {
 
 Ogre::Entity* Wall::getEntity() {
 	return this->_entity;
+}
+
+
+Ogre::String Wall::getName() {
+	return _name;
 }

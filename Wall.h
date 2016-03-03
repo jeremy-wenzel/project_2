@@ -33,11 +33,13 @@ public:
 			Ogre::Real roll,
 			Ogre::Real pitch,
 			Ogre::Real yaw,
-			PointSystem *ps);
+			PointSystem *ps,
+			Ogre::String material);
 	~Wall();
 	void update(float elapsedTime);
 	void setKinematic();
 	OgreMotionState* getMotionState();
 	Ogre::Entity* getEntity();
+	Ogre::String getName();
 	// void update() {}
 };

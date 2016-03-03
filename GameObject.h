@@ -58,6 +58,7 @@ public:
 	// This method checks if there is a collision or not
 	virtual void update(float elapsedTime) {}
 	virtual void setKinematic(bool flag);
+	bool getKinematic();
 	BulletContactCallback* _cCallBack;	
 };
 

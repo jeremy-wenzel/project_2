@@ -60,6 +60,9 @@ private:
   bool doMoveRight;
   OgreText *currentText;
 
+  bool doMoveUp;
+  bool doMoveDown;
+
   //Experimental
   bool doMoveFast;
 };

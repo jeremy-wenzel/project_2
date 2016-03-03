@@ -93,3 +93,9 @@ void GameObject::setKinematic(bool flag) {
 		_body->setActivationState(ACTIVE_TAG);
 	}
 }
+
+bool GameObject::getKinematic() {
+	bool kinematic = (_body->getCollisionFlags() & btCollisionObject::CF_KINEMATIC_OBJECT)
+	 == btCollisionObject::CF_KINEMATIC_OBJECT;
+	return kinematic;
+}
