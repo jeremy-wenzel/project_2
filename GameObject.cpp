@@ -66,6 +66,10 @@ btRigidBody* GameObject::getBody() {
 	return _body;
 }
 
+Ogre::String GameObject::getName() {
+	return _name;
+}
+
 // Transform the object from the Bullet World to the Ogre World
 void GameObject::updateTransform() {
 	if (_rootNode) {

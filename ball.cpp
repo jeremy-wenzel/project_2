@@ -24,7 +24,8 @@ ball::ball(Ogre::String name,
 		_tr.setOrigin(convertVectorToBtVector(initialPosition));
 		this->_shape = new btSphereShape(radius);
 		this->_motionState = new OgreMotionState(this->_tr, this->_rootNode);
-    	
+    	_ps = sceneMgr->createParticleSystem("Tail", "Examples/JetEngine1");
+		_rootNode->attachObject(_ps);
 		addToSimulator();
 		setKinematic(true);
 	}
