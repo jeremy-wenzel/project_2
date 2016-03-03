@@ -86,6 +86,7 @@ void TutorialApplication::createFrameListener(void)
 //---------------------------------------------------------------------------
 void TutorialApplication::createScene(void)
 {
+    music = NULL;
     // Create your scene here :)
     if (!soundInit()) {
         Ogre::LogManager::getSingleton().logMessage ("init failed");
@@ -141,6 +142,8 @@ void TutorialApplication::createScene(void)
     ///////////
     camNode = p->getNode()->createChildSceneNode(Ogre::Vector3(0,1000.f,500.f));
     camNode->attachObject(mCamera);
+    music = Mix_LoadMUS( "halo.wav" );
+    Mix_PlayMusic( music, -1 );
 }
 
 
@@ -304,7 +307,7 @@ bool TutorialApplication::keyPressed(const OIS::KeyEvent &arg) {
         if (arg.key == OIS::KC_A) {
             // Ogre::Quaternion ori = p->getParentNode()->getOrientation();
             // Ogre::Vector3 dir = ori * Ogre::Vector3::NEGATIVE_UNIT_X;//p->_moveSpeed * Ogre::Vector3(ori * Ogre::Vector3::UNIT_X, 0, ori * Ogre::Vector3::UNIT_Z);
-            // p->getParentNode()->translate(p->_moveSpeed * dir);
+            // p->getParentNode()->translate(p->_moveSpeed * dir);e sound frequency we use, a
             // cout << "left : " << p->getParentNode()->getPosition() << endl;
             //camNode->roll(Ogre::Radian(-2.f));
             doMoveLeft = true;

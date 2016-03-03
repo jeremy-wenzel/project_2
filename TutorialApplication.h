@@ -64,6 +64,8 @@ private:
 
   //Experimental
   bool doMoveFast;
+
+  Mix_Music *music;
 };
 
 //---------------------------------------------------------------------------
