@@ -2,6 +2,7 @@
 
 /* Ogre Includes */
 #include <OgreMeshManager.h>
+// #include <OgreTimerImp.h>
 
 /* Game Includes */
 #include "GameObject.h"
@@ -15,6 +16,7 @@ private:
 	Mix_Chunk *gScratch;
 	PointSystem *_ps;
 	float lastTime;
+	Ogre::Timer* timer;
 public:
 	bool _active;
 	Wall (Ogre::String name,

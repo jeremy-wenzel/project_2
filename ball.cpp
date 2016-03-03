@@ -9,7 +9,7 @@ ball::ball(Ogre::String name,
 			btScalar fric,
 			Ogre::Vector3 initialPosition,
 			Ogre::String material)
-	:GameObject(name, sceneMgr, sim, mass, restit, fric), lastTime(0.0)
+			:GameObject(name, sceneMgr, sim, mass, restit, fric), lastTime(0.0)
 	{
 		Ogre::Entity *entity = sceneMgr->createEntity(name);
 		this->_entity = entity;
@@ -51,17 +51,22 @@ void ball::update(float elapsedTime) {
 		}
 		_context->hit = false;
 	}
+
+	btVector3 speed = _body->getLinearVelocity();
+	if (speed.length() > 1000) {
+		speed = speed.normalized() * 1000;
+		_body->setLinearVelocity(speed);
+	}
 }
 
 Ogre::SceneNode* ball::getSceneNode() {
 	return this->_rootNode;
 }
 
-OgreMotionState* ball::getMotionState(){
+OgreMotionState* ball::getMotionState() {
 	return _motionState;
 }
 
-ball::~ball()
-{
-}
+ball::~ball() {
 
+}
