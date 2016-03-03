@@ -5,7 +5,6 @@
 #include <Overlay/OgreOverlayManager.h>
 #include <Overlay/OgreOverlayContainer.h>
 
-
 class OgreText {
 public:
 	OgreText();
