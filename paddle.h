@@ -3,6 +3,8 @@
 /* Ogre Includes */
 #include <OgreMeshManager.h>
 #include <OgreParticleSystem.h>
+#include <SDL_mixer.h>
+#include <SDL.h>
 
 /* Game Includes */
 #include "GameObject.h"
@@ -11,6 +13,8 @@ class Paddle : public GameObject {
 private:
 	bool _active;
 	Ogre::SceneNode* _parentNode;
+	Mix_Chunk *gScratch;
+	float lastTime;
 
 public:
 	Ogre::Real _moveSpeed;
@@ -28,7 +32,7 @@ public:
 			Ogre::Real pitch,
 			Ogre::Real yaw);
 	~Paddle();
-	void update();
+	void update(float elapsedTime);
 	Ogre::SceneNode* getParentNode();
 	void updateTransform();
 };

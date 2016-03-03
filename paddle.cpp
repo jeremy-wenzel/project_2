@@ -12,7 +12,7 @@ Paddle::Paddle (Ogre::SceneManager* sceneMgr,
 				Ogre::Real roll,
 				Ogre::Real pitch,
 				Ogre::Real yaw)
-				: GameObject("paddle", sceneMgr, sim, mass, restit, fric) {
+				: GameObject("paddle", sceneMgr, sim, mass, restit, fric), lastTime(0) {
 	_active = true;
 	_moveSpeed = 300.f;
 
@@ -45,14 +45,28 @@ Paddle::Paddle (Ogre::SceneManager* sceneMgr,
 	
 	addToSimulator();
 	setKinematic(true);
+	gScratch = Mix_LoadWAV( "bat_hit_ball.wav" );
 }
 
 Paddle::~Paddle () {
 	delete _motionState;	
 }
 
-void Paddle::update () {
-
+void Paddle::update (float elapsedTime) {
+	if (_cCallBack)
+	{
+		
+		lastTime += elapsedTime;
+		
+		if (_context->hit 
+			&& (_context->theObject->getName() == "sphere.mesh")
+			&& (_context->lastBody != _context->body && lastTime > 0.1)) {
+			//Handle the hit
+			Mix_PlayChannel( -1, gScratch, 0 );
+			lastTime = 0.0f;
+		}
+		_context->hit = false;
+	}
 }
 
 Ogre::SceneNode* Paddle::getParentNode() {
