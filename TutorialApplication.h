@@ -25,6 +25,7 @@ http://www.ogre3d.org/wiki/
 #include "Room.h"
 #include "Simulator.h"
 #include <vector>
+#include "OgreText.h"
 
 //---------------------------------------------------------------------------
 
@@ -58,6 +59,7 @@ private:
   bool doMoveBackward;
   bool doMoveLeft;
   bool doMoveRight;
+  OgreText *text;
 
   //Experimental
   bool doMoveFast;

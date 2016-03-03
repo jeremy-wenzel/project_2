@@ -22,6 +22,7 @@ http://www.ogre3d.org/wiki/
 #include <OgreLogManager.h>
 
 
+
 using namespace std;
 
 
@@ -40,6 +41,10 @@ TutorialApplication::~TutorialApplication(void)
     if (room)
     {
         delete room;
+    }
+    if (text)
+    {
+        delete text;
     }
     // mTrayMgr->destroyWidget("Pause");
     // mTrayMgr->destroyWidget("Score");
@@ -78,9 +83,10 @@ void TutorialApplication::createFrameListener(void)
 {
     BaseApplication::createFrameListener();
     mTrayMgr->showCursor();
+    text = new OgreText();
     std::string Score("score: " + std::to_string(score));
-    mTrayMgr->createLabel(OgreBites::TL_BOTTOMLEFT, "Score: ", Ogre::String(Score), 150);
-    mTrayMgr->createButton(OgreBites::TL_BOTTOMLEFT, "Pause", "Pause", 150);
+    text->setText(Ogre::String(Score));
+    text->setPosition(0, 0);
 }
  
 //---------------------------------------------------------------------------
