@@ -287,7 +287,7 @@ bool TutorialApplication::keyPressed(const OIS::KeyEvent &arg) {
         case OIS::KC_LSHIFT : doMoveFast     = true; break;
 
         case OIS::KC_ESCAPE : mShutDown      = true; break;
-        // case OIS::KC_R      : pause();             break;
+        case OIS::KC_R      : pause();               break;
     }
     
     // Mute Music

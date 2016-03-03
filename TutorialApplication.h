@@ -42,6 +42,7 @@ protected:
     virtual bool mouseMoved(const OIS::MouseEvent &arg);
     virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
     bool soundInit(void);
+    void pause(void);
     virtual void createFrameListener(void);
     virtual bool mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id);
 
