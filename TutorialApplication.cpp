@@ -28,7 +28,7 @@ using namespace std;
 
 
 //---------------------------------------------------------------------------
-TutorialApplication::TutorialApplication(void): score(0), gameStarts(false)
+TutorialApplication::TutorialApplication(void): gameStarts(false)
 {
 }
 //---------------------------------------------------------------------------
@@ -43,12 +43,7 @@ TutorialApplication::~TutorialApplication(void)
     {
         delete room;
     }
-    if (text)
-    {
-        delete text;
-    }
-    // mTrayMgr->destroyWidget("Pause");
-    // mTrayMgr->destroyWidget("Score");
+    
 }
 
 bool TutorialApplication::soundInit(void)
@@ -83,12 +78,7 @@ bool TutorialApplication::mousePressed(
 void TutorialApplication::createFrameListener(void)
 {
     BaseApplication::createFrameListener();
-    mTrayMgr->showCursor();
-    text = new OgreText();
-    std::string Score("score: " + std::to_string(score));
-    text->setText(Ogre::String(Score));
-    text->setColor(1.0, 1.0, 1.0, 1.0);
-    text->setPosition(0.1, 0.1);
+    
 }
  
 //---------------------------------------------------------------------------
@@ -147,6 +137,14 @@ void TutorialApplication::createScene(void)
     camNode = p->getNode()->createChildSceneNode(Ogre::Vector3(0,200.f,300.f));
     camNode->attachObject(mCamera);
 
+
+    currentText = new OgreText();
+
+    std::string Score("current score: " + std::to_string(ps->getCurrentScore()));
+    currentText->setText(Ogre::String(Score));
+    currentText->setColor(1.0, 1.0, 1.0, 1.0);
+    currentText->setPosition(0, 0.9);
+
 }
 
 
@@ -154,8 +152,8 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
 
     sim->stepSimulation(evt.timeSinceLastEvent, 1);
-    b->update(evt.timeSinceLastEvent);
-
+    std::string Score("current score: " + std::to_string(ps->getCurrentScore()));
+    currentText->setText(Ogre::String(Score));
 
     //Paddle Movement
 
@@ -325,7 +323,7 @@ bool TutorialApplication::mouseMoved(const OIS::MouseEvent &arg)
         p->getNode()->pitch(Ogre::Radian(0.01f));
     }
 
-    cout << "Pitch : " << p->getNode()->getOrientation().getPitch().valueRadians() << ", Yaw : " << p->getParentNode()->getOrientation().getYaw().valueRadians() << endl;
+    // cout << "Pitch : " << p->getNode()->getOrientation().getPitch().valueRadians() << ", Yaw : " << p->getParentNode()->getOrientation().getYaw().valueRadians() << endl;
 
     return true; //BaseApplication::mouseMoved(arg);
 }

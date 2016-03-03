@@ -9,12 +9,14 @@
 #include <SDL_mixer.h>
 #include <SDL.h>
 #include "PointSystem.h"
+#include "OgreText.h"
 
 class Wall : public GameObject {
 private:
 	Mix_Chunk *gScratch;
 	PointSystem *_ps;
 	float lastTime;
+	OgreText *text;
 public:
 	bool _active;
 	Wall (Ogre::String name,

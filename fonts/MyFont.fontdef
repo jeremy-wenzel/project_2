@@ -2,6 +2,7 @@ MyFont
 {
 	type image
 	source	berlin_sans32.png
+    size 15
 	glyph ! 0.0859375 0.125 0.101563 0.1875
     glyph " 0.146484 0.125 0.166016 0.1875
     glyph # 0.201172 0.125 0.236328 0.1875

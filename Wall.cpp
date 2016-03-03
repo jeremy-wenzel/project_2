@@ -20,6 +20,7 @@ Wall::Wall (Ogre::String name,
 
 	_active = true;
 
+
 	// Build Plane and create mesh
 	Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
 	Ogre::MeshManager::getSingleton().createPlane(
@@ -57,25 +58,42 @@ Wall::Wall (Ogre::String name,
 	// Set origin (both in Ogre and in Bullet)
 	gScratch = Mix_LoadWAV( "bat_hit_ball.wav" );
 	this->_ps = ps;
+	if (_name == "ground")
+	{
+		text = new OgreText();
+
+    	std::string Score("total score: " + std::to_string(this->_ps->getScore()));
+    	text->setText(Ogre::String(Score));
+    	text->setColor(1.0, 1.0, 1.0, 1.0);
+    	text->setPosition(0, 0);
+	}
 	addToSimulator();
 }
 
 Wall::~Wall () {
 	// std::cout << "Deleting Wall" << std::endl;
 	Mix_FreeChunk( gScratch );
-	delete _motionState;	
+	if (_motionState)
+		delete _motionState;
+	if (text)
+    {
+        delete text;
+    }	
 }
 
 void Wall::update (float elapsedTime) {
-	// Not sure if we need to do anything because wall is not doing anything
+
 		lastTime += elapsedTime;
 		if (_context->hit && _context->theObject->getName() == "sphere.mesh"
 			&& (lastTime > 0.5 || (_context->lastBody != _context->body && lastTime > 0.1))) {
 			// Add point
 			// Deactivate wall
+
 			if(_name == "ground")
 			{
 				_ps->updateTotalScore();
+				std::string Score("total score: " + std::to_string(_ps->getScore()));
+				text->setText(Ogre::String(Score));
 				Room::reset();
 			}
 			else if (_active && _name != "ground")

@@ -25,7 +25,7 @@ http://www.ogre3d.org/wiki/
 #include "Room.h"
 #include "Simulator.h"
 #include <vector>
-#include "OgreText.h"
+
 
 //---------------------------------------------------------------------------
 
@@ -51,7 +51,6 @@ private:
   Ogre::SceneNode *camNode;
 	Simulator *sim;
   Room *room;
-  int score;
   bool gameStarts;
   PointSystem *ps;
 
@@ -59,7 +58,7 @@ private:
   bool doMoveBackward;
   bool doMoveLeft;
   bool doMoveRight;
-  OgreText *text;
+  OgreText *currentText;
 
   //Experimental
   bool doMoveFast;

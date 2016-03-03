@@ -42,8 +42,10 @@ void ball::moveAround(Ogre::Vector3 vector)
 void ball::update(float elapsedTime) {
 	if (_cCallBack)
 	{
+		
 		lastTime += elapsedTime;
 		_simulator->getWorld()->contactTest(_body, *_cCallBack);
+		
 		if (_context->hit && (_context->velNorm > 2.0 || _context->velNorm < -2.0) 
 			&& (lastTime > 0.5 || (_context->lastBody != _context->body && lastTime > 0.1))) {
 			//Handle the hit

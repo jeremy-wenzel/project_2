@@ -17,3 +17,8 @@ void PointSystem::updateTotalScore() {
 int PointSystem::getScore() {
 	return _scoreTotal;
 }
+
+
+int PointSystem::getCurrentScore() {
+	return _scoreCurrent;
+}

@@ -47,7 +47,7 @@ void OgreText::setText(Ogre::String string)
     textArea->setDimensions(1.0f,1.0f);
     textArea->setMetricsMode(Ogre::GMM_RELATIVE);
     textArea->setFontName("MyFont");
-    textArea->setCharHeight(0.3f);
+    textArea->setCharHeight(0.08f);
 }
 
 void OgreText::setColor(float R,float G,float B,float A)

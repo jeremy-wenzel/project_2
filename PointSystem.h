@@ -9,4 +9,5 @@ public:
 	void updateTotalScore();
 	int getScore();
 	PointSystem();
+	int getCurrentScore();
 };
