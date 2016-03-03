@@ -20,6 +20,7 @@ http://www.ogre3d.org/wiki/
 #include "TutorialApplication.h"
 #include <iostream>
 #include <OgreLogManager.h>
+#include "OgreText.h"
 
 
 using namespace std;
@@ -40,6 +41,10 @@ TutorialApplication::~TutorialApplication(void)
     if (room)
     {
         delete room;
+    }
+    if (text)
+    {
+        delete text;
     }
     // mTrayMgr->destroyWidget("Pause");
     // mTrayMgr->destroyWidget("Score");
@@ -78,9 +83,14 @@ void TutorialApplication::createFrameListener(void)
 {
     BaseApplication::createFrameListener();
     mTrayMgr->showCursor();
+    // std::string Score("score: " + std::to_string(score));
+    // mTrayMgr->createLabel(OgreBites::TL_BOTTOMLEFT, "Score: ", Ogre::String(Score), 150);
+    // mTrayMgr->createButton(OgreBites::TL_BOTTOMLEFT, "Pause", "Pause", 150);
+    text = new OgreText();
     std::string Score("score: " + std::to_string(score));
-    mTrayMgr->createLabel(OgreBites::TL_BOTTOMLEFT, "Score: ", Ogre::String(Score), 150);
-    mTrayMgr->createButton(OgreBites::TL_BOTTOMLEFT, "Pause", "Pause", 150);
+    text->setText(Ogre::String(Score));
+    text->setColor(1.0, 1.0, 1.0, 1.0);
+    text->setPosition(0.1, 0.1);
 }
  
 //---------------------------------------------------------------------------
@@ -96,7 +106,6 @@ void TutorialApplication::createScene(void)
     mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
     mSceneMgr->setSkyBox(true, "Examples/EveningSkyBox");
     mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
-    mSceneMgr->setSkyDome(true, "Examples/CloudySky", 5, 8);
     Ogre::Light *diffuseLight = mSceneMgr->createLight("diffuse light");
     
     // make this light a point light
