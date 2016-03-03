@@ -66,6 +66,7 @@ private:
   bool doMoveFast;
 
   Mix_Music *music;
+  bool musicPlaying;
 };
 
 //---------------------------------------------------------------------------

@@ -41,6 +41,9 @@ TutorialApplication::~TutorialApplication(void)
     {
         delete room;
     }
+
+    if (music)
+        Mix_FreeMusic( music );
     // mTrayMgr->destroyWidget("Pause");
     // mTrayMgr->destroyWidget("Score");
 }
@@ -144,6 +147,8 @@ void TutorialApplication::createScene(void)
     camNode->attachObject(mCamera);
     music = Mix_LoadMUS( "halo.wav" );
     Mix_PlayMusic( music, -1 );
+    musicPlaying = true;
+    Room::setPlayingSounds(true);
 }
 
 
@@ -337,6 +342,20 @@ bool TutorialApplication::keyPressed(const OIS::KeyEvent &arg) {
             doMoveDown = true;
         }
 
+        // Mute Music
+        if (arg.key == OIS::KC_M) {
+            // Stop Music
+            if (musicPlaying) {
+                musicPlaying = false;
+                Mix_HaltMusic();
+                Room::setPlayingSounds(false);
+            }
+            else {
+                musicPlaying = true;
+                Mix_PlayMusic(music, -1 );
+                Room::setPlayingSounds(true);
+            }
+        }
         //Experimental --- Fast Movement
 
         if (arg.key == OIS::KC_LSHIFT) {

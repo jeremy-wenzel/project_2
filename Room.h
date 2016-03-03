@@ -7,6 +7,7 @@
 class Room {
 private:
 	static std::vector<Wall*> walls;
+	static bool playSounds;
 	int wallLength = 1000;
 
 public:
@@ -21,5 +22,6 @@ public:
 			(*it)->getEntity()->setMaterialName("Examples/Rockwall");
 		}
 	}
-
+	static void setPlayingSounds(bool input) {playSounds = input;}
+	static bool isSoundOn() {return playSounds;}
 };

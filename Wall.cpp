@@ -87,7 +87,7 @@ void Wall::update (float elapsedTime) {
 			}
 			_active = false;
 			std::cout << "timer " << timer->getMilliseconds() << std::endl;
-			if (timer->getMilliseconds() > 400)
+			if (timer->getMilliseconds() > 400 && Room::isSoundOn())
 				Mix_PlayChannel( -1, gScratch, 0 );
 			lastTime = 0.0f;
 			timer->reset();
