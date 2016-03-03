@@ -57,6 +57,8 @@ Wall::Wall (Ogre::String name,
 	// Set origin (both in Ogre and in Bullet)
 	gScratch = Mix_LoadWAV( "bat_hit_ball.wav" );
 	this->_ps = ps;
+
+	timer = new Ogre::Timer();
 	addToSimulator();
 }
 
@@ -84,8 +86,11 @@ void Wall::update (float elapsedTime) {
 				_ps->updateCurrentScore();
 			}
 			_active = false;
-			Mix_PlayChannel( -1, gScratch, 0 );
+			std::cout << "timer " << timer->getMilliseconds() << std::endl;
+			if (timer->getMilliseconds() > 400)
+				Mix_PlayChannel( -1, gScratch, 0 );
 			lastTime = 0.0f;
+			timer->reset();
 		}
 		_context->hit = false;
 	
