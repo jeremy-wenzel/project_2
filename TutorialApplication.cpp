@@ -128,7 +128,7 @@ void TutorialApplication::createScene(void)
     //p = new Paddle(mSceneMgr, sim, btScalar(0), btScalar(1), btScalar(.5f), 
     p = new Paddle(mSceneMgr, sim, btScalar(10.f), btScalar(5.0f), btScalar(0.25f), 
         Ogre::Real(160), Ogre::Real(20), Ogre::Real(160), 
-        Ogre::Real(0), Ogre::Real(20), Ogre::Real(0), 
+        Ogre::Real(0), Ogre::Real(90), Ogre::Real(0), 
         Ogre::Real(0), Ogre::Real(90), Ogre::Real(0));
 
     doMoveForward  = false;

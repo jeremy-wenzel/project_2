@@ -58,6 +58,7 @@ void Simulator::stepSimulation(const Ogre::Real elapsedTime, int maxSubSteps,
 
 	// go through each object and do updates
 	for (int i = 0; i < objectList.size(); ++i) {
+		objectList[i]->_context->hit = false;
 		dynamicsWorld->contactTest(objectList[i]->getBody(), *(objectList[i]->_cCallBack));
 	}
 	for (int i = 0; i < objectList.size(); ++i) {
