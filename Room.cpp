@@ -2,10 +2,10 @@
 
 
 std::vector<Wall*> Room::walls;
+bool Room::playSounds;
 
 Room::Room(Ogre::SceneManager* sceneManager, Simulator *sim, PointSystem *ps) {
 	// Build Ground Wall
-	
 	btScalar mass(0.f);
 	btScalar rest(1.f);
 	btScalar frict(0.5f);
@@ -144,3 +144,4 @@ bool Room::isOutsideRoom(Ogre::Vector3 pos) {
 		return true;
 	return false;
 }
+
