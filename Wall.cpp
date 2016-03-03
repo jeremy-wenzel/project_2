@@ -71,10 +71,12 @@ Wall::~Wall () {
 void Wall::update (float elapsedTime) {
 	// Not sure if we need to do anything because wall is not doing anything
 		lastTime += elapsedTime;
+		
 		if (_context->hit && _context->theObject->getName() == "sphere.mesh"
-			&& timer->getMilliseconds() > 400 ) {
+			&& timer->getMilliseconds() > 200 ) {
 			// Add point
 			// Deactivate wall
+			std::cout << "Name = " << _name << std::endl;
 			if(_name == "ground")
 			{
 				_ps->updateTotalScore();
@@ -87,7 +89,7 @@ void Wall::update (float elapsedTime) {
 			}
 			_active = false;
 			std::cout << "timer " << timer->getMilliseconds() << std::endl;
-			if (Room::isSoundOn())
+			if (Room::isSoundOn() && timer->getMilliseconds() > 500)
 				Mix_PlayChannel( -1, gScratch, 0 );
 			lastTime = 0.0f;
 			timer->reset();
