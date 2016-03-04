@@ -96,12 +96,20 @@ void Wall::update (float elapsedTime) {
 
 				if(_name == "ground")
 				{
-					_ps->updateTotalScore();
-					std::string Score("total score: " + std::to_string(_ps->getScore()));
-					text->setText(Ogre::String(Score));
-					Room::reset();
+					// Ground bounce twice
+					if (_ps->getCurrentScore() == 0) {
+						_ps->updateHighScore();
+						std::string Score("total score: " + std::to_string(_ps->getHighScore()));
+						text->setText(Ogre::String(Score));
+						Room::reset();
+						_ps->resetTotal();
+					}
+					else {
+						_ps->resetCurrent();
+					}
+					
 				}
-				else if (_active && _name != "ground")
+				else if (_name != "ground")
 				{
 					_entity->setMaterialName("Examples/RockwallDarker");
 					_ps->updateCurrentScore();
