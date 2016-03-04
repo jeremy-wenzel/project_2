@@ -75,6 +75,7 @@ private:
   bool doMoveFast;
 
   Mix_Music *music;
+  Mix_Chunk *winnerSound;
   bool musicPlaying;
 };
 

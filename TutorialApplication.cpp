@@ -28,8 +28,9 @@ using namespace std;
 
 
 //---------------------------------------------------------------------------
-TutorialApplication::TutorialApplication(void): gameStarts(false), gamePaused(false)
+TutorialApplication::TutorialApplication(void)
 {
+
 }
 //---------------------------------------------------------------------------
 TutorialApplication::~TutorialApplication(void)
@@ -84,8 +85,8 @@ bool TutorialApplication::mousePressed(
     if (id == OIS::MB_Left)
     {
         b->setKinematic(false);
-        gameStarts = true;
-        gamePaused = false;
+        ps->gameStarts = true;
+        ps->gamePaused = false;
         pauseText->hideText();
         endText->hideText();
         highScore->hideText();
@@ -133,6 +134,9 @@ void TutorialApplication::createScene(void)
 
     
     ps = new PointSystem();
+    ps->gameStarts = false;
+    ps->gamePaused = false;
+    ps->gameEnds = false;
 
     room = new Room(mSceneMgr, sim, ps);
     
@@ -198,7 +202,9 @@ void TutorialApplication::createScene(void)
     highScore->hideText();
     highScore->resize(0.20f);
 
+    // Load up music and sounds
     music = Mix_LoadMUS( "halo.wav" );
+    winnerSound = Mix_LoadWAV("win.wav");
     Mix_PlayMusic( music, -1 );
     musicPlaying = true;
     Room::setPlayingSounds(true);
@@ -224,7 +230,7 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
     Ogre::Real temp_move_speed = p->_moveSpeed * evt.timeSinceLastFrame;
 
     // Paddle Movement
-    if (gameStarts && !gamePaused) {
+    if (ps->gameStarts && !ps->gamePaused) {
         if (doMoveFast) {
             temp_move_speed *= 4.0f;
         }
@@ -261,7 +267,7 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
     }
 
     //Ball Movement
-    else if(!gamePaused){
+    else if(!ps->gamePaused){
 
         Ogre::SceneNode *node = b->getSceneNode();
         if (doMoveUp)
@@ -320,19 +326,33 @@ void TutorialApplication::pause(void) {
     pauseText->showText();
     endText->hideText();
     highScore->hideText();
-    gamePaused = true;
+    ps->gamePaused = true;
 }
 
 
 void TutorialApplication::gameOver(void) {
-    ps->updateHighScore();
+    // See if new High score
+    bool isNewHighScore = ps->updateHighScore();
+
+    // Set text and pause game
     std::string Score("High score: " + std::to_string(ps->getHighScore()));
     totalText->setText(Ogre::String(Score));
     ps->resetTotal();
-    gamePaused = true;
-    endText->showText();
+    ps->gamePaused = true;
+
+    // Play music
+    if (isNewHighScore) {
+        highScore->showText();
+        endText->hideText();
+        Mix_PlayChannel( -1, winnerSound, 0 );
+    }
+    else {
+        highScore->hideText();
+        endText->showText();
+    }
+    
     pauseText->hideText();
-    highScore->hideText();
+    ps->gameEnds = false; 
 }
 
 
@@ -343,7 +363,7 @@ void TutorialApplication::reset(void) {
     endText->hideText();
     pauseText->hideText();
     highScore->hideText();
-    gameStarts = false;
+    ps->gameStarts = false;
     ps->gameEnds = false;
 }
 //---------------------------------------------------------------------------

@@ -85,7 +85,7 @@ void Wall::update (float elapsedTime) {
 		if (_context->theObject->getKinematic() == false)
 		{
 
-			if(_name == "ground")
+			if(_name == "ground" && !_ps->gamePaused)
 			{
 				// Ground bounce twice
 				if (_ps->getCurrentScore() == 0) {
@@ -96,7 +96,7 @@ void Wall::update (float elapsedTime) {
 				}
 				
 			}
-			else if (!_ps->gameEnds)
+			else if (!_ps->gamePaused)
 			{
 				_entity->setMaterialName("Examples/RockwallDarker");
 				_ps->updateCurrentScore();

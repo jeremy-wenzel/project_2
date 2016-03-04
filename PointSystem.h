@@ -8,11 +8,13 @@ private:
 public:
 	PointSystem();
 	bool gameEnds;
+	bool gameStarts;
+	bool gamePaused;
 	void updateCurrentScore();
 	void resetCurrent();
 	void resetTotal();
 	int getScore();
 	int getCurrentScore();
 	int getHighScore();
-	void updateHighScore();
+	bool updateHighScore();
 };
