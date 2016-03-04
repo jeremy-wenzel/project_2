@@ -68,7 +68,14 @@ void Paddle::updateTransform() {
 		Ogre::Vector3 position = _parentNode->getPosition();
 		_tr.setOrigin(btVector3(position.x, position.y, position.z));
 		Ogre::Quaternion quat = _rootNode->getOrientation();
-		_tr.setRotation(btQuaternion(quat.x, quat.y, quat.z, quat.w));
+		Ogre::Quaternion quat2 = _rootNode->convertLocalToWorldOrientation(quat);
+		_tr.setRotation(btQuaternion(quat2.x, quat2.y, quat2.z, quat2.w));
+		// Ogre::Vector3 xAxis, yAxis, zAxis;
+		// xAxis = _rootNode->getOrientation().xAxis().normalisedCopy();
+		// yAxis = _parentNode->getOrientation().yAxis().normalisedCopy();
+		// zAxis = Ogre::Vector3(0,0,1);
+		// Ogre::Quaternion quat = Ogre::Quaternion(xAxis,yAxis,zAxis);
+		// _rootNode->setOrientation(quat);
 	}
 	if (_motionState) {
 		_motionState->updateTransform(_tr);	
