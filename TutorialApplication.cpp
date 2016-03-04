@@ -231,7 +231,7 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
             Ogre::Vector3 moveVector = (temp_move_speed * dir);
             if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
             {
-                Mix_PlayChannel( -1, paddleSound, 0 );
+                //Mix_PlayChannel( -1, paddleSound, 0 );
                 p->getParentNode()->translate(moveVector);
             }
         }
@@ -241,7 +241,7 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
             Ogre::Vector3 moveVector = (temp_move_speed * dir);
             if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
             {
-                Mix_PlayChannel( -1, paddleSound, 0 );
+                
                 p->getParentNode()->translate(moveVector);
             }
         }
@@ -252,7 +252,7 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
             Ogre::Vector3 moveVector = (temp_move_speed * dir);
             if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
             {
-                Mix_PlayChannel( -1, paddleSound, 0 );
+                //Mix_PlayChannel( -1, paddleSound, 0 );
                 p->getParentNode()->translate(moveVector);
             }
         }
@@ -262,7 +262,7 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
             Ogre::Vector3 moveVector = (temp_move_speed * dir);
             if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
             {
-                Mix_PlayChannel( -1, paddleSound, 0 );
+                //Mix_PlayChannel( -1, paddleSound, 0 );
                 p->getParentNode()->translate(moveVector);
             }
         }
@@ -338,7 +338,6 @@ void TutorialApplication::gameOver(void) {
 
             if (room->isSoundOn())
                 Mix_PlayChannel(-1, winnerSound, 0);
-            
         }
         else {
             endText->showText();
@@ -453,6 +452,11 @@ bool TutorialApplication::mouseMoved(const OIS::MouseEvent &arg) {
         p->getNode()->pitch(Ogre::Radian(-0.01f));
     while (p->getNode()->getOrientation().getPitch().valueDegrees() < -30)
         p->getNode()->pitch(Ogre::Radian(0.01f));
+
+    /////
+
+    if (abs(arg.state.X.rel) > 100)
+        Mix_PlayChannel( -1, paddleSound, 0 );
 
     /////
 
