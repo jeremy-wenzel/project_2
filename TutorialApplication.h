@@ -64,6 +64,7 @@ private:
   OgreText *currentText;
   OgreText *pauseText;
   OgreText *endText;
+  OgreText *highScore;
 
   bool doMoveUp;
   bool doMoveDown;

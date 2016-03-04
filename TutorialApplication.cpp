@@ -88,6 +88,7 @@ bool TutorialApplication::mousePressed(
         gamePaused = false;
         pauseText->hideText();
         endText->hideText();
+        highScore->hideText();
         ps->gameEnds = false;
     }
 
@@ -181,6 +182,14 @@ void TutorialApplication::createScene(void)
     endText->setPosition(0, 0.3);
     endText->hideText();
     endText->resize(0.25f);
+
+
+    highScore = new OgreText();
+    highScore->setText("New HIGH Score!");
+    highScore->setColor(0.0, 0.0, 1.0, 1.0);
+    highScore->setPosition(0, 0.3);
+    highScore->hideText();
+    highScore->resize(0.20f);
 
     music = Mix_LoadMUS( "halo.wav" );
     Mix_PlayMusic( music, -1 );
@@ -303,6 +312,7 @@ void TutorialApplication::pause(void) {
     b->setKinematic(true);
     pauseText->showText();
     endText->hideText();
+    highScore->hideText();
     gamePaused = true;
 }
 
@@ -311,6 +321,7 @@ void TutorialApplication::gameOver(void) {
     gamePaused = true;
     endText->showText();
     pauseText->hideText();
+    highScore->hideText();
 }
 
 
@@ -320,6 +331,7 @@ void TutorialApplication::reset(void) {
     b->updateTransform();
     endText->hideText();
     pauseText->hideText();
+    highScore->hideText();
     gameStarts = false;
     ps->gameEnds = false;
 }
