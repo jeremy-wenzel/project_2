@@ -300,8 +300,6 @@ void TutorialApplication::pause(void) {
 }
 
 void TutorialApplication::gameOver(void) {
-    b->setKinematic(true);
-
     // See if new High score
     highScore->hideText();
     endText->hideText();
@@ -320,21 +318,8 @@ void TutorialApplication::gameOver(void) {
     std::string Score("High score: " + std::to_string(ps->getHighScore()));
     //ps->resetTotal();
     totalText->setText(Ogre::String(Score));
-
-    //ps->gamePaused = true;
-
-    // Play music
-    // if (isNewHighScore) {
-    //     highScore->showText();
-    //     endText->hideText();
-    //     Mix_PlayChannel(-1, winnerSound, 0);
-    // }
-    // else {
-    //     highScore->hideText();
-    //     endText->showText();
-    // }
-    
-    ps->gameEnds = true;
+  
+    ps->gameEnds = false;
     ps->gameStarts = false;
 }
 
@@ -347,6 +332,7 @@ void TutorialApplication::reset(void) {
 
     //std::string Score("High score: " + std::to_string(ps->getHighScore()));
     ps->resetTotal();
+    ps->resetCurrent();
     //totalText->setText(Ogre::String(Score));
 
     endText->hideText();
