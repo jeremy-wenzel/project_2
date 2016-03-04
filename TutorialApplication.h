@@ -26,59 +26,53 @@ http://www.ogre3d.org/wiki/
 #include "Simulator.h"
 #include <vector>
 
-
-//---------------------------------------------------------------------------
-
-class TutorialApplication : public BaseApplication
-{
+class TutorialApplication : public BaseApplication {
 public:
     TutorialApplication(void);
     virtual ~TutorialApplication(void);
 
 protected:
     virtual void createScene(void);
+    virtual void createFrameListener(void);
+    virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
     virtual bool keyPressed(const OIS::KeyEvent &arg);
     virtual bool keyReleased(const OIS::KeyEvent &arg);
     virtual bool mouseMoved(const OIS::MouseEvent &arg);
-    virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
+    virtual bool mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id);
     bool soundInit(void);
+    void start(void);
     void pause(void);
     void reset(void);
     void gameOver(void);
-    virtual void createFrameListener(void);
-    virtual bool mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id);
+    void mute(void);
 
 private:
 	ball *b;
 	Paddle *p;
-  Ogre::SceneNode *camNode;
-	Simulator *sim;
-  Room *room;
-  bool gameStarts;
-  PointSystem *ps;
+    Ogre::SceneNode *camNode;
+    Simulator *sim;
+    Room *room;
+    PointSystem *ps;
+    Mix_Music *music;
 
-  bool doMoveForward;
-  bool doMoveBackward;
-  bool doMoveLeft;
-  bool doMoveRight;
-  OgreText *totalText;
-  OgreText *currentText;
-  OgreText *pauseText;
-  OgreText *endText;
+    OgreText* currentText;
+    OgreText* totalText;
+    OgreText* pauseText;
+    OgreText* endText;
 
-  bool doMoveUp;
-  bool doMoveDown;
-  bool gamePaused;
+    bool gameStarts;
+    bool gamePaused;
 
-  //Experimental
-  bool doMoveFast;
+    bool doMoveForward;
+    bool doMoveBackward;
+    bool doMoveLeft;
+    bool doMoveRight;
+    bool doMoveUp;
+    bool doMoveDown;
 
-  Mix_Music *music;
-  bool musicPlaying;
+    bool doMoveFast;
+
+    bool musicPlaying;
 };
 
-//---------------------------------------------------------------------------
-
-#endif // #ifndef __TutorialApplication_h_
-
-//---------------------------------------------------------------------------
+#endif

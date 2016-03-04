@@ -3,7 +3,7 @@
 Filename:    TutorialApplication.cpp
 -----------------------------------------------------------------------------
 
-This source file is part of the
+This source file derives from the
    ___                 __    __ _ _    _
   /___\__ _ _ __ ___  / / /\ \ (_) | _(_)
  //  // _` | '__/ _ \ \ \/  \/ / | |/ / |
@@ -14,140 +14,118 @@ Tutorial Framework (for Ogre 1.9)
 http://www.ogre3d.org/wiki/
 -----------------------------------------------------------------------------
 */
+
 #include <iostream>
 #include <cmath>
 
 #include "TutorialApplication.h"
-#include <iostream>
 #include <OgreLogManager.h>
 #include "OgreText.h"
 
-
-
 using namespace std;
 
+TutorialApplication::TutorialApplication(void): gameStarts(false), gamePaused(false) {
 
-//---------------------------------------------------------------------------
-TutorialApplication::TutorialApplication(void): gameStarts(false), gamePaused(false)
-{
 }
-//---------------------------------------------------------------------------
-TutorialApplication::~TutorialApplication(void)
-{
+
+TutorialApplication::~TutorialApplication(void) {
+    
     if (b)
-    {
         delete b;
-    }
 
     if (room)
-    {
         delete room;
-    }
 
     if (currentText)
-    {
         delete currentText;
-    }
+
+    if (pauseText)
+        delete pauseText;
+
+    if (endText)
+        delete endText;
 
     if (music)
-        Mix_FreeMusic( music );
-    if (pauseText)
-    {
-        delete pauseText;
-    }
-    if (endText)
-    {
-        delete endText;
-    }
-
+        Mix_FreeMusic(music);
 }
 
-bool TutorialApplication::soundInit(void)
-{
-    if( SDL_Init( SDL_INIT_AUDIO ) < 0 ) {
-        /* Failed, exit. */
+bool TutorialApplication::soundInit(void) {
+    
+    // Fails, exit
+    if (SDL_Init(SDL_INIT_AUDIO) < 0) {
         return false;
     }
-      //Initialize SDL_mixer
-    if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
-    {
+    
+    //Initialize SDL_mixer
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
         return false;
     }
+
     return true;
-
 }
 
-// mouse event
-bool TutorialApplication::mousePressed(
-  const OIS::MouseEvent& me, OIS::MouseButtonID id) 
-{
-    if (id == OIS::MB_Left)
-    {
-        b->setKinematic(false);
-        gameStarts = true;
-        gamePaused = false;
-        pauseText->hideText();
-        endText->hideText();
-        ps->gameEnds = false;
-    }
-
-
-  return true; 
-}
-
-
-void TutorialApplication::createFrameListener(void)
-{
+void TutorialApplication::createFrameListener(void) {
     BaseApplication::createFrameListener();
 }
  
 //---------------------------------------------------------------------------
-void TutorialApplication::createScene(void)
-{
+void TutorialApplication::createScene(void) {
+    
     music = NULL;
+
     // Create your scene here :)
     if (!soundInit()) {
         Ogre::LogManager::getSingleton().logMessage ("init failed");
     }
+
     mCameraMan->getCamera()->setPosition(0, 0, 0);
     mCameraMan->getCamera()->lookAt(0, 0, 0);
     mCameraMan->setStyle(OgreBites::CS_MANUAL);
+
+    /////
+
     mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
     mSceneMgr->setSkyBox(true, "Examples/EveningSkyBox");
     mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
+
+    /////
+
     Ogre::Light *diffuseLight = mSceneMgr->createLight("diffuse light");
-    
-    // make this light a point light
     diffuseLight->setType(Ogre::Light::LT_POINT);            
     diffuseLight->setDiffuseColour(20.0, 20.0, 20.0);
     diffuseLight->setPosition(0, 1000, 0);
-
-    sim = new Simulator();
-    btScalar mass = 10.0;
-
-    btScalar resist = 1;
-    btScalar friction = 0.50;
-    Ogre::Vector3 initialPoint (0, 250, 0);
-
-
+    
+    /////
     
     ps = new PointSystem();
 
+    /////
+
+    sim = new Simulator();
+
+    /////
+
     room = new Room(mSceneMgr, sim, ps);
     
-    b = new ball("sphere.mesh", mSceneMgr, sim, mass * .25f, 
-                resist, friction, initialPoint, "Ogre/Tusks");
+    /////
 
+    btScalar mass     = 10.0;
+    btScalar resist   = 1;
+    btScalar friction = 0.50;
+    Ogre::Vector3 initialPoint (0, 250, 0);
 
-    //p = new Paddle(mSceneMgr, sim, btScalar(0), btScalar(1), btScalar(.5f), 
+    b = new ball("sphere.mesh", mSceneMgr, sim, mass * .25f, resist, friction, initialPoint, "Ogre/Tusks");
+
+    /////
 
     p = new Paddle(mSceneMgr, sim, btScalar(10.f), btScalar(5.0f), btScalar(0.25f), 
         Ogre::Real(160), Ogre::Real(20), Ogre::Real(160), 
         Ogre::Real(0), Ogre::Real(90), Ogre::Real(0), 
         Ogre::Real(0), Ogre::Real(90), Ogre::Real(0));
 
+    /////
 
-    doMoveForward = false;
+    doMoveForward  = false;
     doMoveBackward = false;
     doMoveLeft     = false;
     doMoveRight    = false;
@@ -155,21 +133,20 @@ void TutorialApplication::createScene(void)
     doMoveDown     = false;
     doMoveFast     = false;
 
-
-    ///////////
+    /////
+    
     camNode = p->getNode()->createChildSceneNode(Ogre::Vector3(0,1000.f,500.f));
     camNode->attachObject(mCamera);
 
+    /////
 
     totalText = new OgreText();
-
     std::string highScore("High score: " + std::to_string(ps->getHighScore()));
     totalText->setText(Ogre::String(highScore));
     totalText->setColor(1.0, 1.0, 1.0, 1.0);
     totalText->setPosition(0, 0);
 
     currentText = new OgreText();
-
     std::string currScore("current score: " + std::to_string(ps->getCurrentScore()));
     currentText->setText(Ogre::String(currScore));
     currentText->setColor(1.0, 1.0, 1.0, 1.0);
@@ -189,17 +166,17 @@ void TutorialApplication::createScene(void)
     endText->hideText();
     endText->resize(0.25f);
 
-    music = Mix_LoadMUS( "halo.wav" );
-    Mix_PlayMusic( music, -1 );
+    /////
+
+    music = Mix_LoadMUS("halo.wav");
+    Mix_PlayMusic(music, -1);
     musicPlaying = true;
     Room::setPlayingSounds(true);
-
 }
 
 
 bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
-
     sim->stepSimulation(evt.timeSinceLastEvent, 1);
 
     std::string Score("Total score: " + std::to_string(ps->getScore()));
@@ -210,15 +187,14 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
         gameOver();
     }
 
-
     b->update(evt.timeSinceLastEvent);
     Ogre::Real temp_move_speed = p->_moveSpeed * evt.timeSinceLastFrame;
 
     // Paddle Movement
     if (gameStarts && !gamePaused) {
-        if (doMoveFast) {
+
+        if (doMoveFast)
             temp_move_speed *= 4.0f;
-        }
         
         if (doMoveForward) {
             Ogre::Quaternion ori = p->getParentNode()->getOrientation();
@@ -227,7 +203,7 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
             if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
                 p->getParentNode()->translate(moveVector);
         }
-        else if (doMoveBackward) {
+        if (doMoveBackward) {
             Ogre::Quaternion ori = p->getParentNode()->getOrientation();
             Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_Z;
             Ogre::Vector3 moveVector = (temp_move_speed * dir);
@@ -242,7 +218,7 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
             if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
                 p->getParentNode()->translate(moveVector);
         }
-        else if (doMoveRight) {
+        if (doMoveRight) {
             Ogre::Quaternion ori = p->getParentNode()->getOrientation();
             Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_X;
             Ogre::Vector3 moveVector = (temp_move_speed * dir);
@@ -252,48 +228,35 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
     }
 
     //Ball Movement
-    else if(!gamePaused){
+    else if(!gameStarts && !ps->gameEnds) {
 
         Ogre::SceneNode *node = b->getSceneNode();
+        
         if (doMoveUp)
-        {
-            if (!room->isOutsideRoom(node->getPosition() + Ogre::Vector3(0, 10, 0)))
-                b->moveAround(Ogre::Vector3(0, temp_move_speed, 0));
-        }
+            if (!room->isOutsideRoom(node->getPosition() + Ogre::Vector3(0,  10, 0)))
+                b->moveAround(Ogre::Vector3(0,  temp_move_speed, 0));
         if (doMoveDown)
-        {
-            if(!room->isOutsideRoom(node->getPosition() + Ogre::Vector3(0, -10, 0)))
+            if (!room->isOutsideRoom(node->getPosition() + Ogre::Vector3(0, -10, 0)))
                 b->moveAround(Ogre::Vector3(0, -temp_move_speed, 0));
-        }
 
         if (doMoveLeft)
-        {
-            if(!room->isOutsideRoom(node->getPosition() + Ogre::Vector3(-10, 0, 0)))
+            if (!room->isOutsideRoom(node->getPosition() + Ogre::Vector3(-10, 0, 0)))
                 b->moveAround(Ogre::Vector3(-temp_move_speed, 0, 0));
-        }
         if (doMoveRight)
-        {
-            if(!room->isOutsideRoom(node->getPosition() + Ogre::Vector3(10, 0, 0)))
-                b->moveAround(Ogre::Vector3(temp_move_speed, 0, 0));
-        }
+            if (!room->isOutsideRoom(node->getPosition() + Ogre::Vector3( 10, 0, 0)))
+                b->moveAround(Ogre::Vector3( temp_move_speed, 0, 0));
 
         if (doMoveForward)
-        { 
-            if(!room->isOutsideRoom(node->getPosition() + Ogre::Vector3(0, 0, -10)))
+            if (!room->isOutsideRoom(node->getPosition() + Ogre::Vector3(0, 0, -10)))
                 b->moveAround(Ogre::Vector3(0, 0, -temp_move_speed));
-        }
-        
         if (doMoveBackward)
-        {
-            if(!room->isOutsideRoom(node->getPosition() + Ogre::Vector3(0, 0, 10)))
-                b->moveAround(Ogre::Vector3(0, 0, temp_move_speed));
-        }
+            if (!room->isOutsideRoom(node->getPosition() + Ogre::Vector3(0, 0,  10)))
+                b->moveAround(Ogre::Vector3(0, 0,  temp_move_speed));
 
-        ///
+        /////
 
-        if (room->isOutsideRoom(b->getNode()->getPosition())) {
+        if (room->isOutsideRoom(b->getNode()->getPosition()))
             reset();
-        }
     }
 
     Ogre::Vector3 lookPoint = b->getNode()->getPosition() + p->getParentNode()->getPosition();
@@ -306,38 +269,77 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
     return ret;
 }
 
-void TutorialApplication::pause(void) {
-    b->setKinematic(true);
-    pauseText->showText();
-    endText->hideText();
-    gamePaused = true;
+void TutorialApplication::start(void) {
+    if (!gameStarts && !ps->gameEnds) {
+        b->setKinematic(false);
+
+        endText->hideText();
+
+        gameStarts = true;
+    }
 }
 
+void TutorialApplication::pause(void) {
+    if (gameStarts && !gamePaused) {
+        b->setKinematic(true);
+
+        pauseText->showText();
+        
+        gamePaused = true;
+    }
+    else if (gamePaused) {
+        b->setKinematic(false);
+        
+        pauseText->hideText();
+        
+        gamePaused = false;
+    }
+}
 
 void TutorialApplication::gameOver(void) {
+    b->setKinematic(true);
+
     ps->updateHighScore();
     std::string Score("High score: " + std::to_string(ps->getHighScore()));
-    totalText->setText(Ogre::String(Score));
     ps->resetTotal();
-    gamePaused = true;
-    endText->showText();
-    pauseText->hideText();
-}
 
+    totalText->setText(Ogre::String(Score));
+    endText->showText();
+
+    gameStarts = false;
+}
 
 void TutorialApplication::reset(void) {
     b->setKinematic(true);
     b->getNode()->setPosition(Ogre::Vector3(0, 250, 0));
     b->updateTransform();
+
+    p->getParentNode()->setPosition(Ogre::Vector3(0, 90, 0));
+
     endText->hideText();
     pauseText->hideText();
+
     gameStarts = false;
     ps->gameEnds = false;
+    gamePaused = false;
 }
+
+void TutorialApplication::mute(void) {
+    if (musicPlaying) {
+        Mix_HaltMusic();
+        Room::setPlayingSounds(false);
+    }
+    else {
+        Mix_PlayMusic(music, -1);
+        Room::setPlayingSounds(true);
+    }
+
+    musicPlaying = !musicPlaying;
+}
+
 //---------------------------------------------------------------------------
 
 bool TutorialApplication::keyPressed(const OIS::KeyEvent &arg) {
-    //BaseApplication::keyPressed(arg);
 
     switch (arg.key) {
         case OIS::KC_W      : doMoveForward  = true; break;
@@ -351,28 +353,14 @@ bool TutorialApplication::keyPressed(const OIS::KeyEvent &arg) {
         case OIS::KC_ESCAPE : mShutDown      = true; break;
         case OIS::KC_P      : pause();               break;
         case OIS::KC_R      : reset();               break;
-    }
-    
-    // Mute Music
-    if (arg.key == OIS::KC_M) {
-        // Stop Music
-        if (musicPlaying) {
-            musicPlaying = false;
-            Mix_HaltMusic();
-            Room::setPlayingSounds(false);
-        }
-        else {
-            musicPlaying = true;
-            Mix_PlayMusic(music, -1 );
-            Room::setPlayingSounds(true);
-        }
+
+        case OIS::KC_M      : mute();                break;
     }
 
     return true;
 }
 
 bool TutorialApplication::keyReleased(const OIS::KeyEvent &arg) {
-    BaseApplication::keyReleased(arg);
 
     switch (arg.key) {
         case OIS::KC_W      : doMoveForward  = false; break;
@@ -387,34 +375,36 @@ bool TutorialApplication::keyReleased(const OIS::KeyEvent &arg) {
     return true;
 }
 
-bool TutorialApplication::mouseMoved(const OIS::MouseEvent &arg)
-{
+bool TutorialApplication::mouseMoved(const OIS::MouseEvent &arg) {
+
     p->getParentNode()->yaw(Ogre::Degree(arg.state.X.rel * .5f));
+    
     p->getNode()->pitch(Ogre::Degree(-arg.state.Y.rel * .25f));
 
-    while (p->getNode()->getOrientation().getPitch().valueDegrees() > 0) {
+    while (p->getNode()->getOrientation().getPitch().valueDegrees() > 0)
         p->getNode()->pitch(Ogre::Radian(-0.01f));
-    }
-    while (p->getNode()->getOrientation().getPitch().valueDegrees() < -30) {
+    while (p->getNode()->getOrientation().getPitch().valueDegrees() < -30)
         p->getNode()->pitch(Ogre::Radian(0.01f));
-    }
 
-    //cout << "Pitch : " << p->getNode()->getOrientation().getPitch().valueRadians() << ", Yaw : " << p->getParentNode()->getOrientation().getYaw().valueRadians() << endl;
+    /////
 
-    camNode->translate(Ogre::Vector3(0,0,arg.state.Z.rel));
+    camNode->translate(Ogre::Vector3(0,0,-arg.state.Z.rel));
 
-    while (camNode->getPosition().z > 800.f) {
+    while (camNode->getPosition().z > 800.f)
         camNode->translate(Ogre::Vector3(0, 0, -1.f));
-    }
-    while (camNode->getPosition().z < 500.f) {
+    while (camNode->getPosition().z < 500.f)
         camNode->translate(Ogre::Vector3(0, 0, 1.f));
+
+    return true;
+}
+
+bool TutorialApplication::mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id) {
+    
+    switch (id) {
+        case OIS::MB_Left : start(); break;
     }
 
-
-    // cout << "Pitch : " << p->getNode()->getOrientation().getPitch().valueRadians() << ", Yaw : " << p->getParentNode()->getOrientation().getYaw().valueRadians() << endl;
-
-
-    return true; //BaseApplication::mouseMoved(arg);
+    return true; 
 }
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
