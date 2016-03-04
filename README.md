@@ -16,15 +16,22 @@
 
 8. There is also an executable of the project in the root of the directory called "ProjectName". The code for the project is located in "Source/Core"-->
 
-README file for assignment2 milestone 2
+README file for assignment2 milestone 3
 
-Done:
-1. Left click to drop the ball
-2. Audio is enabled when ball hit the wall
-3. Gravity and Collision detection
+Functions:
+1. Camera chasing after the ball
+2. Implemented sound on collisions
+3. Implemented paddle movement
+4. Integrated physics
+5. Added background music
+6. Added lose condition
+7. Added special sound on win
+8. Added player control, e.g. pause, restart, start
+9. Display text on screen
 
 
-TODO:
-1. User Interface, use CEGUI 0.8.4
-2. Paddle
-3. Score system
+User Manual:
+R: restart + reset ball
+Left Click: start
+P: pause
+WASDQR camera control
