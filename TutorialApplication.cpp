@@ -136,7 +136,7 @@ void TutorialApplication::createScene(void)
     room = new Room(mSceneMgr, sim, ps);
     
     b = new ball("sphere.mesh", mSceneMgr, sim, mass * .25f, 
-                resist, friction, initialPoint, "OceanHLSL_GLSL");
+                resist, friction, initialPoint, "Ogre/Tusks");
 
 
     //p = new Paddle(mSceneMgr, sim, btScalar(0), btScalar(1), btScalar(.5f), 
