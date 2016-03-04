@@ -307,8 +307,10 @@ void TutorialApplication::gameOver(void) {
     bool isNewHighScore = ps->updateHighScore();
     if (isNewHighScore) {
         highScore->showText();
-        Mix_PlayChannel(-1, winnerSound, 0);
-        cout << "Yo." << endl;
+
+        if (room->isSoundOn())
+            Mix_PlayChannel(-1, winnerSound, 0);
+        
     }
     else {
         endText->showText();

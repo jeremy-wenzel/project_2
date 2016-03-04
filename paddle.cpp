@@ -1,4 +1,5 @@
 #include "paddle.h"
+#include "Room.h"
 
 Paddle::Paddle (Ogre::SceneManager* sceneMgr,
 				Simulator* sim,
@@ -53,7 +54,8 @@ void Paddle::update (float elapsedTime) {
 		if (_context->hit 
 			&& (_context->theObject->getName() == "sphere.mesh")) {
 			//Handle the hit
-			Mix_PlayChannel( -1, gScratch, 0 );
+			if (Room::isSoundOn())
+				Mix_PlayChannel( -1, gScratch, 0 );
 		}
 		_context->hit = false;
 	}
