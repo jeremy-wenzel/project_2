@@ -24,7 +24,9 @@ http://www.ogre3d.org/wiki/
 
 using namespace std;
 
-TutorialApplication::TutorialApplication(void) {
+//---------------------------------------------------------------------------
+TutorialApplication::TutorialApplication(void): muteSound(false)
+{
 }
 
 TutorialApplication::~TutorialApplication(void) {
@@ -43,6 +45,8 @@ TutorialApplication::~TutorialApplication(void) {
 
     if (endText)
         delete endText;
+    if (paddleSound)
+        Mix_FreeChunk(paddleSound);
 
     if (music)
         Mix_FreeMusic(music);
@@ -57,6 +61,25 @@ bool TutorialApplication::soundInit(void) {
     //Initialize SDL_mixer
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
         return false;
+
+    return true;
+
+}
+
+// mouse event
+bool TutorialApplication::mousePressed(
+  const OIS::MouseEvent& me, OIS::MouseButtonID id) 
+{
+    if (id == OIS::MB_Left && b->getKinematic())
+    {
+        b->setKinematic(false);
+        ps->gameStarts = true;
+        ps->gamePaused = false;
+        pauseText->hideText();
+        endText->hideText();
+        highScore->hideText();
+        ps->gameEnds = false;
+    }
 
     return true;
 }
@@ -162,23 +185,24 @@ void TutorialApplication::createScene(void) {
     endText = new OgreText();
     endText->setText("Game Over");
     endText->setColor(0.0, 0.0, 0.0, 1.0);
-    endText->setPosition(0, 0.3);
+    endText->setPosition(0.2, 0.3);
     endText->hideText();
-    endText->resize(0.25f);
+    endText->resize(0.20f);
 
     highScore = new OgreText();
     highScore->setText("New HIGH Score!");
     highScore->setColor(0.0, 0.0, 1.0, 1.0);
-    highScore->setPosition(0, 0.3);
+    highScore->setPosition(0.2, 0.3);
     highScore->hideText();
-    highScore->resize(0.20f);
+    highScore->resize(0.10f);
 
     /////
 
     music = Mix_LoadMUS( "halo.wav" );
     winnerSound = Mix_LoadWAV("win.wav");
-
     Mix_PlayMusic(music, -1);
+    paddleSound = Mix_LoadWAV("wind.wav");
+    Mix_PlayMusic( music, -1 );
     musicPlaying = true;
     Room::setPlayingSounds(true);
 }
@@ -206,14 +230,20 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
             Ogre::Vector3 dir = ori * Ogre::Vector3::NEGATIVE_UNIT_Z;
             Ogre::Vector3 moveVector = (temp_move_speed * dir);
             if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
+            {
+                Mix_PlayChannel( -1, paddleSound, 0 );
                 p->getParentNode()->translate(moveVector);
+            }
         }
         if (doMoveBackward) {
             Ogre::Quaternion ori = p->getParentNode()->getOrientation();
             Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_Z;
             Ogre::Vector3 moveVector = (temp_move_speed * dir);
             if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
+            {
+                Mix_PlayChannel( -1, paddleSound, 0 );
                 p->getParentNode()->translate(moveVector);
+            }
         }
 
         if (doMoveLeft) {
@@ -221,14 +251,20 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
             Ogre::Vector3 dir = ori * Ogre::Vector3::NEGATIVE_UNIT_X;
             Ogre::Vector3 moveVector = (temp_move_speed * dir);
             if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
+            {
+                Mix_PlayChannel( -1, paddleSound, 0 );
                 p->getParentNode()->translate(moveVector);
+            }
         }
         if (doMoveRight) {
             Ogre::Quaternion ori = p->getParentNode()->getOrientation();
             Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_X;
             Ogre::Vector3 moveVector = (temp_move_speed * dir);
             if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
+            {
+                Mix_PlayChannel( -1, paddleSound, 0 );
                 p->getParentNode()->translate(moveVector);
+            }
         }
     }
 
@@ -273,56 +309,51 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
     return ret;
 }
 
-void TutorialApplication::start(void) {
-    if (!ps->gameStarts && !ps->gameEnds) {
-        b->setKinematic(false);
-
-        ps->gameStarts = true;
-        ps->gamePaused = false;
-    }
-}
-
 void TutorialApplication::pause(void) {
-    if (ps->gameStarts && !ps->gamePaused) {
+    if (ps->gameStarts && !ps->gamePaused && !ps->gameEnds) {
         b->setKinematic(true);
 
         pauseText->showText();
         
         ps->gamePaused = true;
+        ps->gameStarts = false;
     }
-    else if (ps->gamePaused) {
+    else if (ps->gamePaused && !ps->gameStarts && !ps->gameEnds) {
         b->setKinematic(false);
         
         pauseText->hideText();
         
         ps->gamePaused = false;
+        ps->gameStarts = true;
     }
 }
 
 void TutorialApplication::gameOver(void) {
     // See if new High score
-    highScore->hideText();
-    endText->hideText();
+    if (!ps->gamePaused) {
+        highScore->hideText();
+        endText->hideText();
 
-    bool isNewHighScore = ps->updateHighScore();
-    if (isNewHighScore) {
-        highScore->showText();
+        bool isNewHighScore = ps->updateHighScore();
+        if (isNewHighScore) {
+            highScore->showText();
 
-        if (room->isSoundOn())
-            Mix_PlayChannel(-1, winnerSound, 0);
-        
+            if (room->isSoundOn())
+                Mix_PlayChannel(-1, winnerSound, 0);
+            
+        }
+        else {
+            endText->showText();
+        }
+
+        // Set text and pause game
+        std::string Score("High score: " + std::to_string(ps->getHighScore()));
+        //ps->resetTotal();
+        totalText->setText(Ogre::String(Score));
+      
+        ps->gameStarts = false;
+        ps->gamePaused = true;
     }
-    else {
-        endText->showText();
-    }
-
-    // Set text and pause game
-    std::string Score("High score: " + std::to_string(ps->getHighScore()));
-    //ps->resetTotal();
-    totalText->setText(Ogre::String(Score));
-  
-    ps->gameEnds = false;
-    ps->gameStarts = false;
 }
 
 void TutorialApplication::reset(void) {
@@ -330,12 +361,14 @@ void TutorialApplication::reset(void) {
     b->getNode()->setPosition(Ogre::Vector3(0, 250, 0));
     b->updateTransform();
 
-    p->getParentNode()->setPosition(Ogre::Vector3(0, 90, 0));
-
     //std::string Score("High score: " + std::to_string(ps->getHighScore()));
     ps->resetTotal();
     ps->resetCurrent();
     //totalText->setText(Ogre::String(Score));
+
+
+    p->getParentNode()->setPosition(Ogre::Real(0), Ogre::Real(90), Ogre::Real(0));
+    p->updateTransform();
 
     endText->hideText();
     pauseText->hideText();
@@ -359,6 +392,21 @@ void TutorialApplication::mute(void) {
     musicPlaying = !musicPlaying;
 }
 
+void TutorialApplication::changeVolume()
+{
+    if (!muteSound)
+    {
+        Mix_VolumeChunk(paddleSound, 0);
+        Mix_VolumeChunk(winnerSound, 0);
+        muteSound = true;
+    }
+    else
+    {
+        Mix_VolumeChunk(paddleSound, MIX_MAX_VOLUME / 2);
+        Mix_VolumeChunk(winnerSound, MIX_MAX_VOLUME / 2);
+        muteSound = false;
+    }
+}
 //---------------------------------------------------------------------------
 
 bool TutorialApplication::keyPressed(const OIS::KeyEvent &arg) {
@@ -375,8 +423,8 @@ bool TutorialApplication::keyPressed(const OIS::KeyEvent &arg) {
         case OIS::KC_ESCAPE : mShutDown      = true; break;
         case OIS::KC_P      : pause();               break;
         case OIS::KC_R      : reset();               break;
-
         case OIS::KC_M      : mute();                break;
+        case OIS::KC_V      : changeVolume();        break;
     }
 
     return true;
@@ -418,15 +466,6 @@ bool TutorialApplication::mouseMoved(const OIS::MouseEvent &arg) {
         camNode->translate(Ogre::Vector3(0, 0, 1.f));
 
     return true;
-}
-
-bool TutorialApplication::mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id) {
-    
-    switch (id) {
-        case OIS::MB_Left : start(); break;
-    }
-
-    return true; 
 }
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32

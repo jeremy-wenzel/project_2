@@ -40,38 +40,40 @@ protected:
     virtual bool mouseMoved(const OIS::MouseEvent &arg);
     virtual bool mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id);
     bool soundInit(void);
-    void start(void);
     void pause(void);
     void reset(void);
     void gameOver(void);
     void mute(void);
+    void changeVolume();
 
 private:
 	ball *b;
 	Paddle *p;
-    Ogre::SceneNode *camNode;
-    Simulator *sim;
-    Room *room;
-    PointSystem *ps;
+  Ogre::SceneNode *camNode;
+	Simulator *sim;
+  Room *room;
+  bool gameStarts;
+  PointSystem *ps;
+  bool muteSound;
 
-    OgreText *totalText;
-    OgreText *currentText;
-    OgreText *pauseText;
-    OgreText *endText;
-    OgreText *highScore;
+  bool doMoveForward;
+  bool doMoveBackward;
+  bool doMoveLeft;
+  bool doMoveRight;
+  bool doMoveDown;
+  bool doMoveUp;
+  bool doMoveFast;
 
-    bool doMoveForward;
-    bool doMoveBackward;
-    bool doMoveLeft;
-    bool doMoveRight;
-    bool doMoveUp;
-    bool doMoveDown;
+  OgreText *totalText;
+  OgreText *currentText;
+  OgreText *pauseText;
+  OgreText *endText;
+  OgreText *highScore;
 
-    bool doMoveFast;
-    
-    Mix_Music *music;
-    Mix_Chunk *winnerSound;
-    bool musicPlaying;
+  Mix_Music *music;
+  Mix_Chunk *winnerSound;
+  Mix_Chunk *paddleSound;
+  bool musicPlaying;
 };
 
 #endif
