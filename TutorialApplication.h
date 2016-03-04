@@ -44,7 +44,6 @@ protected:
     void reset(void);
     void gameOver(void);
     void mute(void);
-    void changeVolume();
 
 private:
 	ball *b;

@@ -202,6 +202,7 @@ void TutorialApplication::createScene(void) {
     winnerSound = Mix_LoadWAV("win.wav");
     Mix_PlayMusic(music, -1);
     paddleSound = Mix_LoadWAV("wind.wav");
+    Mix_VolumeChunk(paddleSound, 30);
     Mix_PlayMusic( music, -1 );
     musicPlaying = true;
     Room::setPlayingSounds(true);
@@ -269,7 +270,7 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
     }
 
     //Ball Movement
-    else if(!ps->gameStarts && !ps->gameEnds) {
+    else if(!ps->gameStarts && !ps->gameEnds && !ps->gamePaused) {
         Ogre::SceneNode *node = b->getSceneNode();
         
         if (doMoveUp)
@@ -294,8 +295,9 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
                 b->moveAround(Ogre::Vector3(0, 0,  temp_move_speed));
     }
 
-    if (room->isOutsideRoom(b->getNode()->getPosition() / 1.1))
+    if (room->isOutsideRoom(b->getNode()->getPosition() / 1.5)) {
         reset();
+    }
 
     Ogre::Vector3 lookPoint = b->getNode()->getPosition() + p->getParentNode()->getPosition();
     lookPoint *= .5f;
@@ -384,26 +386,13 @@ void TutorialApplication::mute(void) {
     else {
         Mix_PlayMusic(music, -1);
         Room::setPlayingSounds(true);
+        Mix_VolumeChunk(paddleSound, 30);
+        Mix_VolumeChunk(winnerSound, 30);
     }
 
     musicPlaying = !musicPlaying;
 }
 
-void TutorialApplication::changeVolume()
-{
-    if (!muteSound)
-    {
-        Mix_VolumeChunk(paddleSound, 0);
-        Mix_VolumeChunk(winnerSound, 0);
-        muteSound = true;
-    }
-    else
-    {
-        Mix_VolumeChunk(paddleSound, MIX_MAX_VOLUME / 2);
-        Mix_VolumeChunk(winnerSound, MIX_MAX_VOLUME / 2);
-        muteSound = false;
-    }
-}
 //---------------------------------------------------------------------------
 
 bool TutorialApplication::keyPressed(const OIS::KeyEvent &arg) {
@@ -421,7 +410,6 @@ bool TutorialApplication::keyPressed(const OIS::KeyEvent &arg) {
         case OIS::KC_P      : pause();               break;
         case OIS::KC_R      : reset();               break;
         case OIS::KC_M      : mute();                break;
-        case OIS::KC_V      : changeVolume();        break;
     }
 
     return true;
@@ -455,7 +443,7 @@ bool TutorialApplication::mouseMoved(const OIS::MouseEvent &arg) {
 
     /////
 
-    if (abs(arg.state.X.rel) > 100)
+    if (abs(arg.state.X.rel) > 10 && room->isSoundOn()) 
         Mix_PlayChannel( -1, paddleSound, 0 );
 
     /////
