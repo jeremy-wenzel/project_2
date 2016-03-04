@@ -19,8 +19,6 @@ Wall::Wall (Ogre::String name,
 			PointSystem *ps,
 			Ogre::String material) : GameObject(name, sceneMgr, sim, mass, restit, fric), lastTime(0){
 
-	_active = true;
-
 
 	// Build Plane and create mesh
 	Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
@@ -100,16 +98,15 @@ void Wall::update (float elapsedTime) {
 				_ps->updateTotalScore();
 				std::string Score("total score: " + std::to_string(_ps->getScore()));
 				text->setText(Ogre::String(Score));
-				Room::reset();
+				_ps->gameEnds = true;
 			}
-			else if (_active && _name != "ground")
+			else if (!_ps->gameEnds)
 			{
 				_entity->setMaterialName("Examples/RockwallDarker");
 				_ps->updateCurrentScore();
 				materialTimer->reset();
 			}
 		}
-		_active = false;
 		// std::cout << "timer " << timer->getMilliseconds() << std::endl;
 		if (Room::isSoundOn() && timer->getMilliseconds() > 500)
 			Mix_PlayChannel( -1, gScratch, 0 );

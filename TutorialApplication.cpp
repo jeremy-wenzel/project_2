@@ -55,6 +55,10 @@ TutorialApplication::~TutorialApplication(void)
     {
         delete pauseText;
     }
+    if (endText)
+    {
+        delete endText;
+    }
 
 }
 
@@ -83,6 +87,8 @@ bool TutorialApplication::mousePressed(
         gameStarts = true;
         gamePaused = false;
         pauseText->hideText();
+        endText->hideText();
+        ps->gameEnds = false;
     }
 
 
@@ -169,6 +175,13 @@ void TutorialApplication::createScene(void)
     pauseText->hideText();
     pauseText->resize(0.40f);
 
+    endText = new OgreText();
+    endText->setText("Game Over");
+    endText->setColor(0.0, 0.0, 0.0, 1.0);
+    endText->setPosition(0, 0.3);
+    endText->hideText();
+    endText->resize(0.25f);
+
     music = Mix_LoadMUS( "halo.wav" );
     Mix_PlayMusic( music, -1 );
     musicPlaying = true;
@@ -184,6 +197,11 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
     std::string Score("current score: " + std::to_string(ps->getCurrentScore()));
     currentText->setText(Ogre::String(Score));
+
+    if (ps->gameEnds)
+    {
+        gameOver();
+    }
 
 
     b->update(evt.timeSinceLastEvent);
@@ -284,7 +302,15 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 void TutorialApplication::pause(void) {
     b->setKinematic(true);
     pauseText->showText();
+    endText->hideText();
     gamePaused = true;
+}
+
+
+void TutorialApplication::gameOver(void) {
+    gamePaused = true;
+    endText->showText();
+    pauseText->hideText();
 }
 
 
@@ -292,7 +318,10 @@ void TutorialApplication::reset(void) {
     b->setKinematic(true);
     b->getNode()->setPosition(Ogre::Vector3(0, 250, 0));
     b->updateTransform();
+    endText->hideText();
+    pauseText->hideText();
     gameStarts = false;
+    ps->gameEnds = false;
 }
 //---------------------------------------------------------------------------
 

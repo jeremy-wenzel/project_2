@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-PointSystem::PointSystem():_scoreCurrent(0), _scoreTotal(0){}
+PointSystem::PointSystem():_scoreCurrent(0), _scoreTotal(0), gameEnds(false){}
 
 
 void PointSystem::updateCurrentScore() {

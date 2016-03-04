@@ -21,7 +21,6 @@ private:
 	Ogre::Timer* timer;
 	Ogre::Timer* materialTimer;
 public:
-	bool _active;
 	Wall (Ogre::String name,
 		  Ogre::SceneManager* sceneMgr,
 		  Simulator* sim,

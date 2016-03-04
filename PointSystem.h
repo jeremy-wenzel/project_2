@@ -5,6 +5,7 @@ private:
 	int _scoreCurrent;
 	int _scoreTotal;
 public:
+	bool gameEnds;
 	void updateCurrentScore();
 	void updateTotalScore();
 	int getScore();
