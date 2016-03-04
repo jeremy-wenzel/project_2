@@ -292,12 +292,10 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
         if (doMoveBackward)
             if (!room->isOutsideRoom(node->getPosition() + Ogre::Vector3(0, 0,  10)))
                 b->moveAround(Ogre::Vector3(0, 0,  temp_move_speed));
-
-        /////
-
-        if (room->isOutsideRoom(b->getNode()->getPosition()))
-            reset();
     }
+
+    if (room->isOutsideRoom(b->getNode()->getPosition()))
+        reset();
 
     Ogre::Vector3 lookPoint = b->getNode()->getPosition() + p->getParentNode()->getPosition();
     lookPoint *= .5f;
