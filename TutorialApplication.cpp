@@ -28,7 +28,7 @@ using namespace std;
 
 
 //---------------------------------------------------------------------------
-TutorialApplication::TutorialApplication(void): gameStarts(false)
+TutorialApplication::TutorialApplication(void): gameStarts(false), gamePaused(false)
 {
 }
 //---------------------------------------------------------------------------
@@ -51,6 +51,10 @@ TutorialApplication::~TutorialApplication(void)
 
     if (music)
         Mix_FreeMusic( music );
+    if (pauseText)
+    {
+        delete pauseText;
+    }
 
 }
 
@@ -77,6 +81,8 @@ bool TutorialApplication::mousePressed(
     {
         b->setKinematic(false);
         gameStarts = true;
+        gamePaused = false;
+        pauseText->hideText();
     }
 
 
@@ -156,7 +162,12 @@ void TutorialApplication::createScene(void)
     currentText->setColor(1.0, 1.0, 1.0, 1.0);
     currentText->setPosition(0, 0.9);
 
-
+    pauseText = new OgreText();
+    pauseText->setText("paused");
+    pauseText->setColor(1.0, 0.0, 0.0, 1.0);
+    pauseText->setPosition(0.05, 0.3);
+    pauseText->hideText();
+    pauseText->resize(0.40f);
 
     music = Mix_LoadMUS( "halo.wav" );
     Mix_PlayMusic( music, -1 );
@@ -179,7 +190,7 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
     Ogre::Real temp_move_speed = p->_moveSpeed * evt.timeSinceLastFrame;
 
     // Paddle Movement
-    if (gameStarts) {
+    if (gameStarts && !gamePaused) {
         if (doMoveFast) {
             temp_move_speed *= 4.0f;
         }
@@ -216,7 +227,7 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
     }
 
     //Ball Movement
-    else {
+    else if(!gamePaused){
 
         Ogre::SceneNode *node = b->getSceneNode();
         if (doMoveUp)
@@ -256,7 +267,7 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
         ///
 
         if (room->isOutsideRoom(b->getNode()->getPosition())) {
-            
+            reset();
         }
     }
 
@@ -268,6 +279,20 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
     bool ret = BaseApplication::frameRenderingQueued(evt);
     return ret;
+}
+
+void TutorialApplication::pause(void) {
+    b->setKinematic(true);
+    pauseText->showText();
+    gamePaused = true;
+}
+
+
+void TutorialApplication::reset(void) {
+    b->setKinematic(true);
+    b->getNode()->setPosition(Ogre::Vector3(0, 250, 0));
+    b->updateTransform();
+    gameStarts = false;
 }
 //---------------------------------------------------------------------------
 
@@ -284,7 +309,8 @@ bool TutorialApplication::keyPressed(const OIS::KeyEvent &arg) {
         case OIS::KC_LSHIFT : doMoveFast     = true; break;
 
         case OIS::KC_ESCAPE : mShutDown      = true; break;
-        case OIS::KC_R      : pause();               break;
+        case OIS::KC_P      : pause();               break;
+        case OIS::KC_R      : reset();               break;
     }
     
     // Mute Music

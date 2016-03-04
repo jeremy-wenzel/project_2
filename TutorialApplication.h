@@ -43,6 +43,7 @@ protected:
     virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
     bool soundInit(void);
     void pause(void);
+    void reset(void);
     virtual void createFrameListener(void);
     virtual bool mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id);
 
@@ -60,9 +61,11 @@ private:
   bool doMoveLeft;
   bool doMoveRight;
   OgreText *currentText;
+  OgreText *pauseText;
 
   bool doMoveUp;
   bool doMoveDown;
+  bool gamePaused;
 
   //Experimental
   bool doMoveFast;

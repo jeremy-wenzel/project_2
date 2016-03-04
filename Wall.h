@@ -19,6 +19,7 @@ private:
 	float lastTime;
 	OgreText *text;
 	Ogre::Timer* timer;
+	Ogre::Timer* materialTimer;
 public:
 	bool _active;
 	Wall (Ogre::String name,

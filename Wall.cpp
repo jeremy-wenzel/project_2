@@ -70,6 +70,7 @@ Wall::Wall (Ogre::String name,
 	}
 
 	timer = new Ogre::Timer();
+	materialTimer = new Ogre::Timer();
 	addToSimulator();
 }
 
@@ -86,36 +87,41 @@ Wall::~Wall () {
 
 void Wall::update (float elapsedTime) {
 
-		lastTime += elapsedTime;
-		
-		if (_context->hit && _context->theObject->getName() == "sphere.mesh"
-			&& timer->getMilliseconds() > 200 ) {
-
-			if (_context->theObject->getKinematic() == false)
-			{
-
-				if(_name == "ground")
-				{
-					_ps->updateTotalScore();
-					std::string Score("total score: " + std::to_string(_ps->getScore()));
-					text->setText(Ogre::String(Score));
-					Room::reset();
-				}
-				else if (_active && _name != "ground")
-				{
-					_entity->setMaterialName("Examples/RockwallDarker");
-					_ps->updateCurrentScore();
-				}
-			}
-			_active = false;
-			std::cout << "timer " << timer->getMilliseconds() << std::endl;
-			if (Room::isSoundOn() && timer->getMilliseconds() > 500)
-				Mix_PlayChannel( -1, gScratch, 0 );
-			lastTime = 0.0f;
-			timer->reset();
-		}
-		_context->hit = false;
+	lastTime += elapsedTime;
 	
+	if (_context->hit && _context->theObject->getName() == "sphere.mesh"
+		&& timer->getMilliseconds() > 200 ) {
+
+		if (_context->theObject->getKinematic() == false)
+		{
+
+			if(_name == "ground")
+			{
+				_ps->updateTotalScore();
+				std::string Score("total score: " + std::to_string(_ps->getScore()));
+				text->setText(Ogre::String(Score));
+				Room::reset();
+			}
+			else if (_active && _name != "ground")
+			{
+				_entity->setMaterialName("Examples/RockwallDarker");
+				_ps->updateCurrentScore();
+				materialTimer->reset();
+			}
+		}
+		_active = false;
+		// std::cout << "timer " << timer->getMilliseconds() << std::endl;
+		if (Room::isSoundOn() && timer->getMilliseconds() > 500)
+			Mix_PlayChannel( -1, gScratch, 0 );
+		lastTime = 0.0f;
+		timer->reset();
+	}
+	_context->hit = false;
+	
+	if (materialTimer && _name != "ground" && materialTimer->getMilliseconds() > 100) {
+		_entity->setMaterialName("Examples/Rockwall");
+	}
+
 }
 
 void Wall::setKinematic() {
