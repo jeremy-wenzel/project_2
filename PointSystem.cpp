@@ -2,16 +2,26 @@
 #include <iostream>
 
 
-PointSystem::PointSystem():_scoreCurrent(0), _scoreTotal(0){}
+
+PointSystem::PointSystem()
+:_scoreCurrent(0), _scoreTotal(0), _highScore(0), gameEnds(false){}
 
 
 void PointSystem::updateCurrentScore() {
-	_scoreCurrent ++;
+	_scoreCurrent++;
+	_scoreTotal++;
 }
 
-void PointSystem::updateTotalScore() {
-	_scoreTotal += _scoreCurrent;
+void PointSystem::resetCurrent() {
 	_scoreCurrent = 0;
+}
+
+void PointSystem::resetTotal() {
+	_scoreTotal = 0;
+}
+void PointSystem::updateHighScore() {
+	if (_highScore < _scoreTotal)
+		_highScore = _scoreTotal;
 }
 
 int PointSystem::getScore() {
@@ -22,3 +32,9 @@ int PointSystem::getScore() {
 int PointSystem::getCurrentScore() {
 	return _scoreCurrent;
 }
+
+
+int PointSystem::getHighScore() {
+	return _highScore;
+}
+

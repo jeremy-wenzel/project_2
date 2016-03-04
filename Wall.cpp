@@ -19,8 +19,6 @@ Wall::Wall (Ogre::String name,
 			PointSystem *ps,
 			Ogre::String material) : GameObject(name, sceneMgr, sim, mass, restit, fric), lastTime(0){
 
-	_active = true;
-
 
 	// Build Plane and create mesh
 	Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
@@ -57,7 +55,7 @@ Wall::Wall (Ogre::String name,
 	// Set Motion State
 	
 	// Set origin (both in Ogre and in Bullet)
-	gScratch = Mix_LoadWAV( "bat_hit_ball.wav" );
+	gScratch = Mix_LoadWAV( "paddle.wav" );
 	this->_ps = ps;
 	if (_name == "ground")
 	{
@@ -70,6 +68,7 @@ Wall::Wall (Ogre::String name,
 	}
 
 	timer = new Ogre::Timer();
+	materialTimer = new Ogre::Timer();
 	addToSimulator();
 }
 
@@ -86,36 +85,48 @@ Wall::~Wall () {
 
 void Wall::update (float elapsedTime) {
 
-		lastTime += elapsedTime;
-		
-		if (_context->hit && _context->theObject->getName() == "sphere.mesh"
-			&& timer->getMilliseconds() > 200 ) {
-
-			if (_context->theObject->getKinematic() == false)
-			{
-
-				if(_name == "ground")
-				{
-					_ps->updateTotalScore();
-					std::string Score("total score: " + std::to_string(_ps->getScore()));
-					text->setText(Ogre::String(Score));
-					Room::reset();
-				}
-				else if (_active && _name != "ground")
-				{
-					_entity->setMaterialName("Examples/RockwallDarker");
-					_ps->updateCurrentScore();
-				}
-			}
-			_active = false;
-			std::cout << "timer " << timer->getMilliseconds() << std::endl;
-			if (Room::isSoundOn() && timer->getMilliseconds() > 500)
-				Mix_PlayChannel( -1, gScratch, 0 );
-			lastTime = 0.0f;
-			timer->reset();
-		}
-		_context->hit = false;
+	lastTime += elapsedTime;
 	
+	if (_context->hit && _context->theObject->getName() == "sphere.mesh"
+		&& timer->getMilliseconds() > 200 ) {
+
+		if (_context->theObject->getKinematic() == false)
+		{
+
+			if(_name == "ground")
+			{
+				// Ground bounce twice
+				if (_ps->getCurrentScore() == 0) {
+					_ps->updateHighScore();
+					std::string Score("total score: " + std::to_string(_ps->getHighScore()));
+					text->setText(Ogre::String(Score));
+					_ps->resetTotal();
+					_ps->gameEnds = true;
+				}
+				else {
+					_ps->resetCurrent();
+				}
+				
+			}
+			else if (!_ps->gameEnds)
+			{
+				_entity->setMaterialName("Examples/RockwallDarker");
+				_ps->updateCurrentScore();
+				materialTimer->reset();
+			}
+		}
+		// std::cout << "timer " << timer->getMilliseconds() << std::endl;
+		if (Room::isSoundOn() && timer->getMilliseconds() > 500)
+			Mix_PlayChannel( -1, gScratch, 0 );
+		lastTime = 0.0f;
+		timer->reset();
+	}
+	_context->hit = false;
+	
+	if (materialTimer && _name != "ground" && materialTimer->getMilliseconds() > 100) {
+		_entity->setMaterialName("Examples/Rockwall");
+	}
+
 }
 
 void Wall::setKinematic() {
