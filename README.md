@@ -18,16 +18,26 @@
 
 README file for assignment2 milestone 3
 
+<p> how to run </p>
+<p> Inside the directory, do make </p>
+<p> ./assignment2 </p>
+
+
 Functions:
-1. Camera chasing after the ball
-2. Implemented sound on collisions
-3. Implemented paddle movement
-4. Integrated physics
-5. Added background music
-6. Added lose condition
-7. Added special sound on win
-8. Added player control, e.g. pause, restart, start
-9. Display text on screen
+1. Camera chasing after the ball <br>
+2. Implemented sound on collisions <br>
+3. Implemented paddle movement <br>
+4. Integrated physics <br>
+5. Added background music <br>
+6. Added lose/win condition <br>
+7. Added special sound on win <br>
+8. Added player control, e.g. pause, restart, start <br>
+9. Display text on screen <br>
+10. Tilt the paddle with mouse <br>
+11. Rotate camera with mouse <br>
+12. Particle system <br>
+13. Sound on moving paddle <br>
+
 
 
 User Manual:
