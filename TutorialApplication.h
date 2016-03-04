@@ -45,6 +45,7 @@ protected:
     void pause(void);
     void reset(void);
     void gameOver(void);
+    void changeVolume();
     virtual void createFrameListener(void);
     virtual bool mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id);
 
@@ -56,6 +57,7 @@ private:
   Room *room;
   bool gameStarts;
   PointSystem *ps;
+  bool muteSound;
 
   bool doMoveForward;
   bool doMoveBackward;
@@ -76,6 +78,7 @@ private:
 
   Mix_Music *music;
   Mix_Chunk *winnerSound;
+  Mix_Chunk *paddleSound;
   bool musicPlaying;
 };
 

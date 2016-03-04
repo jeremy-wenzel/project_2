@@ -28,7 +28,7 @@ using namespace std;
 
 
 //---------------------------------------------------------------------------
-TutorialApplication::TutorialApplication(void)
+TutorialApplication::TutorialApplication(void): muteSound(false)
 {
 
 }
@@ -60,6 +60,8 @@ TutorialApplication::~TutorialApplication(void)
     {
         delete endText;
     }
+    if (paddleSound)
+        Mix_FreeChunk(paddleSound);
 
 }
 
@@ -82,7 +84,7 @@ bool TutorialApplication::soundInit(void)
 bool TutorialApplication::mousePressed(
   const OIS::MouseEvent& me, OIS::MouseButtonID id) 
 {
-    if (id == OIS::MB_Left)
+    if (id == OIS::MB_Left && b->getKinematic())
     {
         b->setKinematic(false);
         ps->gameStarts = true;
@@ -190,21 +192,22 @@ void TutorialApplication::createScene(void)
     endText = new OgreText();
     endText->setText("Game Over");
     endText->setColor(0.0, 0.0, 0.0, 1.0);
-    endText->setPosition(0, 0.3);
+    endText->setPosition(0.2, 0.3);
     endText->hideText();
-    endText->resize(0.25f);
+    endText->resize(0.20f);
 
 
     highScore = new OgreText();
     highScore->setText("New HIGH Score!");
     highScore->setColor(0.0, 0.0, 1.0, 1.0);
-    highScore->setPosition(0, 0.3);
+    highScore->setPosition(0.2, 0.3);
     highScore->hideText();
-    highScore->resize(0.20f);
+    highScore->resize(0.10f);
 
     // Load up music and sounds
     music = Mix_LoadMUS( "halo.wav" );
     winnerSound = Mix_LoadWAV("win.wav");
+    paddleSound = Mix_LoadWAV("wind.wav");
     Mix_PlayMusic( music, -1 );
     musicPlaying = true;
     Room::setPlayingSounds(true);
@@ -240,14 +243,20 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
             Ogre::Vector3 dir = ori * Ogre::Vector3::NEGATIVE_UNIT_Z;
             Ogre::Vector3 moveVector = (temp_move_speed * dir);
             if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
+            {
+                Mix_PlayChannel( -1, paddleSound, 0 );
                 p->getParentNode()->translate(moveVector);
+            }
         }
         else if (doMoveBackward) {
             Ogre::Quaternion ori = p->getParentNode()->getOrientation();
             Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_Z;
             Ogre::Vector3 moveVector = (temp_move_speed * dir);
             if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
+            {
+                Mix_PlayChannel( -1, paddleSound, 0 );
                 p->getParentNode()->translate(moveVector);
+            }
         }
 
         if (doMoveLeft) {
@@ -255,14 +264,20 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
             Ogre::Vector3 dir = ori * Ogre::Vector3::NEGATIVE_UNIT_X;
             Ogre::Vector3 moveVector = (temp_move_speed * dir);
             if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
+            {
+                Mix_PlayChannel( -1, paddleSound, 0 );
                 p->getParentNode()->translate(moveVector);
+            }
         }
         else if (doMoveRight) {
             Ogre::Quaternion ori = p->getParentNode()->getOrientation();
             Ogre::Vector3 dir = ori * Ogre::Vector3::UNIT_X;
             Ogre::Vector3 moveVector = (temp_move_speed * dir);
             if (!room->isOutsideRoom(moveVector + (p->getParentNode()->getPosition())))
+            {
+                Mix_PlayChannel( -1, paddleSound, 0 );
                 p->getParentNode()->translate(moveVector);
+            }
         }
     }
 
@@ -360,11 +375,30 @@ void TutorialApplication::reset(void) {
     b->setKinematic(true);
     b->getNode()->setPosition(Ogre::Vector3(0, 250, 0));
     b->updateTransform();
+    p->getParentNode()->setPosition(Ogre::Real(0), Ogre::Real(90), Ogre::Real(0));
+    p->updateTransform();
     endText->hideText();
     pauseText->hideText();
     highScore->hideText();
     ps->gameStarts = false;
     ps->gameEnds = false;
+}
+
+
+void TutorialApplication::changeVolume()
+{
+    if (!muteSound)
+    {
+        Mix_VolumeChunk(paddleSound, 0);
+        Mix_VolumeChunk(winnerSound, 0);
+        muteSound = true;
+    }
+    else
+    {
+        Mix_VolumeChunk(paddleSound, MIX_MAX_VOLUME / 2);
+        Mix_VolumeChunk(winnerSound, MIX_MAX_VOLUME / 2);
+        muteSound = false;
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -383,6 +417,7 @@ bool TutorialApplication::keyPressed(const OIS::KeyEvent &arg) {
         case OIS::KC_ESCAPE : mShutDown      = true; break;
         case OIS::KC_P      : pause();               break;
         case OIS::KC_R      : reset();               break;
+        case OIS::KC_V      : changeVolume();        break;
     }
     
     // Mute Music
