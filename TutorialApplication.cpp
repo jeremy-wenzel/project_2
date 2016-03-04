@@ -161,10 +161,17 @@ void TutorialApplication::createScene(void)
     camNode->attachObject(mCamera);
 
 
+    totalText = new OgreText();
+
+    std::string highScore("High score: " + std::to_string(ps->getHighScore()));
+    totalText->setText(Ogre::String(highScore));
+    totalText->setColor(1.0, 1.0, 1.0, 1.0);
+    totalText->setPosition(0, 0);
+
     currentText = new OgreText();
 
-    std::string Score("current score: " + std::to_string(ps->getCurrentScore()));
-    currentText->setText(Ogre::String(Score));
+    std::string currScore("current score: " + std::to_string(ps->getCurrentScore()));
+    currentText->setText(Ogre::String(currScore));
     currentText->setColor(1.0, 1.0, 1.0, 1.0);
     currentText->setPosition(0, 0.9);
 
@@ -308,6 +315,10 @@ void TutorialApplication::pause(void) {
 
 
 void TutorialApplication::gameOver(void) {
+    ps->updateHighScore();
+    std::string Score("High score: " + std::to_string(ps->getHighScore()));
+    totalText->setText(Ogre::String(Score));
+    ps->resetTotal();
     gamePaused = true;
     endText->showText();
     pauseText->hideText();
@@ -381,7 +392,7 @@ bool TutorialApplication::mouseMoved(const OIS::MouseEvent &arg)
     p->getParentNode()->yaw(Ogre::Degree(arg.state.X.rel * .5f));
     p->getNode()->pitch(Ogre::Degree(-arg.state.Y.rel * .25f));
 
-    while (p->getNode()->getOrientation().getPitch().valueDegrees() > 30) {
+    while (p->getNode()->getOrientation().getPitch().valueDegrees() > 0) {
         p->getNode()->pitch(Ogre::Radian(-0.01f));
     }
     while (p->getNode()->getOrientation().getPitch().valueDegrees() < -30) {

@@ -61,6 +61,7 @@ private:
   bool doMoveBackward;
   bool doMoveLeft;
   bool doMoveRight;
+  OgreText *totalText;
   OgreText *currentText;
   OgreText *pauseText;
   OgreText *endText;

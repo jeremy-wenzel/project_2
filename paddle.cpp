@@ -35,7 +35,6 @@ Paddle::Paddle (Ogre::SceneManager* sceneMgr,
 	_rootNode->pitch(Ogre::Degree(pitch));
 	_rootNode->roll(Ogre::Degree(roll));
 	_rootNode->yaw(Ogre::Degree(yaw));
-	_entity->setCastShadows(false);
 	// Create entity for plane
 	_rootNode->attachObject(_entity);
 	

@@ -57,15 +57,7 @@ Wall::Wall (Ogre::String name,
 	// Set origin (both in Ogre and in Bullet)
 	gScratch = Mix_LoadWAV( "paddle.wav" );
 	this->_ps = ps;
-	if (_name == "ground")
-	{
-		text = new OgreText();
 
-    	std::string Score("total score: " + std::to_string(this->_ps->getScore()));
-    	text->setText(Ogre::String(Score));
-    	text->setColor(1.0, 1.0, 1.0, 1.0);
-    	text->setPosition(0, 0);
-	}
 
 	timer = new Ogre::Timer();
 	materialTimer = new Ogre::Timer();
@@ -97,10 +89,6 @@ void Wall::update (float elapsedTime) {
 			{
 				// Ground bounce twice
 				if (_ps->getCurrentScore() == 0) {
-					_ps->updateHighScore();
-					std::string Score("total score: " + std::to_string(_ps->getHighScore()));
-					text->setText(Ogre::String(Score));
-					_ps->resetTotal();
 					_ps->gameEnds = true;
 				}
 				else {
@@ -110,7 +98,6 @@ void Wall::update (float elapsedTime) {
 			}
 			else if (!_ps->gameEnds)
 			{
-				_entity->setMaterialName("Examples/RockwallDarker");
 				_ps->updateCurrentScore();
 				materialTimer->reset();
 			}
