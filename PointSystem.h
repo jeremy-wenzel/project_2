@@ -7,6 +7,7 @@ private:
 	int _highScore;
 public:
 	PointSystem();
+	bool gameEnds;
 	void updateCurrentScore();
 	void resetCurrent();
 	void resetTotal();

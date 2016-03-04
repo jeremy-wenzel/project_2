@@ -2,7 +2,9 @@
 #include <iostream>
 
 
-PointSystem::PointSystem():_scoreCurrent(0), _scoreTotal(0), _highScore(0){}
+
+PointSystem::PointSystem()
+:_scoreCurrent(0), _scoreTotal(0), _highScore(0), gameEnds(false){}
 
 
 void PointSystem::updateCurrentScore() {
@@ -31,6 +33,8 @@ int PointSystem::getCurrentScore() {
 	return _scoreCurrent;
 }
 
+
 int PointSystem::getHighScore() {
 	return _highScore;
 }
+
