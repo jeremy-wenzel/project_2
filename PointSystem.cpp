@@ -19,9 +19,15 @@ void PointSystem::resetCurrent() {
 void PointSystem::resetTotal() {
 	_scoreTotal = 0;
 }
-void PointSystem::updateHighScore() {
-	if (_highScore < _scoreTotal)
+
+// Returns true if highScore is updated
+// Returns false if not
+bool PointSystem::updateHighScore() {
+	if (_highScore < _scoreTotal) {
 		_highScore = _scoreTotal;
+		return true;
+	}
+	return false;
 }
 
 int PointSystem::getScore() {

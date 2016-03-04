@@ -53,15 +53,12 @@ private:
     Simulator *sim;
     Room *room;
     PointSystem *ps;
-    Mix_Music *music;
 
-    OgreText* currentText;
-    OgreText* totalText;
-    OgreText* pauseText;
-    OgreText* endText;
-
-    bool gameStarts;
-    bool gamePaused;
+    OgreText *totalText;
+    OgreText *currentText;
+    OgreText *pauseText;
+    OgreText *endText;
+    OgreText *highScore;
 
     bool doMoveForward;
     bool doMoveBackward;
@@ -71,7 +68,9 @@ private:
     bool doMoveDown;
 
     bool doMoveFast;
-
+    
+    Mix_Music *music;
+    Mix_Chunk *winnerSound;
     bool musicPlaying;
 };
 
