@@ -21,31 +21,27 @@ Paddle::Paddle (Ogre::SceneManager* sceneMgr,
 	_entity->setCastShadows(true);
 	_parentNode = sceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(x_pos, y_pos, z_pos));
 	_rootNode = _parentNode->createChildSceneNode();
-	//_rootNode->translate(0, Ogre::Real(height), 0);
-	//_rootNode->pitch(Ogre::Degree(45));
 
 	// Create Transform
 	_tr.setIdentity();
 	_tr.setOrigin(btVector3(x_pos, y_pos, z_pos));
-	//_tr.setRotation(btQuaternion(yaw, pitch, roll, 0));
 
 	// Set Motion State
 	_shape = new btBoxShape(btVector3(btScalar(height/2.f), btScalar(width/2.f), btScalar(depth/2.f)));
 	_motionState = new OgreMotionState(_tr, _rootNode);
+
 	// Set origin (both in Ogre and in Bullet)
-
 	_rootNode->scale(Ogre::Vector3(height/100.f, width/100.f, depth/100.f));
-
 	_rootNode->pitch(Ogre::Degree(pitch));
 	_rootNode->roll(Ogre::Degree(roll));
 	_rootNode->yaw(Ogre::Degree(yaw));
-	this->_entity->setCastShadows(false);
+	_entity->setCastShadows(false);
 	// Create entity for plane
 	_rootNode->attachObject(_entity);
 	
 	addToSimulator();
 	setKinematic(true);
-	gScratch = Mix_LoadWAV( "bat_hit_ball.wav" );
+	gScratch = Mix_LoadWAV( "paddle.wav" );
 }
 
 Paddle::~Paddle () {
@@ -54,16 +50,11 @@ Paddle::~Paddle () {
 
 void Paddle::update (float elapsedTime) {
 	if (_cCallBack)
-	{
-		
-		lastTime += elapsedTime;
-		
+	{	
 		if (_context->hit 
-			&& (_context->theObject->getName() == "sphere.mesh")
-			&& (_context->lastBody != _context->body && lastTime > 0.1)) {
+			&& (_context->theObject->getName() == "sphere.mesh")) {
 			//Handle the hit
 			Mix_PlayChannel( -1, gScratch, 0 );
-			lastTime = 0.0f;
 		}
 		_context->hit = false;
 	}

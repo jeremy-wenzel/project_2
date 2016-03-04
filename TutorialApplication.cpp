@@ -171,7 +171,7 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
     sim->stepSimulation(evt.timeSinceLastEvent, 1);
 
-    std::string Score("current score: " + std::to_string(ps->getScore()));
+    std::string Score("Total score: " + std::to_string(ps->getScore()));
     currentText->setText(Ogre::String(Score));
 
 

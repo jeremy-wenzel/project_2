@@ -57,7 +57,7 @@ Wall::Wall (Ogre::String name,
 	// Set Motion State
 	
 	// Set origin (both in Ogre and in Bullet)
-	gScratch = Mix_LoadWAV( "bat_hit_ball.wav" );
+	gScratch = Mix_LoadWAV( "paddle.wav" );
 	this->_ps = ps;
 	if (_name == "ground")
 	{
@@ -99,7 +99,7 @@ void Wall::update (float elapsedTime) {
 					// Ground bounce twice
 					if (_ps->getCurrentScore() == 0) {
 						_ps->updateHighScore();
-						std::string Score("total score: " + std::to_string(_ps->getHighScore()));
+						std::string Score("High score: " + std::to_string(_ps->getHighScore()));
 						text->setText(Ogre::String(Score));
 						Room::reset();
 						_ps->resetTotal();
