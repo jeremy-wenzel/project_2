@@ -164,8 +164,8 @@ void TutorialApplication::createScene(void)
 
     totalText = new OgreText();
 
-    std::string highScore("High score: " + std::to_string(ps->getHighScore()));
-    totalText->setText(Ogre::String(highScore));
+    std::string high("High score: " + std::to_string(ps->getHighScore()));
+    totalText->setText(Ogre::String(high));
     totalText->setColor(1.0, 1.0, 1.0, 1.0);
     totalText->setPosition(0, 0);
 
