@@ -12,6 +12,9 @@ public:
 	void setPosition(float x, float y);
 	void setText(Ogre::String textString);
 	void setColor(float R,float G,float B,float A);
+	void hideText();
+	void showText();
+	void resize(float size);
 private:
 	Ogre::TextAreaOverlayElement *textArea;
 	Ogre::OverlayManager *olm;

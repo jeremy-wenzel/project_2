@@ -54,3 +54,21 @@ void OgreText::setColor(float R,float G,float B,float A)
 {
     textArea->setColour(Ogre::ColourValue(R, G, B, A));
 }
+
+
+void OgreText::hideText()
+{
+    textArea->hide();
+}
+
+
+void OgreText::showText()
+{
+    textArea->show();
+}
+
+
+void OgreText::resize(float size)
+{
+    textArea->setCharHeight(size);
+}

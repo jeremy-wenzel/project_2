@@ -6,6 +6,7 @@ private:
 	int _scoreTotal;
 	int _highScore;
 public:
+	bool gameEnds;
 	void updateCurrentScore();
 	void resetCurrent();
 	void resetTotal();
