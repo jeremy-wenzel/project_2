@@ -98,6 +98,7 @@ void Wall::update (float elapsedTime) {
 			}
 			else if (!_ps->gameEnds)
 			{
+				_entity->setMaterialName("Examples/RockwallDarker");
 				_ps->updateCurrentScore();
 				materialTimer->reset();
 			}

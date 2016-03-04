@@ -25,7 +25,7 @@ Room::Room(Ogre::SceneManager* sceneManager, Simulator *sim, PointSystem *ps) {
 					   Ogre::Real(0),
 					   Ogre::Real(0),
 					   ps,
-					   "OceanHLSL_GLSL"));
+					   "Examples/Rockwall"));
 
 	walls.push_back(new Wall(Ogre::String("northWall"),
 					   sceneManager,
