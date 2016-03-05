@@ -7,6 +7,7 @@ Camera controls are automatically enabled
 * R for restart
 * Escape for quit
 * Mouse left click drops the ball
+* Moving the mouse quickly to the left or right cause a "whooshing" sound
 * Scroll mouse middle button for zoom in/out
 * Mute/Unmute music and sounds: M
 * Move camera with the mouse (left, right)

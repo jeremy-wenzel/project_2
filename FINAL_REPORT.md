@@ -7,11 +7,13 @@
 
 * Paddle: Paddle is the most time consuming part in this project that requires a lot of math adjustments. Our paddle works fine in moving in four directions (positive/negative along x-axis and positive/negative along y-axis). We rotate the paddle using the mouse. This was extremely difficult to get fully working due to the use of Euler angles. We only wanted to pitch and yaw the paddle, but not roll. We eventually solved this issue by implementing the paddle as a child of some parent node. The parent node would yaw which would cause the child orbit to the parent. When we wanted to pitch, we a would just pitch the child node. This prevented the roll that we didn’t want.
 
+* Player Controls: We implemented the ability for the player to move constantly while holding one of the WASD keys. Now the player will continue to move while holding one of these keys. The player also has the ability to move faster by pressing the shift key.
+
 * Wall: Works as expected. Walls work fine in collision detection, sound playing and communicating with point system.
 
 * UI: Works as expected. UI can display properly on the screen and react to possible user inputs. We switched from CEGUI to OgreText because we had difficulties in compiling CEGUI files. OgreText and OIS can interact with users but there are no instructions on controls. Users have to master basic operations to interact with the game.
 
-* Sound: Works better. We have sound generated whenever ball collides with other game objects in the Ogre space. We enabled background music and users can mute it as well as the game sounds.
+* Sound: Works better. We have sound generated whenever ball collides with other game objects in the Ogre space. We also created a sound for when the player turns sharply, which causes a "whooshing" sound. We enabled background music and users can mute it as well as the game sounds.
 
 * Camera and Camera Control: The camera was implemented differently as we went along. It was initially behind the paddle. However, this made it too difficult to track the ball and the paddle at the same time. We came up with a way to track the middle position between the paddle and the ball. This made it much easier for the the player to follow the ball. We also added an ability for the user to zoom the camera in and out.
 
