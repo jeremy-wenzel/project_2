@@ -1,8 +1,8 @@
-###User Manual###
+#User Manual#
 
 Camera controls are automatically enabled
 
-##General controls:##
+###General controls:###
 * P for pause
 * R for restart
 * Escape for quit
@@ -12,7 +12,7 @@ Camera controls are automatically enabled
 * Move camera with the mouse (left, right)
 * Tilt the paddle with mouse (up, down)
 
-##Before game starts (only ball operations are allowed): ##
+###Before game starts (only ball operations are allowed): ###
 * W -> move forward
 * S -> move backwards
 * A -> move to left
@@ -20,7 +20,7 @@ Camera controls are automatically enabled
 * Q -> move upwards
 * E -> move downwards
 
-##In the game##
+###In the game###
 Only paddle movement
 * W -> forward
 * S -> backward
@@ -28,7 +28,7 @@ Only paddle movement
 * D -> right
 Use shift with either key above speeds up the movement
 
-##Rules##
+###Rules###
 * Get one point for each wall hit ( excluding floor)
 * Lose the game if the ball touches the ground twice in a row 
 * Lose the game if the ball touches the ground before touching other walls
